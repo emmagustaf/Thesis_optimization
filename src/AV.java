@@ -1,10 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Av {
-    private List<Inlet> inlets = new ArrayList<>();
+public class AV {
 
-    public Av(List inlets){
+    private int id;
+    private int lengthToRoot;
+    private List<Inlet> inlets;
+
+    public AV(int id, int lengthToRoot, List<Inlet> inlets){
+        this.id = id;
+        this.lengthToRoot = lengthToRoot;
         this.inlets = inlets;
     }
 
@@ -15,5 +20,21 @@ public class Av {
 
     public void setInlets(List<Inlet> inlets) {
         this.inlets = inlets;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getLengthToRoot() {
+        return lengthToRoot;
+    }
+
+    public void setLengthToRoot(int lengthToRoot) {
+        this.lengthToRoot = lengthToRoot;
     }
 }
