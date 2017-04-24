@@ -13,4 +13,35 @@ public class Junction extends Vertex{
         this.rightDepth = rightDepth;
     }
 
+    public Vertex getLeftChild() {
+        return leftChild;
+    }
+
+    public void setLeftChild(Vertex leftChild) {
+        this.leftChild = leftChild;
+    }
+
+    public Vertex getRightChild() {
+        return rightChild;
+    }
+
+    public void setRightChild(Vertex rightChild) {
+        this.rightChild = rightChild;
+    }
+
+    public int getLeftDepth() {
+        return leftDepth;
+    }
+
+    public void setLeftDepth(int leftDepth) {
+        this.leftDepth = leftDepth;
+    }
+
+    public int getRightDepth() {
+        return rightDepth;
+    }
+
+    public void setRightDepth(int rightDepth) {
+        this.rightDepth = rightDepth;
+    }
 }
