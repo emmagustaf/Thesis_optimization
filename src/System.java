@@ -28,6 +28,7 @@ public class System {
     private Inlet I22_1, I22_2, I22_3;
     private Inlet I23_1, I23_2, I23_3;
 
+    private final int lengthToRoot = 1;
 
     public System(){
         instantiateAllAv();
@@ -41,26 +42,26 @@ public class System {
         }*/
     }
     public void instantiateAllAv(){
-        AV3 = new AV(AVInlets3);
-        AV4 = new AV(AVInlets4);
-        AV5 = new AV(AVInlets5);
-        AV6 = new AV(AVInlets6);
-        AV7 = new AV(AVInlets7);
-        AV8 = new AV(AVInlets8);
-        AV10 = new AV(AVInlets10);
-        AV11 = new AV(AVInlets11);
-        AV12 = new AV(AVInlets12);
-        AV13 = new AV(AVInlets13);
-        AV14 = new AV(AVInlets14);
-        AV15 = new AV(AvInlets15);
-        AV16 = new AV(AvInlets16);
-        AV17 = new AV(AvInlets17);
-        AV18 = new AV(AvInlets18);
-        AV19 = new AV(AVInlets19);
-        AV20 = new AV(AVInlets20);
-        AV21 = new AV(AVInlets21);
-        AV22 = new AV(AVInlets22);
-        AV23 = new AV(AVInlets23);
+        AV3 = new AV(3, lengthToRoot, AVInlets3);
+        AV4 = new AV(4, lengthToRoot, AVInlets4);
+        AV5 = new AV(5, lengthToRoot, AVInlets5);
+        AV6 = new AV(6, lengthToRoot, AVInlets6);
+        AV7 = new AV(6, lengthToRoot, AVInlets7);
+        AV8 = new AV(8, lengthToRoot, AVInlets8);
+        AV10 = new AV(10, lengthToRoot, AVInlets10);
+        AV11 = new AV(11, lengthToRoot, AVInlets11);
+        AV12 = new AV(12, lengthToRoot, AVInlets12);
+        AV13 = new AV(13, lengthToRoot, AVInlets13);
+        AV14 = new AV(14, lengthToRoot, AVInlets14);
+        AV15 = new AV(15, lengthToRoot, AvInlets15);
+        AV16 = new AV(16, lengthToRoot, AvInlets16);
+        AV17 = new AV(17, lengthToRoot, AvInlets17);
+        AV18 = new AV(18, lengthToRoot, AvInlets18);
+        AV19 = new AV(19, lengthToRoot, AVInlets19);
+        AV20 = new AV(20, lengthToRoot, AVInlets20);
+        AV21 = new AV(21, lengthToRoot, AVInlets21);
+        AV22 = new AV(22, lengthToRoot, AVInlets22);
+        AV23 = new AV(23, lengthToRoot, AVInlets23);
 
         /*AV3.setInlets(AVInlets3);
         AV4.setInlets(AVInlets4);
