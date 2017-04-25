@@ -5,7 +5,7 @@ public class InletCluster extends Vertex{
     private List<Inlet> inletList;
     private AV av;
 
-    public InletCluster(int id, int lengthToRoot, int lengthToParent, Vertex parent, AV av, List<Inlet> inletList) {
+    public InletCluster(int id, double lengthToRoot, double lengthToParent, Vertex parent, AV av, List<Inlet> inletList) {
         super(id, lengthToRoot, lengthToParent, parent);
         this.av = av;
         this.inletList = inletList;

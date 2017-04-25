@@ -1,11 +1,13 @@
 
 public class Inlet {
     private int level;
-    private int id;
+    private String id;
+    private int fraction; //fraction 1 = rest, 2 = plastic, 3 = paper
 
-    public Inlet(int id, int level) {
+    public Inlet(String id, int level, int fraction) {
         this.id = id;
         this.level = level;
+        this.fraction = fraction;
     }
 
 
@@ -17,11 +19,19 @@ public class Inlet {
         this.level = level;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public int getFraction() {
+        return fraction;
+    }
+
+    public void setFraction(int fraction) {
+        this.fraction = fraction;
     }
 }
