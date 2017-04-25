@@ -3,9 +3,9 @@ public abstract class Vertex {
 
     private Vertex parent;
     private int id;
-    private int lengthToRoot, lengthToParent;
+    private double lengthToRoot, lengthToParent;
 
-    public Vertex(int id, int lengthToRoot, int lengthToParent, Vertex parent) {
+    public Vertex(int id, double lengthToRoot, double lengthToParent, Vertex parent) {
         this.id = id;
         this.lengthToRoot = lengthToRoot;
         this.lengthToParent = lengthToParent;
@@ -34,19 +34,19 @@ public abstract class Vertex {
         this.id = id;
     }
 
-    public int getLengthToRoot() {
+    public double getLengthToRoot() {
         return lengthToRoot;
     }
 
-    public void setLengthToRoot(int lengthToRoot) {
+    public void setLengthToRoot(double lengthToRoot) {
         this.lengthToRoot = lengthToRoot;
     }
 
-    public int getLengthToParent() {
+    public double getLengthToParent() {
         return lengthToParent;
     }
 
-    public void setLengthToParent(int lengthToParent) {
+    public void setLengthToParent(double lengthToParent) {
         this.lengthToParent = lengthToParent;
     }
 

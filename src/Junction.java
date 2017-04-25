@@ -2,10 +2,10 @@
 public class Junction extends Vertex{
 
     private Vertex leftChild, rightChild;
-    private int leftDepth, rightDepth;
+    private double leftDepth, rightDepth;
 
-    public Junction(int id, int lengthToRoot, int lengthToParent, Vertex parent, Vertex leftChild, Vertex rightChild
-            , int leftDepth, int rightDepth) {
+    public Junction(int id, double lengthToRoot, double lengthToParent, Vertex parent, Vertex leftChild, Vertex rightChild
+            , double leftDepth, double rightDepth) {
         super(id, lengthToRoot, lengthToParent, parent);
         this.leftChild = leftChild;
         this.rightChild = rightChild;
@@ -29,19 +29,19 @@ public class Junction extends Vertex{
         this.rightChild = rightChild;
     }
 
-    public int getLeftDepth() {
+    public double getLeftDepth() {
         return leftDepth;
     }
 
-    public void setLeftDepth(int leftDepth) {
+    public void setLeftDepth(double leftDepth) {
         this.leftDepth = leftDepth;
     }
 
-    public int getRightDepth() {
+    public double getRightDepth() {
         return rightDepth;
     }
 
-    public void setRightDepth(int rightDepth) {
+    public void setRightDepth(double rightDepth) {
         this.rightDepth = rightDepth;
     }
 }

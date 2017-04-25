@@ -5,20 +5,20 @@ public class AV {
 
     private int id;
     private int lengthToRoot;
-    private List<Inlet> inlets;
+    private List<InletCluster> inlets;
 
-    public AV(int id, int lengthToRoot, List<Inlet> inlets){
+    public AV(int id, int lengthToRoot, List<InletCluster> inlets){
         this.id = id;
         this.lengthToRoot = lengthToRoot;
         this.inlets = inlets;
     }
 
 
-    public List<Inlet> getInlets() {
+    public List<InletCluster> getInlets() {
         return inlets;
     }
 
-    public void setInlets(List<Inlet> inlets) {
+    public void setInlets(List<InletCluster> inlets) {
         this.inlets = inlets;
     }
 

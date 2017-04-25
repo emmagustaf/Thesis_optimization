@@ -1,21 +1,13 @@
 
-public class Inlet extends Vertex{
+public class Inlet {
     private int level;
-    private AV av;
+    private int id;
 
-    public Inlet(int id, int lengthToRoot, int lengthToParent, Vertex parent, int level, AV av) {
-        super(id, lengthToRoot, lengthToParent, parent);
+    public Inlet(int id, int level) {
+        this.id = id;
         this.level = level;
-        this.av = av;
     }
 
-    public AV getAV() {
-        return av;
-    }
-
-    public void setAV(AV av) {
-        this.av = av;
-    }
 
     public int getLevel() {
         return level;
@@ -23,5 +15,13 @@ public class Inlet extends Vertex{
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
