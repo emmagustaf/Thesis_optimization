@@ -4,10 +4,10 @@ import java.util.List;
 public class AV {
 
     private int id;
-    private int lengthToRoot;
+    private double lengthToRoot;
     private List<InletCluster> inlets;
 
-    public AV(int id, int lengthToRoot, List<InletCluster> inlets){
+    public AV(int id, double lengthToRoot, List<InletCluster> inlets){
         this.id = id;
         this.lengthToRoot = lengthToRoot;
         this.inlets = inlets;
@@ -30,7 +30,7 @@ public class AV {
         this.id = id;
     }
 
-    public int getLengthToRoot() {
+    public double getLengthToRoot() {
         return lengthToRoot;
     }
 

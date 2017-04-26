@@ -6,8 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
         Vertex j = miniSetup();
-
-        Algorithm.processSubtree(j);
+        SystemSetup ss = new SystemSetup();
+        Algorithm.processSubtree(ss.rootNode);
 
         for (Tuple<Double, String> t : Algorithm.emptySeq) {
             System.out.println(t.y + " for " + t.x + " time.");
