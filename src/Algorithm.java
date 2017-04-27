@@ -59,7 +59,6 @@ public class Algorithm {
     }
 
     private static void emptyAV(AV av) {
-        System.out.println("AV: " + av);
         if (emptySeq.size() > 0) {
             emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
         }

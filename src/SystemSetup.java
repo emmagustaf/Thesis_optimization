@@ -370,7 +370,7 @@ public class SystemSetup {
         inletCluster10_1 = new InletCluster(38,56/METER_CONVERSION,1.2/METER_CONVERSION, J39, null, inletList10_1);
         inletCluster10_2 = new InletCluster(31,51.8/METER_CONVERSION,0.8/METER_CONVERSION, J34, null, inletList10_2);
         inletCluster10_3 = new InletCluster(32,52.6/METER_CONVERSION,0/METER_CONVERSION, J33, null, inletList10_3);
-        inletCluster10_4 = new InletCluster(34,57/METER_CONVERSION,4.4/METER_CONVERSION, J33, null, inletList10_4);
+        inletCluster10_4 = new InletCluster(33,57/METER_CONVERSION,4.4/METER_CONVERSION, J33, null, inletList10_4);
 
         inletCluster11 = new InletCluster(50,60.8/METER_CONVERSION,1.5/METER_CONVERSION, J46, null, inletList11);
 
@@ -653,6 +653,7 @@ public class SystemSetup {
         inletCluster6_1.setAV(AV5);
         inletCluster6_2.setAV(AV5);
         inletCluster6_3.setAV(AV5);
+        inletCluster6_4.setAV(AV5);
 
         AV7 = new AV(7,inletCluster7_1.getLengthToParent(),Arrays.asList(inletCluster7_1,inletCluster7_2,inletCluster7_3,inletCluster7_4));
         inletCluster7_1.setAV(AV7);
@@ -745,8 +746,6 @@ public class SystemSetup {
             return v.getLengthToParent();
 
         } else {
-
-            System.out.println(v.getId());
             double dLeft = setJunctionDepth(((Junction) v).getLeftChild());
             double dRight = setJunctionDepth(((Junction) v).getRightChild());
 

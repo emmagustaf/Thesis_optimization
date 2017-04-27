@@ -51,7 +51,6 @@ public class Main {
         j.setLeftChild(ic1);
         j.setRightChild(ic2);
 
-        System.out.println("ic2s parents : " + ((Junction) ic2.getParent()).getLeftChild().getId());
         return j;
     }
 }
