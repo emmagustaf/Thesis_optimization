@@ -3,16 +3,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SystemSetup {
+
     // variable to convert map scale to real length
     private final double METER_CONVERSION = 0.05;
+
     public static Junction rootNode;
+
     private Junction J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14, J15, J16,
             J17, J18, J19, J20, J21, J22, J23, J24, J25, J26, J27, J28, J29, J30, J31, J32, J33, J34,
             J35, J36, J37, J38, J39, J40, J41, J42, J43, J44, J45, J46, J47, J48, J49, J50, J51, J52, J53;
 
-    private List <AV> AVList = new ArrayList<>();
     private AV AV3, AV4, AV5, AV6, AV7, AV8, AV9, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV23, AV24, AV25;
-    private List <InletCluster> AVInlets3, AVInlets4, AVInlets5, AVInlets6, AVInlets7, AVInlets8, AVInlets10, AVInlets11, AVInlets12, AVInlets13, AVInlets14, AvInlets15, AvInlets16, AvInlets17, AvInlets18, AVInlets19, AVInlets20, AVInlets21, AVInlets22, AVInlets23;
 
     private Inlet I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
             I4_1, I4_2, I4_3, I4_4, I5_1, I5_2, I5_3, I5_4, I5_5,
@@ -472,6 +473,9 @@ public class SystemSetup {
         J53 = new Junction(53,62.1/METER_CONVERSION,0.5/METER_CONVERSION, J52, inletCluster16_1, inletCluster16_2, 1,1);
     }
     public void setChildren(){
+        rootNode.setLeftChild(J1);
+        rootNode.setRightChild(J1);
+
         J1.setLeftChild(J2);
         J1.setRightChild(J5);
 
@@ -732,233 +736,6 @@ public class SystemSetup {
 
         AV25 = new AV(25,inletCluster25.getLengthToParent(),Arrays.asList(inletCluster25));
         inletCluster25.setAV(AV25);
-
-
-        /*AV3 = new AV(3, lengthToRoot, AVInlets3);
-        AV4 = new AV(4, lengthToRoot, AVInlets4);
-        AV5 = new AV(5, lengthToRoot, AVInlets5);
-        AV6 = new AV(6, lengthToRoot, AVInlets6);
-        AV7 = new AV(6, lengthToRoot, AVInlets7);
-        AV8 = new AV(8, lengthToRoot, AVInlets8);
-        AV10 = new AV(10, lengthToRoot, AVInlets10);
-        AV11 = new AV(11, lengthToRoot, AVInlets11);
-        AV12 = new AV(12, lengthToRoot, AVInlets12);
-        AV13 = new AV(13, lengthToRoot, AVInlets13);
-        AV14 = new AV(14, lengthToRoot, AVInlets14);
-        AV15 = new AV(15, lengthToRoot, AvInlets15);
-        AV16 = new AV(16, lengthToRoot, AvInlets16);
-        AV17 = new AV(17, lengthToRoot, AvInlets17);
-        AV18 = new AV(18, lengthToRoot, AvInlets18);
-        AV19 = new AV(19, lengthToRoot, AVInlets19);
-        AV20 = new AV(20, lengthToRoot, AVInlets20);
-        AV21 = new AV(21, lengthToRoot, AVInlets21);
-        AV22 = new AV(22, lengthToRoot, AVInlets22);
-        AV23 = new AV(23, lengthToRoot, AVInlets23);
-        */
-        /*AV3.setInlets(AVInlets3);
-        AV4.setInlets(AVInlets4);
-        AV5.setInlets(AVInlets5);
-        AV6.setInlets(AVInlets6);
-        AV7.setInlets(AVInlets7);
-        AV8.setInlets(AVInlets8);
-        AV10.setInlets(AVInlets10);
-        AV11.setInlets(AVInlets11);
-        AV12.setInlets(AVInlets12);
-        AV13.setInlets(AVInlets13);
-        AV14.setInlets(AVInlets14);
-        AV15.setInlets(AvInlets15);
-        AV16.setInlets(AvInlets16);
-        AV17.setInlets(AvInlets17);
-        AV18.setInlets(AvInlets18);
-        AV19.setInlets(AVInlets19);
-        AV21.setInlets(AVInlets21);
-        AV22.setInlets(AVInlets22);
-        AV23.setInlets(AVInlets23);*/
-    }
-    public void instantiateAllAVInlet(){
-
-
-        /* AVInlets3 = new ArrayList<InletCluster>();
-        AVInlets4 = new ArrayList<Inlet>();
-        AVInlets5 = new ArrayList<Inlet>();
-        AVInlets6 = new ArrayList<Inlet>();
-        AVInlets7 = new ArrayList<Inlet>();
-        AVInlets8 = new ArrayList<Inlet>();
-        AVInlets10 = new ArrayList<Inlet>();
-        AVInlets11 = new ArrayList<Inlet>();
-        AVInlets12 = new ArrayList<Inlet>();
-        AVInlets13 = new ArrayList<Inlet>();
-        AVInlets14 = new ArrayList<Inlet>();
-        AvInlets15 = new ArrayList<Inlet>();
-        AvInlets16 = new ArrayList<Inlet>();
-        AvInlets17 = new ArrayList<Inlet>();
-        AvInlets18 = new ArrayList<Inlet>();
-        AVInlets19 = new ArrayList<Inlet>();
-        AVInlets20 = new ArrayList<Inlet>();
-        AVInlets21 = new ArrayList<Inlet>();
-        AVInlets22 = new ArrayList<Inlet>();
-        AVInlets23 = new ArrayList<Inlet>();
-
-        AVInlets3.add(I3_1);
-        AVInlets3.add(I3_2);
-        AVInlets3.add(I3_3);
-        AVInlets3.add(I3_4);
-        AVInlets3.add(I3_5);
-        AVInlets3.add(I3_6);
-        AVInlets3.add(I3_7);
-        AVInlets3.add(I3_8);
-        AVInlets3.add(I3_18);
-        AVInlets3.add(I3_19);
-        AVInlets3.add(I3_20);
-
-        AVInlets4.add(I4_1);
-        AVInlets4.add(I4_2);
-        AVInlets4.add(I4_3);
-        AVInlets4.add(I4_4);
-
-        AVInlets5.add(I5_1);
-        AVInlets5.add(I5_2);
-        AVInlets5.add(I5_3);
-        AVInlets5.add(I5_4);
-        AVInlets5.add(I5_5);
-
-        AVInlets6.add(I6_1);
-        AVInlets6.add(I6_2);
-        AVInlets6.add(I6_3);
-        AVInlets6.add(I6_4);
-        AVInlets6.add(I6_5);
-        AVInlets6.add(I6_6);
-        AVInlets6.add(I6_7);
-        AVInlets6.add(I6_8);
-        AVInlets6.add(I6_9);
-        AVInlets6.add(I6_10);
-        AVInlets6.add(I6_11);
-        AVInlets6.add(I6_12);
-        AVInlets6.add(I6_13);
-        AVInlets6.add(I6_14);
-        AVInlets6.add(I6_15);
-        AVInlets6.add(I6_16);
-        AVInlets6.add(I6_17);
-        AVInlets6.add(I6_18);
-
-        AVInlets7.add(I7_1);
-        AVInlets7.add(I7_2);
-        AVInlets7.add(I7_3);
-        AVInlets7.add(I7_4);
-        AVInlets7.add(I7_5);
-        AVInlets7.add(I7_6);
-        AVInlets7.add(I7_7);
-        AVInlets7.add(I7_8);
-        AVInlets7.add(I7_9);
-        AVInlets7.add(I7_10);
-
-        AVInlets8.add(I8_1);
-        AVInlets8.add(I8_2);
-        AVInlets8.add(I8_3);
-        AVInlets8.add(I8_4);
-
-        AVInlets10.add(I10_1);
-        AVInlets10.add(I10_2);
-        AVInlets10.add(I10_3);
-        AVInlets10.add(I10_4);
-
-        AVInlets11.add(I11_1);
-        AVInlets11.add(I11_2);
-        AVInlets11.add(I11_3);
-        AVInlets11.add(I11_4);
-        AVInlets11.add(I11_5);
-        AVInlets11.add(I11_6);
-        AVInlets11.add(I11_7);
-        AVInlets11.add(I11_8);
-        AVInlets11.add(I11_9);
-        AVInlets11.add(I11_10);
-
-        AVInlets12.add(I12_1);
-        AVInlets12.add(I12_2);
-        AVInlets12.add(I12_3);
-
-        AVInlets13.add(I13_1);
-        AVInlets13.add(I13_2);
-        AVInlets13.add(I13_3);
-
-        AVInlets14.add(I14_1);
-        AVInlets14.add(I14_2);
-        AVInlets14.add(I14_3);
-        AVInlets14.add(I14_4);
-        AVInlets14.add(I14_5);
-        AVInlets14.add(I14_6);
-        AVInlets14.add(I14_7);
-        AVInlets14.add(I14_8);
-        AVInlets14.add(I14_9);
-        AVInlets14.add(I14_10);
-        AVInlets14.add(I14_11);
-        AVInlets14.add(I14_12);
-
-        AvInlets15.add(I15_1);
-        AvInlets15.add(I15_2);
-        AvInlets15.add(I15_3);
-        AvInlets15.add(I15_4);
-
-        AvInlets16.add(I16_1);
-        AvInlets16.add(I16_2);
-        AvInlets16.add(I16_3);
-        AvInlets16.add(I16_4);
-        AvInlets16.add(I16_5);
-        AvInlets16.add(I16_6);
-        AvInlets16.add(I16_7);
-        AvInlets16.add(I16_8);
-        AvInlets16.add(I16_9);
-        AvInlets16.add(I16_10);
-        AvInlets16.add(I16_11);
-
-        AvInlets17.add(I17_1);
-        AvInlets17.add(I17_2);
-        AvInlets17.add(I17_3);
-        AvInlets17.add(I17_4);
-        AvInlets17.add(I17_5);
-        AvInlets17.add(I17_6);
-
-        AvInlets18.add(I18_1);
-        AvInlets18.add(I18_2);
-        AvInlets18.add(I18_3);
-        AvInlets18.add(I18_4);
-        AvInlets18.add(I18_5);
-        AvInlets18.add(I18_6);
-        AvInlets18.add(I18_7);
-        AvInlets18.add(I18_8);
-        AvInlets18.add(I18_9);
-
-        AVInlets19.add(I19_1);
-        AVInlets19.add(I19_2);
-        AVInlets19.add(I19_3);
-
-        AVInlets20.add(I20_1);
-        AVInlets20.add(I20_2);
-        AVInlets20.add(I20_3);
-
-        AVInlets21.add(I21_1);
-        AVInlets21.add(I21_2);
-        AVInlets21.add(I21_3);
-        AVInlets21.add(I21_4);
-        AVInlets21.add(I21_5);
-        AVInlets21.add(I21_6);
-        AVInlets21.add(I21_7);
-        AVInlets21.add(I21_8);
-        AVInlets21.add(I21_9);
-        AVInlets21.add(I21_10);
-        AVInlets21.add(I21_11);
-        AVInlets21.add(I21_12);
-        AVInlets21.add(I21_13);
-        AVInlets21.add(I21_14);
-        AVInlets21.add(I21_15);
-
-        AVInlets22.add(I22_1);
-        AVInlets22.add(I22_2);
-        AVInlets22.add(I22_3);
-
-        AVInlets23.add(I23_1);
-        AVInlets23.add(I23_2);
-        AVInlets23.add(I23_3);*/
 
     }
 }
