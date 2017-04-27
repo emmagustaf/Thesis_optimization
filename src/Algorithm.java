@@ -19,10 +19,9 @@ public class Algorithm {
 
 
     public static AV processSubtree(Vertex v) {
-        AV av;
 
         if (v instanceof InletCluster) {
-            av = ((InletCluster) v).getAV();
+            AV av = ((InletCluster) v).getAV();
 
             if (!emptiedAVs.contains(av)) {
                 emptyAV(av);
@@ -38,11 +37,18 @@ public class Algorithm {
             Vertex firstChild = leftDeepest ? j.getLeftChild() : j.getRightChild();
             Vertex secondChild = leftDeepest ? j.getRightChild() : j.getLeftChild();
 
-            processSubtree(firstChild);
-            av = processSubtree(secondChild);
+            // Start with the AV furthest away from the root node
+            AV av1 = processSubtree(firstChild);
+            AV av2 = processSubtree(secondChild);
 
-            if (v.getLengthToRoot() != 0) {
+            // If no new AV has been opened in the subtrees, return null
+            if (av2 == null && av1 == null) {
+                return null;
+
+            } else if (v.getLengthToRoot() != 0) {
+                AV av = av2 == null ? av1 : av2;
                 emptySeq.add(new Tuple(v.getLengthToParent(), "Continue on AV: " + av.getId()));
+
                 return av;
             } else {
                 emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
@@ -50,11 +56,10 @@ public class Algorithm {
             }
 
         }
-
-
     }
 
-    public static void emptyAV(AV av) {
+    private static void emptyAV(AV av) {
+        System.out.println("AV: " + av);
         if (emptySeq.size() > 0) {
             emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
         }
@@ -78,9 +83,44 @@ public class Algorithm {
         emptiedAVs.add(av);
     }
 
+    /*public static Vertex buildTree(Vertex v) {
+        if (v instanceof InletCluster) {
+            InletCluster ic = (InletCluster) v;
+
+            // If any inlet in the cluster has a level, the cluster is added to the tree
+            return anyLevel(ic) ? ic : null;
+
+        } else {
+            Junction j = (Junction) v;
+            Vertex v1 = buildTree(j.getRightChild());
+            Vertex v2 = buildTree(j.getLeftChild());
+
+            if (v1 == null && v2 == null) {
+                return null;
+            } else if (v2 == null) {
+                Junction parent = (Junction) j.getParent();
+                if (parent.getLeftChild().getId() == j.getId()) {
+                    parent.setLeftChild(j.getRightChild());
+                }
+            }
+        }
+
+        return v;
+    }
+
+    private static boolean anyLevel(InletCluster cluster) {
+        for (Inlet i : cluster.getInletList()) {
+            if (i.getLevel() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }*/
+
     public static String getLastAV() {
-        String lastSeq = emptySeq.get(emptySeq.size()-1).y;
-        return lastSeq.substring(lastSeq.lastIndexOf(" ")+1);
+        String lastSeq = emptySeq.get(emptySeq.size() - 1).y;
+        return lastSeq.substring(lastSeq.lastIndexOf(" ") + 1);
     }
 
     public static double getTotalTime() {

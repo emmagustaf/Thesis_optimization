@@ -8,6 +8,7 @@ public class Main {
         Vertex j = miniSetup();
         SystemSetup ss = new SystemSetup();
         Algorithm.processSubtree(ss.rootNode);
+        //Algorithm.processSubtree(j);
 
         for (Tuple<Double, String> t : Algorithm.emptySeq) {
             System.out.println(t.y + " for " + t.x + " time.");
@@ -21,8 +22,8 @@ public class Main {
      */
     public static Vertex miniSetup() {
         Junction j = new Junction(1, 0, 0, null, null, null, 4, 6);
-        InletCluster ic1 = new InletCluster(1,4,4, j, null, new ArrayList<>());
-        InletCluster ic2 = new InletCluster(1,6,6, j, null, new ArrayList<>());
+        InletCluster ic1 = new InletCluster(111,4,4, j, null, new ArrayList<>());
+        InletCluster ic2 = new InletCluster(222,6,6, j, null, new ArrayList<>());
 
         Inlet i1 = new Inlet("1", 0, 1);
         Inlet i2 = new Inlet("2", 0, 2);
@@ -50,6 +51,7 @@ public class Main {
         j.setLeftChild(ic1);
         j.setRightChild(ic2);
 
+        System.out.println("ic2s parents : " + ((Junction) ic2.getParent()).getLeftChild().getId());
         return j;
     }
 }

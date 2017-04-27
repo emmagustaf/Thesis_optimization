@@ -56,10 +56,8 @@ public class SystemSetup {
         instantiateAllInletClusters();
         instantiateAllAv();
         setChildren();
+        setJunctionDepth(rootNode);
 
-        System.out.println("InletCluster: " + inletCluster3_2.getParent());
-        System.out.println("InletCluster: " + inletCluster3_2.getLengthToParent());
-        System.out.println("JunctionChild: " + J4.getLeftChild());
     }
 
     public void instantiateAllInlets(){
@@ -259,7 +257,8 @@ public class SystemSetup {
         I25_3 = new Inlet("25:3",0,1);
 
     }
-    public void instantiateAllInletLists(){
+
+    public void instantiateAllInletLists() {
         inletList3_1 = Arrays.asList(I3_1, I3_2, I3_3, I3_4, I3_5);
         inletList3_2 = Arrays.asList(I3_6, I3_7, I3_8);
         inletList3_3 = Arrays.asList(I3_18, I3_19, I3_20);
@@ -339,7 +338,7 @@ public class SystemSetup {
 
     }
 
-    public void instantiateAllInletClusters(){
+    public void instantiateAllInletClusters() {
 
         inletCluster3_1 = new InletCluster(15,42.8/METER_CONVERSION,1.6/METER_CONVERSION, J16, null, inletList3_1);
         inletCluster3_2 = new InletCluster(13,38.5/METER_CONVERSION,3.5/METER_CONVERSION, J13, null, inletList3_2);
@@ -416,7 +415,8 @@ public class SystemSetup {
         inletCluster25 = new InletCluster(3,28.3/METER_CONVERSION,2.2/METER_CONVERSION, J4, null, inletList25);
 
     }
-    public void instantiateAllJunctions(){
+
+    public void instantiateAllJunctions() {
         rootNode = new Junction(0, 0,0, null, J1, J1, 1, 1);
         J1 = new Junction(1,22.6/METER_CONVERSION,22.6/METER_CONVERSION, rootNode, J2, J5, 1, 1);
         J2 = new Junction(2,23.8/METER_CONVERSION,1.2/METER_CONVERSION, J1, inletCluster20, J3,1,1);
@@ -472,7 +472,8 @@ public class SystemSetup {
         J52 = new Junction(52,61.6/METER_CONVERSION,0.4/METER_CONVERSION, J51, J53, inletCluster15_1,1,1);
         J53 = new Junction(53,62.1/METER_CONVERSION,0.5/METER_CONVERSION, J52, inletCluster16_1, inletCluster16_2, 1,1);
     }
-    public void setChildren(){
+
+    public void setChildren() {
         rootNode.setLeftChild(J1);
         rootNode.setRightChild(J1);
 
@@ -636,8 +637,7 @@ public class SystemSetup {
         J53.setRightChild(inletCluster16_2);
     }
 
-
-    public void instantiateAllAv(){
+    public void instantiateAllAv() {
         AV3 = new AV(3,inletCluster3_1.getLengthToParent(),Arrays.asList(inletCluster3_1,inletCluster3_2,inletCluster3_3));
         inletCluster3_1.setAV(AV3);
         inletCluster3_2.setAV(AV3);
@@ -738,4 +738,26 @@ public class SystemSetup {
         inletCluster25.setAV(AV25);
 
     }
+
+    public static double setJunctionDepth(Vertex v) {
+
+        if (v instanceof InletCluster) {
+            return v.getLengthToParent();
+
+        } else {
+
+            System.out.println(v.getId());
+            double dLeft = setJunctionDepth(((Junction) v).getLeftChild());
+            double dRight = setJunctionDepth(((Junction) v).getRightChild());
+
+            ((Junction) v).setLeftDepth(dLeft);
+            ((Junction) v).setRightDepth(dRight);
+
+            double deepest = dRight >= dLeft ? dRight : dLeft;
+
+            return v.getLengthToParent() + deepest;
+
+        }
+    }
+
 }
