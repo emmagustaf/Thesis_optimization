@@ -2,14 +2,13 @@ import java.lang.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args) {
-        Vertex j = miniSetup();
-        Setup setup = new Setup();
+        SystemSetup setup = new SystemSetup();
         Algorithm.processSubtree(setup.rootNode);
-        Algorithm.processSubtree(j);
 
         for (Tuple<Double, String> t : Algorithm.emptySeq) {
             System.out.println(t.y + " for " + t.x + " time.");
@@ -17,6 +16,12 @@ public class Main {
 
         System.out.println("Total time: " + Algorithm.getTotalTime());
 
+        Map<String,List<Disposal>> disposals = ParseData.parseCSVFile();
+
+        /*System.out.println("Disposals for inlet 3:1:");
+        for (Disposal d : disposals.get("3:1")) {
+            System.out.println("Disposal: " + d.getLogId() + ", Date: " + d.getLogDate());
+        }*/
     }
 
     /*

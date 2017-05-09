@@ -1,11 +1,12 @@
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Disposal {
 
     private String logId, inletAddress;
-    private Date logDate;
+    private LocalDateTime logDate;
 
-    public Disposal(String logId, Date logDate, String inletAddress){
+    public Disposal(String logId, LocalDateTime logDate, String inletAddress){
         this.logDate = logDate;
         this.logId = logId;
         this.inletAddress = inletAddress;
@@ -27,11 +28,11 @@ public class Disposal {
         this.inletAddress = inletAddress;
     }
 
-    public Date getLogDate() {
+    public LocalDateTime getLogDate() {
         return logDate;
     }
 
-    public void setLogDate(Date logDate) {
+    public void setLogDate(LocalDateTime logDate) {
         this.logDate = logDate;
     }
 }
