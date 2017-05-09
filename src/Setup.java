@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +17,9 @@ public class Setup {
     private AV AV3, AV4, AV5, AV6, AV7, AV8, AV9, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV23, AV24, AV25;
 
     public Map<String,Inlet> inlets;
+    public Map<String,InletCluster> inletClusters;
+    public Map<String,AV> avs;
+    public Map<String,Junction> junctions;
 
     public Inlet I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
             I4_1, I4_2, I4_3, I4_4, I5_1, I5_2, I5_3, I5_4, I5_5,
@@ -768,3 +771,4 @@ public class Setup {
     }
 
 }
+*/

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class SystemSetup {
 
@@ -14,6 +15,12 @@ public class SystemSetup {
             J35, J36, J37, J38, J39, J40, J41, J42, J43, J44, J45, J46, J47, J48, J49, J50, J51, J52, J53;
 
     private AV AV3, AV4, AV5, AV6, AV7, AV8, AV9, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV23, AV24, AV25;
+
+
+    public Map<String,Inlet> inletsMap;
+    public Map<Integer,InletCluster> inletClusters;
+    public Map<Integer,AV> avs;
+    public Map<Integer,Junction> junctions;
 
     public Inlet I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
             I4_1, I4_2, I4_3, I4_4, I5_1, I5_2, I5_3, I5_4, I5_5,
@@ -265,6 +272,50 @@ public class SystemSetup {
         I25_2 = new Inlet("25:2",0,2);
         I25_3 = new Inlet("25:3",0,1);
 
+
+    }
+    public void fillMaps(){
+
+        List<Inlet> inletList = Arrays.asList(I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
+                I4_1, I4_2, I4_3, I4_4, I5_1, I5_2, I5_3, I5_4, I5_5,
+                I6_1, I6_2, I6_3, I6_4, I6_5, I6_6, I6_7, I6_8, I6_9, I6_10, I6_11, I6_12, I6_13, I6_14, I6_15,
+                I6_16, I6_17, I6_18, I7_1, I7_2, I7_3, I7_4, I7_5, I7_6, I7_7, I7_8, I7_9, I7_10, I7_11, I7_12, I8_1, I8_2,
+                I8_3, I8_4, I8_5, I8_6, I8_7, I8_8, I8_9, I9_3, I10_1, I10_2, I10_3, I10_4,I10_5, I10_6, I10_7, I11_1, I11_2, I11_3,
+                I11_4, I11_5, I11_6, I11_7, I11_8, I11_9, I11_10, I12_1, I12_2, I12_3, I12_4, I12_5, I13_1, I13_2, I13_3, I14_1,
+                I14_2, I14_3, I14_4, I14_5, I14_6, I14_7, I14_8, I14_9, I14_10, I14_11, I14_12, I14_13, I15_1, I15_2, I15_3, I15_4,
+                I15_5, I15_16, I16_1, I16_2, I16_3, I16_4, I16_5, I16_6, I16_7, I16_8, I16_9,
+                I16_10, I16_11, I17_1, I17_2, I17_3, I17_4, I17_5, I17_6, I17_7, I17_8, I17_9, I18_1,
+                I18_2, I18_3, I18_4, I18_5, I18_6, I18_7, I18_8, I18_9, I18_10, I19_1, I19_2, I19_3, I20_1, I20_2, I20_3,
+                I21_1, I21_2, I21_3, I21_4, I21_5, I21_6, I21_7, I21_8, I21_9, I21_10, I21_11, I21_12, I21_13, I21_14,
+                I21_15, I22_1, I22_2, I22_3, I23_1, I23_2, I23_3, I23_4, I23_5, I23_6, I23_7, I24_1, I24_2, I24_3, I24_4, I25_1, I25_2, I25_3);
+        for (Inlet i : inletList) {
+            inletsMap.put(i.getId(),i);
+        }
+
+        List<AV> avList = Arrays.asList(AV3, AV4, AV5, AV6, AV7, AV8, AV9, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV23, AV24, AV25);
+        for (AV a: avList) {
+            avs.put(a.getId(),a);
+        }
+
+        List<InletCluster> inletClusterList = Arrays.asList(inletCluster3_1, inletCluster3_2, inletCluster3_3, inletCluster4, inletCluster5, inletCluster6_1,
+                inletCluster6_2, inletCluster6_3, inletCluster6_4, inletCluster7_1, inletCluster7_2, inletCluster7_3, inletCluster7_4,
+                inletCluster8_1, inletCluster8_2, inletCluster8_3, inletCluster8_4, inletCluster8_5, inletCluster8_6,
+                inletCluster9, inletCluster10_1, inletCluster10_2, inletCluster10_3, inletCluster10_4, inletCluster11, inletCluster12_1, inletCluster12_2, inletCluster12_3,
+                inletCluster13, inletCluster14_1, inletCluster14_2, inletCluster15_1, inletCluster15_2, inletCluster15_3, inletCluster16_1, inletCluster16_2,
+                inletCluster17_1, inletCluster17_2, inletCluster17_3, inletCluster17_4, inletCluster18_1, inletCluster18_2, inletCluster18_3,
+                inletCluster19, inletCluster20, inletCluster21_1, inletCluster21_2,
+                inletCluster21_3,inletCluster21_4, inletCluster22, inletCluster23_1, inletCluster23_2,
+                inletCluster24, inletCluster25);
+        for (InletCluster ic: inletClusterList) {
+            inletClusters.put(ic.getId(),ic);
+        }
+
+        List<Junction> junctionList = Arrays.asList(rootNode, J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14, J15, J16,
+                J17, J18, J19, J20, J21, J22, J23, J24, J25, J26, J27, J28, J29, J30, J31, J32, J33, J34,
+                J35, J36, J37, J38, J39, J40, J41, J42, J43, J44, J45, J46, J47, J48, J49, J50, J51, J52, J53);
+        for (Junction j: junctionList) {
+            junctions.put(j.getId(),j);
+        }
     }
 
     public void instantiateAllInletLists() {
@@ -348,7 +399,7 @@ public class SystemSetup {
     }
 
     public void instantiateAllInletClusters() {
-        /*
+
         inletCluster3_1 = new InletCluster(15,42.8/METER_CONVERSION,1.6/METER_CONVERSION, J16, null, inletList3_1);
         inletCluster3_2 = new InletCluster(13,38.5/METER_CONVERSION,3.5/METER_CONVERSION, J13, null, inletList3_2);
         inletCluster3_3 = new InletCluster(12,34.1/METER_CONVERSION,1.3/METER_CONVERSION, J12, null, inletList3_3);
@@ -422,7 +473,7 @@ public class SystemSetup {
         inletCluster23_2 = new InletCluster(4,26.9/METER_CONVERSION,0.8/METER_CONVERSION, J4, null, inletList23_2);
         inletCluster24 = new InletCluster(5,27.3/METER_CONVERSION,1.5/METER_CONVERSION, J6, null, inletList24);
         inletCluster25 = new InletCluster(3,28.3/METER_CONVERSION,2.2/METER_CONVERSION, J4, null, inletList25);
-*/
+
     }
 
     public void instantiateAllJunctions() {

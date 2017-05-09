@@ -1,21 +1,26 @@
 import java.lang.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         Vertex j = miniSetup();
-        Setup setup = new Setup();
-        Algorithm.processSubtree(setup.rootNode);
-        Algorithm.processSubtree(j);
+        //Setup setup = new Setup();
+        //SystemSetup setup = new SystemSetup();
+      //  Algorithm.processSubtree(setup.rootNode);
+        //Algorithm.processSubtree(j);
 
-        for (Tuple<Double, String> t : Algorithm.emptySeq) {
+/*        for (Tuple<Double, String> t : Algorithm.emptySeq) {
             System.out.println(t.y + " for " + t.x + " time.");
         }
 
-        System.out.println("Total time: " + Algorithm.getTotalTime());
+        System.out.println("Total time: " + Algorithm.getTotalTime());*/
+
+        //setup.inletList.get(0).setLevel(5);
+        //setup.inletList.get(1).setLevel(7);
+        //System.out.println("Get inlet "+ setup.inletList.get(0).getId()+ " level: " +setup.inletList.get(0).getLevel());
+        //System.out.println("Get inlet "+ setup.inletList.get(1).getId()+ " level: " +setup.inletList.get(1).getLevel());
+
 
     }
 
@@ -24,8 +29,11 @@ public class Main {
      */
     public static Vertex miniSetup() {
         Junction j = new Junction(1, 0, 0, null, null, null, 4, 6);
+        Junction first = new Junction(2,1,1,j,null,null,3,0);
+
         InletCluster ic1 = new InletCluster(111,4,4, j, null, new ArrayList<>());
         InletCluster ic2 = new InletCluster(222,6,6, j, null, new ArrayList<>());
+
 
         Inlet i1 = new Inlet("1", 0, 1);
         Inlet i2 = new Inlet("2", 0, 2);
@@ -50,8 +58,26 @@ public class Main {
         ic1.setAV(new AV(1,4, clusters1));
         ic2.setAV(new AV(2,6, clusters2));
 
-        j.setLeftChild(ic1);
+        j.setLeftChild(first);
         j.setRightChild(ic2);
+
+        first.setLeftChild(ic1);
+
+        Map<Integer,Junction> junctions = new HashMap<>();
+        junctions.put(1,j);
+        junctions.put(2,first);
+
+        Map<Integer,InletCluster> inletClusters = new HashMap<>();
+        inletClusters.put(111,ic1);
+
+
+//        System.out.println("RootChild: " + j.getLeftChild().getId() + " leftchilds parent: " + j.getLeftChild().getParent().getId() );
+
+        junctions.get(1).setLeftChild(inletClusters.get(111));
+
+        inletClusters.get(111).setParent(junctions.get(1));
+
+  //      System.out.println("RootChild: " + j.getLeftChild().getId() + " leftchilds parent: " + j.getLeftChild().getParent().getId() );
 
         return j;
     }

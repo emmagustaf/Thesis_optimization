@@ -26,6 +26,8 @@ public abstract class Vertex {
         return this.parent;
     }
 
+    public void setParent(Vertex parent){ this.parent = parent;}
+
     public int getId() {
         return id;
     }
