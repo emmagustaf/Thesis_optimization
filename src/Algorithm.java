@@ -69,10 +69,10 @@ public class Algorithm {
         List<InletCluster> clusters = av.getInlets();
 
         for (InletCluster cluster : clusters) {
-            List<String> inlets = cluster.getInletList();
+            List<Inlet> inlets = cluster.getInletList();
 
-            for (String i : inlets) {
-                emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i));
+            for (Inlet i : inlets) {
+                emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i.getId()));
             }
 
         }

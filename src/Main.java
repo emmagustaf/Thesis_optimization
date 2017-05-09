@@ -1,8 +1,8 @@
 import java.lang.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 public class Main {
 
@@ -22,6 +22,7 @@ public class Main {
         for (Disposal d : disposals.get("3:1")) {
             System.out.println("Disposal: " + d.getLogId() + ", Date: " + d.getLogDate());
         }*/
+
     }
 
     /*
@@ -29,8 +30,11 @@ public class Main {
      */
     public static Vertex miniSetup() {
         Junction j = new Junction(1, 0, 0, null, null, null, 4, 6);
+        Junction first = new Junction(2,1,1,j,null,null,3,0);
+
         InletCluster ic1 = new InletCluster(111,4,4, j, null, new ArrayList<>());
         InletCluster ic2 = new InletCluster(222,6,6, j, null, new ArrayList<>());
+
 
         Inlet i1 = new Inlet("1", 0, 1);
         Inlet i2 = new Inlet("2", 0, 2);
@@ -44,8 +48,8 @@ public class Main {
         inlets2.add(i3);
         inlets2.add(i4);
 
-        ic1.setInletList(Arrays.asList("1","2"));
-        ic2.setInletList(Arrays.asList("3","4"));
+       // ic1.setInletList(Arrays.asList("1","2"));
+       // ic2.setInletList(Arrays.asList("3","4"));
 
         List<InletCluster> clusters1 = new ArrayList<>();
         List<InletCluster> clusters2 = new ArrayList<>();
@@ -55,8 +59,26 @@ public class Main {
         ic1.setAV(new AV(1,4, clusters1));
         ic2.setAV(new AV(2,6, clusters2));
 
-        j.setLeftChild(ic1);
+        j.setLeftChild(first);
         j.setRightChild(ic2);
+
+        first.setLeftChild(ic1);
+
+        Map<Integer,Junction> junctions = new HashMap<>();
+        junctions.put(1,j);
+        junctions.put(2,first);
+
+        Map<Integer,InletCluster> inletClusters = new HashMap<>();
+        inletClusters.put(111,ic1);
+
+
+//        System.out.println("RootChild: " + j.getLeftChild().getId() + " leftchilds parent: " + j.getLeftChild().getParent().getId() );
+
+        junctions.get(1).setLeftChild(inletClusters.get(111));
+
+        inletClusters.get(111).setParent(junctions.get(1));
+
+  //      System.out.println("RootChild: " + j.getLeftChild().getId() + " leftchilds parent: " + j.getLeftChild().getParent().getId() );
 
         return j;
     }
