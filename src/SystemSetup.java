@@ -64,6 +64,7 @@ public class SystemSetup {
         instantiateAllInletClusters();
         instantiateAllAv();
         setChildren();
+        setParents();
         setJunctionDepth(rootNode);
         fillMaps();
 
@@ -546,14 +547,163 @@ public class SystemSetup {
         J45 = new Junction(45,58.3/METER_CONVERSION,0.5/METER_CONVERSION, J44, J46, inletCluster12_2,1,1);
         J46 = new Junction(46,59.3/METER_CONVERSION,1.0/METER_CONVERSION, J45, inletCluster11, J47,1,1);
         J47 = new Junction(47,59.8/METER_CONVERSION,0.5/METER_CONVERSION, J46, inletCluster12_3, inletCluster12_1,1,1);
-        J48 = new Junction(48,58.5/METER_CONVERSION, 1.9/METER_CONVERSION, J43, J49, inletCluster14_2, 1,1);
+        J48 = new Junction(48,58.5/METER_CONVERSION,1.9/METER_CONVERSION, J43, J49, inletCluster14_2, 1,1);
         J49 = new Junction(49,61.5/METER_CONVERSION,3.0/METER_CONVERSION, J48, inletCluster14_1, J50,1,1);
         J50 = new Junction(50,59.5/METER_CONVERSION,1.0/METER_CONVERSION, J49, J51, inletCluster15_2,1,1);
         J51 = new Junction(51,61.2/METER_CONVERSION,1.6/METER_CONVERSION, J50, J52, inletCluster15_3,1,1);
         J52 = new Junction(52,61.6/METER_CONVERSION,0.4/METER_CONVERSION, J51, J53, inletCluster15_1,1,1);
         J53 = new Junction(53,62.1/METER_CONVERSION,0.5/METER_CONVERSION, J52, inletCluster16_1, inletCluster16_2, 1,1);
     }
+    public void setParents(){
+        J1.setParent(rootNode);
+        J2.setParent(J1);
+        inletCluster20.setParent(J2);
 
+        J3.setParent(J2);
+        inletCluster23_1.setParent(J3);
+
+        J4.setParent(J3);
+        inletCluster25.setParent(J4);
+        inletCluster23_2.setParent(J4);
+
+        J5.setParent(J1);
+        inletCluster24.setParent(J5);
+
+        J6.setParent(J5);
+        inletCluster19.setParent(J5);
+
+        J7.setParent(J6);
+        J8.setParent(J7);
+        inletCluster21_1.setParent(J8);
+
+        J9.setParent(J8);
+        J10.setParent(J9);
+        inletCluster21_2.setParent(J10);
+        inletCluster22.setParent(J10);
+
+        J11.setParent(J9);
+        inletCluster21_3.setParent(J11);
+        inletCluster21_4.setParent(J11);
+
+        J12.setParent(J7);
+        inletCluster3_3.setParent(J12);
+
+        J13.setParent(J12);
+        inletCluster3_2.setParent(J13);
+
+        J14.setParent(J13);
+        inletCluster9.setParent(J14);
+
+        J15.setParent(J14);
+        J16.setParent(J15);
+        inletCluster3_1.setParent(J16);
+
+        J17.setParent(J16);
+        inletCluster4.setParent(J17);
+
+        J18.setParent(J17);
+        inletCluster7_2.setParent(J18);
+
+        J19.setParent(J18);
+        inletCluster5.setParent(J19);
+
+        J20.setParent(J19);
+        inletCluster7_1.setParent(J20);
+
+        J21.setParent(J20);
+        inletCluster7_3.setParent(J21);
+        inletCluster7_4.setParent(J21);
+
+        J22.setParent(J15);
+        J23.setParent(J22);
+        inletCluster6_1.setParent(J23);
+
+        J24.setParent(J23);
+        inletCluster6_2.setParent(J24);
+
+        J25.setParent(J24);
+        inletCluster6_3.setParent(J25);
+        inletCluster6_4.setParent(J25);
+
+        J26.setParent(J22);
+        inletCluster8_2.setParent(J26);
+
+        J27.setParent(J26);
+        inletCluster8_3.setParent(J27);
+
+        J28.setParent(J27);
+        J29.setParent(J28);
+        inletCluster8_1.setParent(J29);
+        inletCluster8_6.setParent(J29);
+
+        J30.setParent(J28);
+        inletCluster8_4.setParent(J30);
+
+        J31.setParent(J30);
+        inletCluster8_5.setParent(J31);
+
+        J32.setParent(J31);
+        J33.setParent(J32);
+        inletCluster10_3.setParent(J33);
+        inletCluster10_4.setParent(J33);
+
+        J34.setParent(J32);
+        inletCluster10_2.setParent(J34);
+
+        J35.setParent(J34);
+        J36.setParent(J35);
+        inletCluster17_4.setParent(J36);
+
+        J37.setParent(J36);
+        inletCluster18_1.setParent(J37);
+
+        J38.setParent(J37);
+        inletCluster18_2.setParent(J38);
+        inletCluster18_3.setParent(J38);
+
+        J39.setParent(J35);
+        inletCluster10_1.setParent(J39);
+
+        J40.setParent(J39);
+        J41.setParent(J40);
+        inletCluster17_3.setParent(J41);
+        inletCluster17_1.setParent(J41);
+
+        J42.setParent(J40);
+        inletCluster17_2.setParent(J42);
+
+        J43.setParent(J42);
+        J44.setParent(J43);
+        inletCluster13.setParent(J44);
+
+        J45.setParent(J44);
+        inletCluster12_2.setParent(J45);
+
+        J46.setParent(J45);
+        inletCluster11.setParent(J46);
+
+        J47.setParent(J46);
+        inletCluster12_3.setParent(J47);
+        inletCluster12_1.setParent(J47);
+
+        J48.setParent(J43);
+        inletCluster14_2.setParent(J48);
+
+        J49.setParent(J48);
+        inletCluster14_1.setParent(J49);
+        J50.setParent(J49);
+        inletCluster15_2.setParent(J50);
+
+        J51.setParent(J50);
+        inletCluster15_3.setParent(J51);
+        J52.setParent(J51);
+        inletCluster15_1.setParent(J52);
+
+        J53.setParent(J52);
+        inletCluster16_1.setParent(J53);
+        inletCluster16_2.setParent(J53);
+
+    }
     public void setChildren() {
         rootNode.setLeftChild(J1);
         rootNode.setRightChild(J1);
