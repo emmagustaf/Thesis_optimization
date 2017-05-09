@@ -67,11 +67,11 @@ public class SystemSetup {
 
     }
 
-    public static void levelUpdate(String id, int newLevel){
+    public static void levelUpdate(String id, double newLevel){
         inletsMap.get(id).setLevel(newLevel);
     }
 
-    public static int getLevel(String id) {
+    public static double getLevel(String id) {
         return inletsMap.get(id).getLevel();
     }
     public static void updateRelation(Vertex parent, Vertex leftChild, Vertex rightChild){

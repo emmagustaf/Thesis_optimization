@@ -1,21 +1,21 @@
 
 public class Inlet {
-    private int level;
+    private double level;
     private String id;
     private int fraction; //fraction 1 = rest, 2 = plastic, 3 = paper
 
-    public Inlet(String id, int level, int fraction) {
+    public Inlet(String id, double level, int fraction) {
         this.id = id;
         this.level = level;
         this.fraction = fraction;
     }
 
 
-    public int getLevel() {
+    public double getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(double level) {
         this.level = level;
     }
 

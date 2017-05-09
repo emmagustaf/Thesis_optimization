@@ -8,7 +8,9 @@ import java.util.*;
 public class ParseData {
 
     public static Map<String,List<Disposal>> parseCSVFile() {
-        String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
+        //String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
+        String filePath = "/Users/emma/Chalmers/exjobb/Prototype/thesis_opt/disposals_jan2017.csv";
+
         String delimiter = ";";
         Map<String, List<Disposal>> disposalsPerInlet = new HashMap<>();
 
