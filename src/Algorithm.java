@@ -5,9 +5,12 @@ public class Algorithm {
 
     // Random values for now
     private static final double STABILIZATION_TIME = 5;
-    private static final double EMPTY_DV_TIME = 3;
+    private static final double SAFETY_MARGIN = 5;
+
+    private static final double EMPTY_DV_TIME = 14;
     // Time it takes to close the last AV and empty a new one
-    private static final double OPEN_CLOSE_AV_TIME = 1;
+    private static final double OPEN_CLOSE_AV_TIME = 2;
+    private static final double SPEED = 10; // m/s
 
     /*
      * List of tuples containing a description of the action taken and the time
@@ -47,10 +50,10 @@ public class Algorithm {
 
             } else if (v.getLengthToRoot() != 0) {
                 AV av = av2 == null ? av1 : av2;
-                emptySeq.add(new Tuple(v.getLengthToParent(), "Continue on AV: " + av.getId()));
+                emptySeq.add(new Tuple(v.getLengthToParent()/SPEED, "Continue on AV: " + av.getId()));
 
                 return av;
-            } else {
+            } else { // Reached the root
                 emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
                 return null; // done
             }
@@ -64,7 +67,7 @@ public class Algorithm {
         }
 
         emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Open AV: " + av.getId()));
-        emptySeq.add(new Tuple<>(STABILIZATION_TIME * av.getLengthToRoot(), "Stabilize pressure in AV: " + av.getId()));
+        //emptySeq.add(new Tuple<>(STABILIZATION_TIME * av.getLengthToRoot(), "Stabilize pressure in AV: " + av.getId()));
 
         List<InletCluster> clusters = av.getInlets();
 
@@ -78,7 +81,7 @@ public class Algorithm {
         }
 
         InletCluster lastCluster = clusters.get(clusters.size() - 1);
-        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent(), "Continue on AV: " + av.getId()));
+        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + av.getId()));
         emptiedAVs.add(av);
     }
 
