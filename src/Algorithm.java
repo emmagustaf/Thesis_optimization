@@ -23,7 +23,9 @@ public class Algorithm {
 
     public static AV processSubtree(Vertex v) {
 
-        if (v instanceof InletCluster) {
+        if (v == null) { // TODO No tree to empty (Should be done before calling method)
+            return null;
+        } else if (v instanceof InletCluster) {
             AV av = ((InletCluster) v).getAV();
 
             if (!emptiedAVs.contains(av)) {
@@ -34,11 +36,12 @@ public class Algorithm {
             }
 
         } else {
-            Junction j = (Junction) v;
+            System.out.println(v);
+            //Junction j = (Junction) v;
 
-            boolean leftDeepest = j.getLeftDepth() > j.getRightDepth();
-            Vertex firstChild = leftDeepest ? j.getLeftChild() : j.getRightChild();
-            Vertex secondChild = leftDeepest ? j.getRightChild() : j.getLeftChild();
+            boolean leftDeepest = ((Junction) v).getLeftDepth() > ((Junction) v).getRightDepth();
+            Vertex firstChild = leftDeepest ? ((Junction) v).getLeftChild() : ((Junction) v).getRightChild();
+            Vertex secondChild = leftDeepest ? ((Junction) v).getRightChild() : ((Junction) v).getLeftChild();
 
             // Start with the AV furthest away from the root node
             AV av1 = processSubtree(firstChild);
@@ -51,9 +54,8 @@ public class Algorithm {
             } else if (v.getLengthToRoot() != 0) {
                 AV av = av2 == null ? av1 : av2;
                 emptySeq.add(new Tuple(v.getLengthToParent()/SPEED, "Continue on AV: " + av.getId()));
-
                 return av;
-            } else { // Reached the root
+            } else  { // Reached the root
                 emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
                 return null; // done
             }
@@ -81,44 +83,50 @@ public class Algorithm {
         }
 
         InletCluster lastCluster = clusters.get(clusters.size() - 1);
-        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + av.getId()));
+        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
         emptiedAVs.add(av);
     }
 
-    /*public static Vertex buildTree(Vertex v) {
+    public static Vertex buildTree(Vertex v) {
         if (v instanceof InletCluster) {
-            InletCluster ic = (InletCluster) v;
-
             // If any inlet in the cluster has a level, the cluster is added to the tree
-            return anyLevel(ic) ? ic : null;
+            return SystemSetup.anyLevel(((InletCluster) v).getAV()) ? v : null;
 
         } else {
-            Junction j = (Junction) v;
-            Vertex v1 = buildTree(j.getRightChild());
-            Vertex v2 = buildTree(j.getLeftChild());
+            Vertex v1 = buildTree(((Junction) v).getRightChild());
+            Vertex v2 = buildTree(((Junction) v).getLeftChild());
 
             if (v1 == null && v2 == null) {
                 return null;
-            } else if (v2 == null) {
-                Junction parent = (Junction) j.getParent();
-                if (parent.getLeftChild().getId() == j.getId()) {
-                    parent.setLeftChild(j.getRightChild());
+            } else if (v2 == null) { // If the left subtree should not be included, remove vertex and point right child to parent.
+                if (v.getLengthToRoot() == 0) {
+                    return ((Junction) v).getRightChild();
                 }
+                if (((Junction)v.getParent()).getLeftChild().getId() == v.getId()) {
+                    SystemSetup.updateRelation(v.getParent(), ((Junction) v).getRightChild(), null);
+                } else {
+                    SystemSetup.updateRelation(v.getParent(), null, ((Junction) v).getRightChild());
+                }
+
+                SystemSetup.setJunctionDepth(v.getParent());
+
+            } else if (v1 == null) { // If the right subtree should not be included, remove vertex and point left child to parent.
+                if (v.getLengthToRoot() == 0) {
+                    return ((Junction) v).getLeftChild();
+                }
+                if (((Junction)v.getParent()).getLeftChild().getId() == v.getId()) {
+                    SystemSetup.updateRelation(v.getParent(), ((Junction) v).getLeftChild(), null);
+                } else {
+                    SystemSetup.updateRelation(v.getParent(), null, ((Junction) v).getLeftChild());
+                }
+
+                SystemSetup.setJunctionDepth(v.getParent());
+
             }
         }
 
         return v;
     }
-
-    private static boolean anyLevel(InletCluster cluster) {
-        for (Inlet i : cluster.getInletList()) {
-            if (i.getLevel() > 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }*/
 
     public static String getLastAV() {
         String lastSeq = emptySeq.get(emptySeq.size() - 1).y;
