@@ -10,19 +10,19 @@ public class SystemSetup {
 
     public static Junction rootNode;
 
-    public Junction J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14, J15, J16,
+    private Junction J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14, J15, J16,
             J17, J18, J19, J20, J21, J22, J23, J24, J25, J26, J27, J28, J29, J30, J31, J32, J33, J34,
             J35, J36, J37, J38, J39, J40, J41, J42, J43, J44, J45, J46, J47, J48, J49, J50, J51, J52, J53;
 
     private AV AV3, AV4, AV5, AV6, AV7, AV8, AV9, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV23, AV24, AV25;
 
 
-    public Map<String,Inlet> inletsMap;
-    public Map<Integer,InletCluster> inletClusters;
-    public Map<Integer,AV> avs;
-    public Map<Integer,Junction> junctions;
+    public static Map<String,Inlet> inletsMap;
+    public static Map<Integer,InletCluster> inletClusters;
+    public static Map<Integer,AV> avs;
+    public static Map<Integer,Junction> junctions;
 
-    public Inlet I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
+    private Inlet I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
             I4_1, I4_2, I4_3, I4_4, I5_1, I5_2, I5_3, I5_4, I5_5,
             I6_1, I6_2, I6_3, I6_4, I6_5, I6_6, I6_7, I6_8, I6_9, I6_10, I6_11, I6_12, I6_13, I6_14, I6_15,
             I6_16, I6_17, I6_18, I7_1, I7_2, I7_3, I7_4, I7_5, I7_6, I7_7, I7_8, I7_9, I7_10, I7_11, I7_12, I8_1, I8_2,
@@ -63,20 +63,39 @@ public class SystemSetup {
         instantiateAllAv();
         setChildren();
         setJunctionDepth(rootNode);
+        fillMaps();
 
     }
 
     public static void levelUpdate(String id, int newLevel){
-
-
+        inletsMap.get(id).setLevel(newLevel);
     }
 
     public static int getLevel(String id) {
-        return 1;
+        return inletsMap.get(id).getLevel();
+    }
+    public static void updateRelation(Vertex parent, Vertex leftChild, Vertex rightChild){
+        if(leftChild != null) {
+            if (leftChild instanceof InletCluster) {
+                junctions.get(parent.getId()).setLeftChild(inletClusters.get(leftChild.getId()));
+                inletClusters.get(leftChild.getId()).setParent(junctions.get(parent.getId()));
+            }else if(leftChild instanceof Junction){
+                junctions.get(parent.getId()).setLeftChild(junctions.get(leftChild.getId()));
+                junctions.get(leftChild.getId()).setParent(junctions.get(parent.getId()));
+            }
+        }
+        if(rightChild != null){
+            if (rightChild instanceof InletCluster) {
+                junctions.get(parent.getId()).setRightChild(inletClusters.get(rightChild.getId()));
+                inletClusters.get(rightChild.getId()).setParent(junctions.get(parent.getId()));
+            }else if(rightChild instanceof Junction){
+                junctions.get(parent.getId()).setRightChild(junctions.get(rightChild.getId()));
+                junctions.get(rightChild.getId()).setParent(junctions.get(parent.getId()));
+            }
+        }
     }
 
     public void instantiateAllInlets(){
-
         I3_1 = new Inlet("3:1",0,3);
         I3_2 = new Inlet("3:2",0,2);
         I3_3 = new Inlet("3:3",0,2);

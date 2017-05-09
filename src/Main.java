@@ -4,17 +4,17 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        Vertex j = miniSetup();
+        //Vertex j = miniSetup();
         //Setup setup = new Setup();
-        //SystemSetup setup = new SystemSetup();
-      //  Algorithm.processSubtree(setup.rootNode);
-        //Algorithm.processSubtree(j);
+        SystemSetup setup = new SystemSetup();
+        Algorithm.processSubtree(setup.rootNode);
+     //   Algorithm.processSubtree(j);
 
-/*        for (Tuple<Double, String> t : Algorithm.emptySeq) {
+        for (Tuple<Double, String> t : Algorithm.emptySeq) {
             System.out.println(t.y + " for " + t.x + " time.");
         }
 
-        System.out.println("Total time: " + Algorithm.getTotalTime());*/
+        System.out.println("Total time: " + Algorithm.getTotalTime());
 
         //setup.inletList.get(0).setLevel(5);
         //setup.inletList.get(1).setLevel(7);
@@ -47,8 +47,8 @@ public class Main {
         inlets2.add(i3);
         inlets2.add(i4);
 
-        ic1.setInletList(Arrays.asList("1","2"));
-        ic2.setInletList(Arrays.asList("3","4"));
+       // ic1.setInletList(Arrays.asList("1","2"));
+       // ic2.setInletList(Arrays.asList("3","4"));
 
         List<InletCluster> clusters1 = new ArrayList<>();
         List<InletCluster> clusters2 = new ArrayList<>();
