@@ -82,18 +82,22 @@ public class SystemSetup {
             if (leftChild instanceof InletCluster) {
                 junctions.get(parent.getId()).setLeftChild(inletClusters.get(leftChild.getId()));
                 inletClusters.get(leftChild.getId()).setParent(junctions.get(parent.getId()));
+                inletClusters.get(leftChild.getId()).setLengthToParent(inletClusters.get(leftChild.getId()).getLengthToRoot()-junctions.get(parent.getId()).getLengthToRoot());
             }else if(leftChild instanceof Junction){
                 junctions.get(parent.getId()).setLeftChild(junctions.get(leftChild.getId()));
                 junctions.get(leftChild.getId()).setParent(junctions.get(parent.getId()));
+                junctions.get(leftChild.getId()).setLengthToParent(junctions.get(leftChild.getId()).getLengthToRoot()-junctions.get(parent.getId()).getLengthToRoot());
             }
         }
         if(rightChild != null){
             if (rightChild instanceof InletCluster) {
                 junctions.get(parent.getId()).setRightChild(inletClusters.get(rightChild.getId()));
                 inletClusters.get(rightChild.getId()).setParent(junctions.get(parent.getId()));
+                inletClusters.get(leftChild.getId()).setLengthToParent(inletClusters.get(rightChild.getId()).getLengthToRoot()-junctions.get(parent.getId()).getLengthToRoot());
             }else if(rightChild instanceof Junction){
                 junctions.get(parent.getId()).setRightChild(junctions.get(rightChild.getId()));
                 junctions.get(rightChild.getId()).setParent(junctions.get(parent.getId()));
+                junctions.get(leftChild.getId()).setLengthToParent(junctions.get(rightChild.getId()).getLengthToRoot()-junctions.get(parent.getId()).getLengthToRoot());
             }
         }
     }
