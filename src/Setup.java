@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-public class SystemSetup {
+public class Setup {
 
     // variable to convert map scale to real length
     private final double METER_CONVERSION = 0.05;
@@ -14,6 +15,8 @@ public class SystemSetup {
             J35, J36, J37, J38, J39, J40, J41, J42, J43, J44, J45, J46, J47, J48, J49, J50, J51, J52, J53;
 
     private AV AV3, AV4, AV5, AV6, AV7, AV8, AV9, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV23, AV24, AV25;
+
+    public Map<String,Inlet> inlets;
 
     public Inlet I3_1, I3_2, I3_3, I3_4, I3_5, I3_6, I3_7, I3_8, I3_18, I3_19, I3_20,
             I4_1, I4_2, I4_3, I4_4, I5_1, I5_2, I5_3, I5_4, I5_5,
@@ -28,7 +31,7 @@ public class SystemSetup {
             I21_1, I21_2, I21_3, I21_4, I21_5, I21_6, I21_7, I21_8, I21_9, I21_10, I21_11, I21_12, I21_13, I21_14,
             I21_15, I22_1, I22_2, I22_3, I23_1, I23_2, I23_3, I23_4, I23_5, I23_6, I23_7, I24_1, I24_2, I24_3, I24_4, I25_1, I25_2, I25_3;
 
-    private List<Inlet> inletList3_1, inletList3_2, inletList3_3, inletList4, inletList5, inletList6_1, inletList6_2,
+    private List<String> inletList3_1, inletList3_2, inletList3_3, inletList4, inletList5, inletList6_1, inletList6_2,
             inletList6_3, inletList6_4, inletList7_1, inletList7_2, inletList7_3, inletList7_4, inletList8_1,
             inletList8_2, inletList8_3, inletList8_4, inletList8_5, inletList8_6, inletList9, inletList10_1, inletList10_2,
             inletList10_3, inletList10_4, inletList11, inletList12_1, inletList12_2, inletList12_3, inletList13,
@@ -47,7 +50,7 @@ public class SystemSetup {
             inletCluster21_3,inletCluster21_4, inletCluster22, inletCluster23_1, inletCluster23_2,
             inletCluster24, inletCluster25;
 
-    public SystemSetup(){
+    public Setup(){
 
         instantiateAllInlets();
         instantiateAllInletLists();
@@ -58,7 +61,6 @@ public class SystemSetup {
         setJunctionDepth(rootNode);
 
     }
-
     public static void levelUpdate(String id, int newLevel){
 
 
@@ -69,286 +71,283 @@ public class SystemSetup {
     }
 
     public void instantiateAllInlets(){
+        inlets.put("3:1",new Inlet("3:1",0,3));
+        inlets.put("3:2",new Inlet("3:2",0,2));
+        inlets.put("3:3",new Inlet("3:3",0,2));
+        inlets.put("3:4",new Inlet("3:4",0,1));
+        inlets.put("3:5",new Inlet("3:5",0,1));
+        inlets.put("3:6",new Inlet("3:6",0,3));
+        inlets.put("3:7",new Inlet("3:7",0,2));
+        inlets.put("3:8",new Inlet("3:8",0,2));
+        inlets.put("3:18",new Inlet("3:18",0,3));
+        inlets.put("3:19",new Inlet("3:19",0,1));
+        inlets.put("3:20",new Inlet("3:20",0,1));
 
-        I3_1 = new Inlet("3:1",0,3);
-        I3_2 = new Inlet("3:2",0,2);
-        I3_3 = new Inlet("3:3",0,2);
-        I3_4 = new Inlet("3:4",0,1);
-        I3_5 = new Inlet("3:5",0,1);
-        I3_6 = new Inlet("3:6",0,3);
-        I3_7 = new Inlet("3:7",0,2);
-        I3_8 = new Inlet("3:8",0,2);
-        I3_18 = new Inlet("3:18",0,3);
-        I3_19 = new Inlet("3:19",0,1);
-        I3_20 = new Inlet("3:20",0,1);
+        inlets.put("4:1",new Inlet("4:1",0,1));
 
-        I4_1 = new Inlet("4:1",0,1);
-        I4_2 = new Inlet("4:2",0,2);
-        I4_3 = new Inlet("4:3",0,1);
-        I4_4 = new Inlet("4:4",0,3);
+       inlets.put("4:2",new Inlet("4:2",0,2));
+       inlets.put("4:3",new Inlet("4:3",0,1));
+       inlets.put("4:4",new Inlet("4:4",0,3));
+       inlets.put("5:1",new Inlet("5:1",0,1));
+       inlets.put("5:2",new Inlet("5:2",0,1));
+       inlets.put("5:3",new Inlet("5:3",0,2));
+       inlets.put("5:4",new Inlet("5:4",0,2));
+       inlets.put("5:5",new Inlet("5:5",0,3));
 
-        I5_1 = new Inlet("5:1",0,1);
-        I5_2 = new Inlet("5:2",0,1);
-        I5_3 = new Inlet("5:3",0,2);
-        I5_4 = new Inlet("5:4",0,2);
-        I5_5 = new Inlet("5:5",0,3);
+       inlets.put("6:1",new Inlet("6:1",0,3));
+       inlets.put("6:2",new Inlet("6:2",0,2));
+       inlets.put("6:3",new Inlet("6:3",0,2));
+       inlets.put("6:4",new Inlet("6:4",0,1));
+       inlets.put("6:5",new Inlet("6:5",0,1));
+       inlets.put("6:6",new Inlet("6:6",0,3));
+       inlets.put("6:7",new Inlet("6:7",0,2));
+       inlets.put("6:8",new Inlet("6:8",0,1));
+       inlets.put("6:9",new Inlet("6:9",0,1));
+       inlets.put("6:10",new Inlet("6:10",0,1));
+       inlets.put("6:11",new Inlet("6:11",0,3));
+       inlets.put("6:12",new Inlet("6:12",0,2));
+       inlets.put("6:13",new Inlet("6:13",0,2));
+       inlets.put("6:14",new Inlet("6:14",0,1));
+       inlets.put("6:15",new Inlet("6:15",0,1));
+       inlets.put("6:16",new Inlet("6:16",0,3));
+       inlets.put("6:17",new Inlet("6:17",0,2));
+       inlets.put("6:18",new Inlet("6:18",0,1));
 
-        I6_1 = new Inlet("6:1",0,3);
-        I6_2 = new Inlet("6:2",0,2);
-        I6_3 = new Inlet("6:3",0,2);
-        I6_4 = new Inlet("6:4",0,1);
-        I6_5 = new Inlet("6:5",0,1);
-        I6_6 = new Inlet("6:6",0,3);
-        I6_7 = new Inlet("6:7",0,2);
-        I6_8 = new Inlet("6:8",0,1);
-        I6_9 = new Inlet("6:9",0,1);
-        I6_10 = new Inlet("6:10",0,1);
-        I6_11 = new Inlet("6:11",0,3);
-        I6_12 = new Inlet("6:12",0,2);
-        I6_13 = new Inlet("6:13",0,2);
-        I6_14 = new Inlet("6:14",0,1);
-        I6_15 = new Inlet("6:15",0,1);
-        I6_16 = new Inlet("6:16",0,3);
-        I6_17 = new Inlet("6:17",0,2);
-        I6_18 = new Inlet("6:18",0,1);
+       inlets.put("7:1",new Inlet("7:1",0,1));
+       inlets.put("7:2",new Inlet("7:2",0,2));
+       inlets.put("7:3",new Inlet("7:3",0,3));
+       inlets.put("7:4",new Inlet("7:4",0,1));
+       inlets.put("7:5",new Inlet("7:5",0,1));
+       inlets.put("7:6",new Inlet("7:6",0,1));
+       inlets.put("7:7",new Inlet("7:7",0,2));
+       inlets.put("7:8",new Inlet("7:8",0,2));
+       inlets.put("7:9",new Inlet("7:9",0,3));
+       inlets.put("7:10",new Inlet("7:10",0,3));
+       inlets.put("7:11",new Inlet("7:11",0,1));
+       inlets.put("7:12",new Inlet("7:12",0,1));
 
-        I7_1 = new Inlet("7:1",0,1);
-        I7_2 = new Inlet("7:2",0,2);
-        I7_3 = new Inlet("7:3",0,3);
-        I7_4 = new Inlet("7:4",0,1);
-        I7_5 = new Inlet("7:5",0,1);
-        I7_6 = new Inlet("7:6",0,1);
-        I7_7 = new Inlet("7:7",0,2);
-        I7_8 = new Inlet("7:8",0,2);
-        I7_9 = new Inlet("7:9",0,3);
-        I7_10 = new Inlet("7:10",0,3);
-        I7_11 = new Inlet("7:11",0,1);
-        I7_12 = new Inlet("7:12",0,1);
+       inlets.put("8:1",new Inlet("8:1",0,3));
+       inlets.put("8:2",new Inlet("8:2",0,2));
+       inlets.put("8:3",new Inlet("8:3",0,1));
+       inlets.put("8:4",new Inlet("8:4",0,1));
+       inlets.put("8:5",new Inlet("8:5",0,1));
+       inlets.put("8:6",new Inlet("8:6",0,1));
+       inlets.put("8:7",new Inlet("8:7",0,1));
+       inlets.put("8:8",new Inlet("8:8",0,1));
+       inlets.put("8:9",new Inlet("8:9",0,1));
 
-        I8_1 = new Inlet("8:1",0,3);
-        I8_2 = new Inlet("8:2",0,2);
-        I8_3 = new Inlet("8:3",0,1);
-        I8_4 = new Inlet("8:4",0,1);
-        I8_5 = new Inlet("8:5",0,1);
-        I8_6 = new Inlet("8:6",0,1);
-        I8_7 = new Inlet("8:7",0,1);
-        I8_8 = new Inlet("8:8",0,1);
-        I8_9 = new Inlet("8:9",0,1);
+       inlets.put("9:3",new Inlet("9:3",0, 1));
 
-        I9_3 = new Inlet("9:3",0, 1);
+       inlets.put("10:1",new Inlet("10:1",0,3));
+       inlets.put("10:2",new Inlet("10:2",0,2));
+       inlets.put("10:3",new Inlet("10:3",0,1));
+       inlets.put("10:4",new Inlet("10:4",0,1));
+       inlets.put("10:5",new Inlet("10:5",0,1));
+       inlets.put("10:6",new Inlet("10:6",0,1));
+       inlets.put("10:7",new Inlet("10:7",0,1));
 
-        I10_1 = new Inlet("10:1",0,3);
-        I10_2 = new Inlet("10:2",0,2);
-        I10_3 = new Inlet("10:3",0,1);
-        I10_4 = new Inlet("10:4",0,1);
-        I10_5 = new Inlet("10:5",0,1);
-        I10_6 = new Inlet("10:6",0,1);
-        I10_7 = new Inlet("10:7",0,1);
+       inlets.put("11:1",new Inlet("11:1",0,2));
+       inlets.put("11:2",new Inlet("11:2",0,2));
+       inlets.put("11:3",new Inlet("11:3",0,2));
+       inlets.put("11:4",new Inlet("11:4",0,1));
+       inlets.put("11:5",new Inlet("11:5",0,1));
+       inlets.put("11:6",new Inlet("11:6",0,3));
+       inlets.put("11:7",new Inlet("11:7",0,3));
+       inlets.put("11:8",new Inlet("11:8",0,3));
+       inlets.put("11:9",new Inlet("11:9",0,1));
+       inlets.put("11:10",new Inlet("11:10",0,1));
 
-        I11_1 = new Inlet("11:1",0,2);
-        I11_2 = new Inlet("11:2",0,2);
-        I11_3 = new Inlet("11:3",0,2);
-        I11_4 = new Inlet("11:4",0,1);
-        I11_5 = new Inlet("11:5",0,1);
-        I11_6 = new Inlet("11:6",0,3);
-        I11_7 = new Inlet("11:7",0,3);
-        I11_8 = new Inlet("11:8",0,3);
-        I11_9 = new Inlet("11:9",0,1);
-        I11_10 = new Inlet("11:10",0,1);
+       inlets.put("12:1",new Inlet("12:1",0,3));
+       inlets.put("12:2",new Inlet("12:2",0,2));
+       inlets.put("12:3",new Inlet("12:3",0,1));
+       inlets.put("12:4",new Inlet("12:4",0,1));
+       inlets.put("12:5",new Inlet("12:5",0,1));
 
-        I12_1 = new Inlet("12:1",0,3);
-        I12_2 = new Inlet("12:2",0,2);
-        I12_3 = new Inlet("12:3",0,1);
-        I12_4 = new Inlet("12:4",0,1);
-        I12_5 = new Inlet("12:5",0,1);
+       inlets.put("13:1",new Inlet("13:1",0,3));
+       inlets.put("13:2",new Inlet("13:2",0,2));
+       inlets.put("13:3",new Inlet("13:3",0,1));
 
-        I13_1 = new Inlet("13:1",0,3);
-        I13_2 = new Inlet("13:2",0,2);
-        I13_3 = new Inlet("13:3",0,1);
+       inlets.put("14:1",new Inlet("14:1",0,1));
+       inlets.put("14:2",new Inlet("14:2",0,1));
+       inlets.put("14:3",new Inlet("14:3",0,1));
+       inlets.put("14:4",new Inlet("14:4",0,1));
+       inlets.put("14:5",new Inlet("14:5",0,1));
+       inlets.put("14:6",new Inlet("14:6",0,1));
+       inlets.put("14:7",new Inlet("14:7",0,2));
+       inlets.put("14:8",new Inlet("14:8",0,2));
+       inlets.put("14:9",new Inlet("14:9",0,2));
+       inlets.put("14:10",new Inlet("14:10",0,2));
+       inlets.put("14:11",new Inlet("14:11",0,3));
+       inlets.put("14:12",new Inlet("14:12",0,3));
+       inlets.put("14:13",new Inlet("14:13",0,3));
 
-        I14_1 = new Inlet("14:1",0,1);
-        I14_2 = new Inlet("14:2",0,1);
-        I14_3 = new Inlet("14:3",0,1);
-        I14_4 = new Inlet("14:4",0,1);
-        I14_5 = new Inlet("14:5",0,1);
-        I14_6 = new Inlet("14:6",0,1);
-        I14_7 = new Inlet("14:7",0,2);
-        I14_8 = new Inlet("14:8",0,2);
-        I14_9 = new Inlet("14:9",0,2);
-        I14_10 = new Inlet("14:10",0,2);
-        I14_11 = new Inlet("14:11",0,3);
-        I14_12 = new Inlet("14:12",0,3);
-        I14_13 = new Inlet("14:13",0,3);
+       inlets.put("15:1",new Inlet("15:1",0,1));
+       inlets.put("15:2",new Inlet("15:2",0,1));
+       inlets.put("15:3",new Inlet("15:3",0,2));
+       inlets.put("15:4",new Inlet("15:4",0,3));
+       inlets.put("15:5",new Inlet("15:5",0,1));
+       inlets.put("15:16",new Inlet("15:16",0,1));
 
-        I15_1 = new Inlet("15:1",0,1);
-        I15_2 = new Inlet("15:2",0,1);
-        I15_3 = new Inlet("15:3",0,2);
-        I15_4 = new Inlet("15:4",0,3);
-        I15_5 = new Inlet("15:5",0,1);
-        I15_16 = new Inlet("15:16",0,1);
+       inlets.put("16:1",new Inlet("16:1",0,3));
+       inlets.put("16:2",new Inlet("16:2",0,2));
+       inlets.put("16:3",new Inlet("16:3",0,2));
+       inlets.put("16:4",new Inlet("16:4",0,1));
+       inlets.put("16:5",new Inlet("16:5",0,1));
+       inlets.put("16:6",new Inlet("16:6",0,3));
+       inlets.put("16:7",new Inlet("16:7",0,3));
+       inlets.put("16:8",new Inlet("16:8",0,2));
+       inlets.put("16:9",new Inlet("16:9",0,2));
+       inlets.put("16:10",new Inlet("16:10",0,1));
+       inlets.put("16:11",new Inlet("16:11",0,1));
 
-        I16_1 = new Inlet("16:1",0,3);
-        I16_2 = new Inlet("16:2",0,2);
-        I16_3 = new Inlet("16:3",0,2);
-        I16_4 = new Inlet("16:4",0,1);
-        I16_5 = new Inlet("16:5",0,1);
-        I16_6 = new Inlet("16:6",0,3);
-        I16_7 = new Inlet("16:7",0,3);
-        I16_8 = new Inlet("16:8",0,2);
-        I16_9 = new Inlet("16:9",0,2);
-        I16_10 = new Inlet("16:10",0,1);
-        I16_11 = new Inlet("16:11",0,1);
+       inlets.put("17:1",new Inlet("17:1",0,3));
+       inlets.put("17:2",new Inlet("17:2",0,2));
+       inlets.put("17:3",new Inlet("17:3",0,1));
+       inlets.put("17:4",new Inlet("17:4",0,1));
+       inlets.put("17:5",new Inlet("17:5",0,1));
+       inlets.put("17:6",new Inlet("17:6",0,1));
+       inlets.put("17:7",new Inlet("17:7",0,1));
+       inlets.put("17:8",new Inlet("17:8",0,1));
+       inlets.put("17:9",new Inlet("17:9",0,1));
 
-        I17_1 = new Inlet("17:1",0,3);
-        I17_2 = new Inlet("17:2",0,2);
-        I17_3 = new Inlet("17:3",0,1);
-        I17_4 = new Inlet("17:4",0,1);
-        I17_5 = new Inlet("17:5",0,1);
-        I17_6 = new Inlet("17:6",0,1);
-        I17_7 = new Inlet("17:7",0,1);
-        I17_8 = new Inlet("17:8",0,1);
-        I17_9 = new Inlet("17:9",0,1);
+       inlets.put("18:1",new Inlet("18:1",0,3));
+       inlets.put("18:2",new Inlet("18:2",0,2));
+       inlets.put("18:3",new Inlet("18:3",0,2));
+       inlets.put("18:4",new Inlet("18:4",0,1));
+       inlets.put("18:5",new Inlet("18:5",0,1));
+       inlets.put("18:6",new Inlet("18:6",0,3));
+       inlets.put("18:7",new Inlet("18:7",0,2));
+       inlets.put("18:8",new Inlet("18:8",0,1));
+       inlets.put("18:9",new Inlet("18:9",0,1));
+       inlets.put("18:10",new Inlet("18:10",0,1));
 
-        I18_1 = new Inlet("18:1",0,3);
-        I18_2 = new Inlet("18:2",0,2);
-        I18_3 = new Inlet("18:3",0,2);
-        I18_4 = new Inlet("18:4",0,1);
-        I18_5 = new Inlet("18:5",0,1);
-        I18_6 = new Inlet("18:6",0,3);
-        I18_7 = new Inlet("18:7",0,2);
-        I18_8 = new Inlet("18:8",0,1);
-        I18_9 = new Inlet("18:9",0,1);
-        I18_10 = new Inlet("18:10",0,1);
+       inlets.put("19:1",new Inlet("19:1",0,3));
+       inlets.put("19:2",new Inlet("19:2",0,2));
+       inlets.put("19:3",new Inlet("19:3",0,1));
 
-        I19_1 = new Inlet("19:1",0,3);
-        I19_2 = new Inlet("19:2",0,2);
-        I19_3 = new Inlet("19:3",0,1);
+       inlets.put("20:1",new Inlet("20:1", 0, 3));
+       inlets.put("20:2",new Inlet("20:2", 0, 2));
+       inlets.put("20:3",new Inlet("20:3", 0, 1));
 
-        I20_1 = new Inlet("20:1", 0, 3);
-        I20_2 = new Inlet("20:2", 0, 2);
-        I20_3 = new Inlet("20:3", 0, 1);
+       inlets.put("21:1",new Inlet("21:1",0,3));
+       inlets.put("21:2",new Inlet("21:2",0,2));
+       inlets.put("21:3",new Inlet("21:3",0,1));
+       inlets.put("23:4",new Inlet("23:4",0,3));
+       inlets.put("23:5",new Inlet("23:5",0,2));
+       inlets.put("23:6",new Inlet("23:6",0,1));
+       inlets.put("23:7",new Inlet("23:7",0,3));
+       inlets.put("23:8",new Inlet("23:8",0,2));
+       inlets.put("23:9",new Inlet("23:9",0,1));
+       inlets.put("23:10",new Inlet("23:10",0,3));
+       inlets.put("23:11",new Inlet("23:11",0,2));
+       inlets.put("23:12",new Inlet("23:12",0,1));
+       inlets.put("23:13",new Inlet("23:13",0,3));
+       inlets.put("23:14",new Inlet("23:14",0,2));
+       inlets.put("23:15",new Inlet("23:15",0,1));
+                       
+       inlets.put("22:1",new Inlet("22:1",0,3));
+       inlets.put("22:2",new Inlet("22:2",0,2));
+       inlets.put("22:3",new Inlet("22:3",0,1));
 
-        I21_1 = new Inlet("21:1",0,3);
-        I21_2 = new Inlet("21:2",0,2);
-        I21_3 = new Inlet("21:3",0,1);
-        I21_4 = new Inlet("23:4",0,3);
-        I21_5 = new Inlet("23:5",0,2);
-        I21_6 = new Inlet("23:6",0,1);
-        I21_7 = new Inlet("23:7",0,3);
-        I21_8 = new Inlet("23:8",0,2);
-        I21_9 = new Inlet("23:9",0,1);
-        I21_10 = new Inlet("23:10",0,3);
-        I21_11 = new Inlet("23:11",0,2);
-        I21_12 = new Inlet("23:12",0,1);
-        I21_13 = new Inlet("23:13",0,3);
-        I21_14 = new Inlet("23:14",0,2);
-        I21_15 = new Inlet("23:15",0,1);
+       inlets.put("23:1",new Inlet("23:1",0,3));
+       inlets.put("23:2",new Inlet("23:2",0,2));
+       inlets.put("23:3",new Inlet("23:3",0,1));
+       inlets.put("23:4",new Inlet("23:4",0,3));
+       inlets.put("23:5",new Inlet("23:5",0,2));
+       inlets.put("23:6",new Inlet("23:6",0,1));
+       inlets.put("23:7",new Inlet("23:7",0,1));
 
-        I22_1 = new Inlet("22:1",0,3);
-        I22_2 = new Inlet("22:2",0,2);
-        I22_3 = new Inlet("22:3",0,1);
+       inlets.put("24:1",new Inlet("24:1",0,1));
+       inlets.put("24:2",new Inlet("24:2",0,2));
+       inlets.put("24:3",new Inlet("24:3",0,3));
+       inlets.put("24:4",new Inlet("24:4",0,1));
 
-        I23_1 = new Inlet("23:1",0,3);
-        I23_2 = new Inlet("23:2",0,2);
-        I23_3 = new Inlet("23:3",0,1);
-        I23_4 = new Inlet("23:4",0,3);
-        I23_5 = new Inlet("23:5",0,2);
-        I23_6 = new Inlet("23:6",0,1);
-        I23_7 = new Inlet("23:7",0,1);
-
-        I24_1 = new Inlet("24:1",0,1);
-        I24_2 = new Inlet("24:2",0,2);
-        I24_3 = new Inlet("24:3",0,3);
-        I24_4 = new Inlet("24:4",0,1);
-
-        I25_1 = new Inlet("25:1",0,3);
-        I25_2 = new Inlet("25:2",0,2);
-        I25_3 = new Inlet("25:3",0,1);
+       inlets.put("25:1",new Inlet("25:1",0,3));
+       inlets.put("25:2",new Inlet("25:2",0,2));
+       inlets.put("25:3",new Inlet("25:3",0,1));
 
     }
 
     public void instantiateAllInletLists() {
-        inletList3_1 = Arrays.asList(I3_1, I3_2, I3_3, I3_4, I3_5);
-        inletList3_2 = Arrays.asList(I3_6, I3_7, I3_8);
-        inletList3_3 = Arrays.asList(I3_18, I3_19, I3_20);
+        inletList3_1 = Arrays.asList("3:1", "3:2", "3:3", "3:4", "3:5");
+        inletList3_2 = Arrays.asList("3:6", "3:7", "3:8");
+        inletList3_3 = Arrays.asList("3:18", "3:19", "3:20");
 
-        inletList4 = Arrays.asList(I4_1, I4_2, I4_3, I4_4);
+        inletList4 = Arrays.asList("4:1", "4:2", "4:3", "4:4");
 
-        inletList5 = Arrays.asList(I5_1, I5_2, I5_3, I5_4, I5_5);
+        inletList5 = Arrays.asList("5:1", "5:2", "5:3", "5:4", "5:5");
 
-        inletList6_1 = Arrays.asList(I6_1, I6_2, I6_3, I6_4, I6_5);
-        inletList6_2 = Arrays.asList(I6_6, I6_7, I6_8, I6_9, I6_10);
-        inletList6_3 = Arrays.asList(I6_11, I6_12, I6_13, I6_14, I6_15, I6_16);
-        inletList6_4 = Arrays.asList(I6_16, I6_17, I6_18);
+        inletList6_1 = Arrays.asList("6_1", "6:2", "6:3", "6:4", "6:5");
+        inletList6_2 = Arrays.asList("6_6", "6:7", "6:8", "6:9", "6:10");
+        inletList6_3 = Arrays.asList("6_11","6:12","6:13","6:14","6:15", "6:16");
+        inletList6_4 = Arrays.asList("6_16","6:17","6:18");
 
-        inletList7_1 = Arrays.asList(I7_1, I7_2, I7_3);
-        inletList7_2 = Arrays.asList(I7_4, I7_5, I7_6, I7_7, I7_8, I7_8, I7_9, I7_10);
-        inletList7_3 = Arrays.asList(I7_11);
-        inletList7_4 = Arrays.asList(I7_12);
+        inletList7_1 = Arrays.asList("7:1", "7:2", "7:3");
+        inletList7_2 = Arrays.asList("7:4", "7:5", "7:6", "7:7", "7:8", "7:8", "7:9", "7:10");
+        inletList7_3 = Arrays.asList("7:11");
+        inletList7_4 = Arrays.asList("7:12");
 
-        inletList8_1 = Arrays.asList(I8_1, I8_2, I8_3, I8_4);
-        inletList8_2 = Arrays.asList(I8_5);
-        inletList8_3 = Arrays.asList(I8_6);
-        inletList8_4 = Arrays.asList(I8_7);
-        inletList8_5 = Arrays.asList(I8_8);
-        inletList8_6 = Arrays.asList(I8_9);
+        inletList8_1 = Arrays.asList("8:1", "8:2", "8:3", "8:4");
+        inletList8_2 = Arrays.asList("8:5");
+        inletList8_3 = Arrays.asList("8:6");
+        inletList8_4 = Arrays.asList("8:7");
+        inletList8_5 = Arrays.asList("8:8");
+        inletList8_6 = Arrays.asList("8:9");
 
-        inletList9 = Arrays.asList(I9_3);
+        inletList9 = Arrays.asList("9:3");
 
-        inletList10_1 = Arrays.asList(I10_1, I10_2, I10_3, I10_4);
-        inletList10_2 = Arrays.asList(I10_5);
-        inletList10_3 = Arrays.asList(I10_6);
-        inletList10_4 = Arrays.asList(I10_7);
+        inletList10_1 = Arrays.asList("10:1", "10:2", "10:3", "10:4");
+        inletList10_2 = Arrays.asList("10:5");
+        inletList10_3 = Arrays.asList("10:6");
+        inletList10_4 = Arrays.asList("10:7");
 
-        inletList11 = Arrays.asList(I11_1, I11_2, I11_3, I11_4, I11_5, I11_6, I11_7, I11_8, I11_9, I11_10);
+        inletList11 = Arrays.asList("11:1", "11:2", "11:3", "11:4", "11:5", "11:6", "11:7", "11:8", "11:9", "11:10");
 
-        inletList12_1 = Arrays.asList(I12_1, I12_2, I12_3);
-        inletList12_2 = Arrays.asList(I12_4);
-        inletList12_3 = Arrays.asList(I12_5);
+        inletList12_1 = Arrays.asList("12:1", "12:2", "12:3");
+        inletList12_2 = Arrays.asList("12:4");
+        inletList12_3 = Arrays.asList("12:5");
 
-        inletList13 = Arrays.asList(I13_1, I13_2, I13_3);
+        inletList13 = Arrays.asList("13:1", "13:2", "13:3");
 
-        inletList14_1 = Arrays.asList(I14_1, I14_2, I14_3, I14_4, I14_5, I14_6, I14_7, I14_8, I14_9, I14_10, I14_11, I14_12);
-        inletList14_2 = Arrays.asList(I14_13);
+        inletList14_1 = Arrays.asList("14:1", "14:2", "14:3", "14:4", "14:5", "14:6", "14:7", "14:8", "14:9", "14:10", "14:11", "14:12");
+        inletList14_2 = Arrays.asList("14:13");
 
-        inletList15_1 = Arrays.asList(I15_1, I15_2, I15_3, I15_4);
-        inletList15_2 = Arrays.asList(I15_5);
-        inletList15_3 = Arrays.asList(I15_16);
+        inletList15_1 = Arrays.asList("15:1", "15:2", "15:3", "15:4");
+        inletList15_2 = Arrays.asList("15:5");
+        inletList15_3 = Arrays.asList("15:16");
 
-        inletList16_1 = Arrays.asList(I16_1, I16_2, I16_3, I16_4, I16_5);
-        inletList16_2 = Arrays.asList(I16_6, I16_7, I16_8, I16_9, I16_10, I16_11);
+        inletList16_1 = Arrays.asList("16:1", "16:2", "16:3", "16:4", "16:5");
+        inletList16_2 = Arrays.asList("16:6", "16:7", "16:8", "16:9", "16:10", "16:11");
 
-        inletList17_1 = Arrays.asList(I17_1,I17_2,I17_3,I17_4,I17_5,I17_6);
-        inletList17_2 = Arrays.asList(I17_7);
-        inletList17_3 = Arrays.asList(I17_8);
-        inletList17_4 = Arrays.asList(I17_9);
+        inletList17_1 = Arrays.asList("17:1", "17:2", "17:3","17:4","17:5","17:6");
+        inletList17_2 = Arrays.asList("17:7");
+        inletList17_3 = Arrays.asList("17:8");
+        inletList17_4 = Arrays.asList("17:9");
 
-        inletList18_1 = Arrays.asList(I18_1, I18_2, I18_3, I18_4, I18_5);
-        inletList18_2 = Arrays.asList(I18_6, I18_7, I18_8, I18_9);
-        inletList18_3 = Arrays.asList(I18_10);
+        inletList18_1 = Arrays.asList("18:1", "18:2", "18:3", "18:4", "18:5");
+        inletList18_2 = Arrays.asList("18:6", "18:7", "18:8", "18:9");
+        inletList18_3 = Arrays.asList("18:10");
 
-        inletList19 = Arrays.asList(I19_1, I19_2, I19_3);
+        inletList19 = Arrays.asList("19:1", "19:2", "19:3");
+        inletList20 = Arrays.asList("20:1", "20:2", "20:3");
 
-        inletList20 = Arrays.asList(I20_1, I20_2, I20_3);
+        inletList21_1 = Arrays.asList("21:1", "21:2", "21:3", "21:4", "21:5", "21:6");
+        inletList21_2 = Arrays.asList("21:7", "21:8", "21:9");
+        inletList21_3 = Arrays.asList("21:10", "21:11", "21:12");
+        inletList21_4 = Arrays.asList("21:13", "21:14", "21:15");
 
-        inletList21_1 = Arrays.asList(I21_1, I21_2, I21_3, I21_4, I21_5, I21_6);
-        inletList21_2 = Arrays.asList(I21_7, I21_8, I21_9);
-        inletList21_3 = Arrays.asList(I21_10, I21_11, I21_12);
-        inletList21_4 = Arrays.asList(I21_13, I21_14, I21_15);
+        inletList22 = Arrays.asList("22:1", "22:2", "22:3");
 
-        inletList22 = Arrays.asList(I22_1, I22_2, I22_3);
+        inletList23_1 = Arrays.asList("23:1", "23:2", "23:3");
+        inletList23_2 = Arrays.asList("23:4", "23:5", "23:6", "23:7");
 
-        inletList23_1 = Arrays.asList(I23_1, I23_2, I23_3);
-        inletList23_2 = Arrays.asList(I23_4, I23_5, I23_6, I23_7);
-
-        inletList24 = Arrays.asList(I24_1, I24_2, I24_3, I24_4);
-
-        inletList25 = Arrays.asList(I25_1, I25_2, I25_3);
+        inletList24 = Arrays.asList("24:1", "24:2", "24:3", "24:4");
+        inletList25 = Arrays.asList("25:1", "25:2", "25:3");
 
     }
 
     public void instantiateAllInletClusters() {
-        /*
+
         inletCluster3_1 = new InletCluster(15,42.8/METER_CONVERSION,1.6/METER_CONVERSION, J16, null, inletList3_1);
         inletCluster3_2 = new InletCluster(13,38.5/METER_CONVERSION,3.5/METER_CONVERSION, J13, null, inletList3_2);
         inletCluster3_3 = new InletCluster(12,34.1/METER_CONVERSION,1.3/METER_CONVERSION, J12, null, inletList3_3);
@@ -422,7 +421,7 @@ public class SystemSetup {
         inletCluster23_2 = new InletCluster(4,26.9/METER_CONVERSION,0.8/METER_CONVERSION, J4, null, inletList23_2);
         inletCluster24 = new InletCluster(5,27.3/METER_CONVERSION,1.5/METER_CONVERSION, J6, null, inletList24);
         inletCluster25 = new InletCluster(3,28.3/METER_CONVERSION,2.2/METER_CONVERSION, J4, null, inletList25);
-*/
+
     }
 
     public void instantiateAllJunctions() {
@@ -767,6 +766,5 @@ public class SystemSetup {
 
         }
     }
-
 
 }

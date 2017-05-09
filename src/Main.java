@@ -1,20 +1,22 @@
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         Vertex j = miniSetup();
-        SystemSetup ss = new SystemSetup();
-        Algorithm.processSubtree(ss.rootNode);
-        //Algorithm.processSubtree(j);
+        Setup setup = new Setup();
+        Algorithm.processSubtree(setup.rootNode);
+        Algorithm.processSubtree(j);
 
         for (Tuple<Double, String> t : Algorithm.emptySeq) {
             System.out.println(t.y + " for " + t.x + " time.");
         }
 
         System.out.println("Total time: " + Algorithm.getTotalTime());
+
     }
 
     /*
@@ -37,8 +39,8 @@ public class Main {
         inlets2.add(i3);
         inlets2.add(i4);
 
-        ic1.setInletList(inlets1);
-        ic2.setInletList(inlets2);
+        ic1.setInletList(Arrays.asList("1","2"));
+        ic2.setInletList(Arrays.asList("3","4"));
 
         List<InletCluster> clusters1 = new ArrayList<>();
         List<InletCluster> clusters2 = new ArrayList<>();

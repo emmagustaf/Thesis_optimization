@@ -2,10 +2,10 @@ import java.util.List;
 
 public class InletCluster extends Vertex{
 
-    private List<Inlet> inletList;
+    private List<String> inletList;
     private AV av;
 
-    public InletCluster(int id, double lengthToRoot, double lengthToParent, Vertex parent, AV av, List<Inlet> inletList) {
+    public InletCluster(int id, double lengthToRoot, double lengthToParent, Vertex parent, AV av, List<String> inletList) {
         super(id, lengthToRoot, lengthToParent, parent);
         this.av = av;
         this.inletList = inletList;
@@ -19,11 +19,11 @@ public class InletCluster extends Vertex{
         this.av = av;
     }
 
-    public List<Inlet> getInletList() {
+    public List<String> getInletList() {
         return inletList;
     }
 
-    public void setInletList(List<Inlet> inletList) {
+    public void setInletList(List<String> inletList) {
         this.inletList = inletList;
     }
 }
