@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SystemSetup {
 
@@ -55,6 +52,11 @@ public class SystemSetup {
             inletCluster24, inletCluster25;
 
     public SystemSetup(){
+
+        inletsMap = new HashMap<>();
+        inletClusters = new HashMap<>();
+        avs = new HashMap<>();
+        junctions = new HashMap<>();
 
         instantiateAllInlets();
         instantiateAllInletLists();
