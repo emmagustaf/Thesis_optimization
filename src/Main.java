@@ -1,4 +1,6 @@
 import java.lang.*;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,13 @@ public class Main {
 
         Statistics.sortDays(disposals2016);
 
-        //System.out.println("Monday-disposals amount: " + setup.inletsMap.get("18:4").getDisposals().get(DayOfWeek.MONDAY).size());
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(Statistics.getDisposalStatsByTime("6:3", Arrays.asList(DayOfWeek.TUESDAY), LocalTime.of(5,0,0), LocalTime.of(23,59,59)));
+
+        System.out.println();
+        System.out.println("Monday-disposals amount: " + setup.inletsMap.get("6:3").getDisposals().get(DayOfWeek.TUESDAY).size());
         /*System.out.println("Disposals for inlet 3:1:");
         for (Disposal d : disposals.get("3:1")) {
             System.out.println("Disposal: " + d.getLogId() + ", Date: " + d.getLogDate());
