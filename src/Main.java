@@ -44,6 +44,7 @@ public class Main {
 
         System.out.println();
         System.out.println("Monday-disposals amount: " + setup.inletsMap.get("6:3").getDisposals().get(DayOfWeek.TUESDAY).size());*/
+
         /*System.out.println("Disposals for inlet 3:1:");
         for (Disposal d : disposals.get("3:1")) {
             System.out.println("Disposal: " + d.getLogId() + ", Date: " + d.getLogDate());
