@@ -8,25 +8,60 @@ public class Main {
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
+        int fraction = 3;
 
-        SystemSetup.levelUpdate("18:1", 0.8);
-        SystemSetup.levelUpdate("25:1", 0.8);
+        testAlgorithm(setup, fraction);
 
-        Algorithm.processSubtree(Algorithm.buildTree(SystemSetup.rootNode));//SystemSetup.inletClusters.get(35));//
+        String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
+        String filePath2 = "/Users/elin/Documents/Programmering/Exjobb/disposals_2016.csv";
+        //String filePath = "/Users/emma/Chalmers/exjobb/Prototype/thesis_opt/disposals_jan2017.csv";
 
-        for (Tuple<Double, String> t : Algorithm.emptySeq) {
-            System.out.println(t.y + " for " + t.x + " time.");
-        }
+        Map<String,List<Disposal>> disposalsJan2017 = ParseData.parseCSVFile(filePath);
+        Map<String,List<Disposal>> disposals2016 = ParseData.parseCSVFile(filePath2);
 
-        System.out.println("Total time: " + Algorithm.getTotalTime());
+        //System.out.println("LocalDateTime: " + LocalDateTime.now() + ", LocalDate: " + LocalDate.of(2017,5,10));
+        //System.out.println(Statistics.compareDates(LocalDateTime.now(), LocalDate.of(2017,5,10)));
 
-        Map<String,List<Disposal>> disposals = ParseData.parseCSVFile();
+        Statistics.sortDays(disposals2016);
 
+        //System.out.println("Monday-disposals amount: " + setup.inletsMap.get("18:4").getDisposals().get(DayOfWeek.MONDAY).size());
         /*System.out.println("Disposals for inlet 3:1:");
         for (Disposal d : disposals.get("3:1")) {
             System.out.println("Disposal: " + d.getLogId() + ", Date: " + d.getLogDate());
         }*/
 
+    }
+
+
+
+    public static void testAlgorithm(SystemSetup setup, int fraction) {
+        setup.levelUpdate("18:1", 0.8);
+        setup.levelUpdate("25:1", 0.8);
+
+        Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
+
+        if (startNode != null) {
+            Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+        }
+
+        for (Tuple<Double, String> t : Algorithm.emptySeq) {
+            System.out.println(t.y + " for " + t.x + " s.");
+        }
+
+        System.out.println("Total time: " + Algorithm.getTotalTime());
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        setup.refreshSystem();
+
+        Algorithm.processSubtree(setup.rootNode, fraction);
+
+        for (Tuple<Double, String> t : Algorithm.emptySeq) {
+            System.out.println(t.y + " for " + t.x + " s.");
+        }
+
+        System.out.println("Total time: " + Algorithm.getTotalTime());
     }
 
     /*

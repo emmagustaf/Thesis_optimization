@@ -21,22 +21,19 @@ public class Algorithm {
     private static List<AV> emptiedAVs = new ArrayList<>();
 
 
-    public static AV processSubtree(Vertex v) {
+    public static AV processSubtree(Vertex v, int fraction) {
 
-        if (v == null) { // TODO No tree to empty (Should be done before calling method)
-            return null;
-        } else if (v instanceof InletCluster) {
+         if (v instanceof InletCluster) {
             AV av = ((InletCluster) v).getAV();
 
             if (!emptiedAVs.contains(av)) {
-                emptyAV(av);
+                emptyAV(av, fraction);
                 return av;
             } else {
                 return null; // No new AV is opened!
             }
 
         } else {
-            System.out.println(v);
             //Junction j = (Junction) v;
 
             boolean leftDeepest = ((Junction) v).getLeftDepth() > ((Junction) v).getRightDepth();
@@ -44,8 +41,8 @@ public class Algorithm {
             Vertex secondChild = leftDeepest ? ((Junction) v).getRightChild() : ((Junction) v).getLeftChild();
 
             // Start with the AV furthest away from the root node
-            AV av1 = processSubtree(firstChild);
-            AV av2 = processSubtree(secondChild);
+            AV av1 = processSubtree(firstChild, fraction);
+            AV av2 = processSubtree(secondChild, fraction);
 
             // If no new AV has been opened in the subtrees, return null
             if (av2 == null && av1 == null) {
@@ -63,7 +60,7 @@ public class Algorithm {
         }
     }
 
-    private static void emptyAV(AV av) {
+    private static void emptyAV(AV av, int fraction) {
         if (emptySeq.size() > 0) {
             emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
         }
@@ -77,7 +74,9 @@ public class Algorithm {
             List<Inlet> inlets = cluster.getInletList();
 
             for (Inlet i : inlets) {
-                emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i.getId()));
+                if (i.getFraction() == fraction) {
+                    emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i.getId()));
+                }
             }
 
         }
@@ -87,14 +86,14 @@ public class Algorithm {
         emptiedAVs.add(av);
     }
 
-    public static Vertex buildTree(Vertex v) {
+    public static Vertex buildTree(Vertex v, int fraction) {
         if (v instanceof InletCluster) {
             // If any inlet in the cluster has a level, the cluster is added to the tree
-            return SystemSetup.anyLevel(((InletCluster) v).getAV()) ? v : null;
+            return SystemSetup.anyLevel(((InletCluster) v).getAV(), fraction) ? v : null;
 
         } else {
-            Vertex v1 = buildTree(((Junction) v).getRightChild());
-            Vertex v2 = buildTree(((Junction) v).getLeftChild());
+            Vertex v1 = buildTree(((Junction) v).getRightChild(), fraction);
+            Vertex v2 = buildTree(((Junction) v).getLeftChild(), fraction);
 
             if (v1 == null && v2 == null) {
                 return null;
