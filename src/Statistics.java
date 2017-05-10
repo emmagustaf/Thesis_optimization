@@ -1,6 +1,7 @@
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,8 +80,52 @@ public class Statistics {
         }
     }
 
+    /*
+     * Returns the average number of disposals made in the given time span
+     */
+    public static double getDisposalStatsByTime(String inletID, List<DayOfWeek> weekdays, LocalTime start, LocalTime end) {
+        Map<DayOfWeek, List<List<Disposal>>> allDisposals = SystemSetup.inletsMap.get(inletID).getDisposals();
+        List<List<Disposal>> dayDisposals = new ArrayList<>();
+        List<List<Disposal>> newDayDisposals = new ArrayList<>();
+
+        for (DayOfWeek weekday : weekdays) {
+            dayDisposals.addAll(allDisposals.get(weekday));
+        }
+
+        // Sort out all disposals inside the time span
+        if (weekdays.size() == 1 && !(start.equals(LocalTime.of(0,0,0)) && end.equals(LocalTime.of(23,59,59)))) {
+            for (List<Disposal> day : dayDisposals) {
+                List<Disposal> newDay = new ArrayList<>();
+
+                for (Disposal d : day) {
+                    LocalTime time = LocalTime.of(d.getLogDate().getHour(), d.getLogDate().getMinute(), d.getLogDate().getSecond());
+
+                    if (time.isAfter(start) && time.isBefore(end)) {
+                        newDay.add(d);
+                    } else if (time.isAfter(end)) {
+                        break;
+                    }
+                }
+
+                newDayDisposals.add(newDay);
+            }
+        } else {
+            newDayDisposals = dayDisposals;
+        }
+
+        // Check average amount of disposals in the time span
+        double totalDisposalAmount = 0;
+
+        for (List<Disposal> day : newDayDisposals) {
+            totalDisposalAmount += day.size();
+        }
+
+        return totalDisposalAmount/(52 * weekdays.size());  //dayDisposals.size();
+
+    }
+
     private static boolean compareDates(LocalDateTime disposalDate, LocalDate currentDate) {
-        LocalDate temp = LocalDate.of(disposalDate.getYear(),disposalDate.getMonth(),disposalDate.getDayOfMonth());
+        LocalDate temp = LocalDate.of(disposalDate.getYear(), disposalDate.getMonth(), disposalDate.getDayOfMonth());
 
         return temp.equals(currentDate);
     }
