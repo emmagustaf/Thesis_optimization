@@ -65,19 +65,21 @@ public class SystemSetup {
         instantiateAllAv();
         setChildren();
         setParents();
-        setAllJunctionDepths(rootNode);
         fillMaps();
+        setAllJunctionDepths(rootNode);
 
     }
 
     public void refreshSystem() {
         Algorithm.emptySeq = new ArrayList<>();
+        Algorithm.emptiedAVs = new ArrayList<>();
 
         instantiateAllJunctions();
         instantiateAllInletClusters();
         instantiateAllAv();
         setChildren();
         setParents();
+        fillMaps();
         setAllJunctionDepths(rootNode);
     }
 
@@ -91,8 +93,9 @@ public class SystemSetup {
 
     public static boolean anyLevel(AV av, int fraction) {
         for (InletCluster ic : avs.get(av.getId()).getInlets()) {
-            for (Inlet i : ic.getInletList()) {
-                if (i.getLevel() > 0 && i.getFraction() == fraction) {
+            for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
+                if (inletsMap.get(i.getId()).getLevel() > LevelHandler.MAX_LEVEL && inletsMap.get(i.getId()).getFraction() == fraction) {
+                    Main.output.add("Inlet with level: " + i.getId());
                     return true;
                     //inletClusters.get(ic.getId()).setInd(1);
                 }
@@ -126,15 +129,7 @@ public class SystemSetup {
                 junctions.get(rightChild.getId()).setLengthToParent(junctions.get(rightChild.getId()).getLengthToRoot()-junctions.get(parent.getId()).getLengthToRoot());
             }
         }
-        /*if(leftChild != null) {
-            ((Junction) parent).setLeftChild(leftChild);
-            leftChild.setParent(parent);
 
-        }
-        if(rightChild != null){
-            ((Junction) parent).setRightChild(rightChild);
-            rightChild.setParent(parent);
-        }   */
     }
 
     public void instantiateAllInlets(){
@@ -1016,25 +1011,25 @@ public class SystemSetup {
     }
 
     public static void setJunctionDepth(Vertex v) {
-        Tuple<Double,Double> newDepth = findJunctionDepth(v);
+        Tuple<Double,Double> newDepth = findJunctionDepth(junctions.get(v.getId()));
 
-        ((Junction) v).setLeftDepth(newDepth.x);
-        ((Junction) v).setRightDepth(newDepth.y);
+        junctions.get(v.getId()).setLeftDepth(newDepth.x);
+        junctions.get(v.getId()).setRightDepth(newDepth.y);
         //junctions.get(v.getId()).setLeftDepth(newDepth.x);
         //junctions.get(v.getId()).setRightDepth(newDepth.y);
     }
 
     public static Tuple<Double,Double> findJunctionDepth(Vertex v) {
         if (v instanceof InletCluster) {
-            return new Tuple(v.getLengthToParent(), v.getLengthToParent());
+            return new Tuple(inletClusters.get(v.getId()).getLengthToParent(), inletClusters.get(v.getId()).getLengthToParent());
 
         } else {
-            double dLeft = findJunctionDepth(((Junction) v).getLeftChild()).x;
-            double dRight = findJunctionDepth(((Junction) v).getRightChild()).y;
+            double dLeft = findJunctionDepth(junctions.get(v.getId()).getLeftChild()).x;
+            double dRight = findJunctionDepth(junctions.get(v.getId()).getRightChild()).y;
 
             //double deepest = dRight >= dLeft ? dRight : dLeft;
 
-            return new Tuple(v.getLengthToParent() + dLeft,v.getLengthToParent() + dRight);
+            return new Tuple(junctions.get(v.getId()).getLengthToParent() + dLeft,junctions.get(v.getId()).getLengthToParent() + dRight);
 
         }
     }
@@ -1042,18 +1037,18 @@ public class SystemSetup {
     public static double setAllJunctionDepths(Vertex v) {
 
         if (v instanceof InletCluster) {
-            return v.getLengthToParent();
+            return inletClusters.get(v.getId()).getLengthToParent();
 
         } else {
-            double dLeft = setAllJunctionDepths(((Junction) v).getLeftChild());
-            double dRight = setAllJunctionDepths(((Junction) v).getRightChild());
+            double dLeft = setAllJunctionDepths(junctions.get(v.getId()).getLeftChild());
+            double dRight = setAllJunctionDepths(junctions.get(v.getId()).getRightChild());
 
-            ((Junction) v).setLeftDepth(dLeft);
-            ((Junction) v).setRightDepth(dRight);
+            junctions.get(v.getId()).setLeftDepth(dLeft);
+            junctions.get(v.getId()).setRightDepth(dRight);
 
             double deepest = dRight >= dLeft ? dRight : dLeft;
 
-            return v.getLengthToParent() + deepest;
+            return junctions.get(v.getId()).getLengthToParent() + deepest;
 
         }
     }

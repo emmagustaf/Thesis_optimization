@@ -1,10 +1,23 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.lang.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.*;
 
 public class Main {
+
+    public static List<String> output = new ArrayList<>();
+    private static Map<String,List<Disposal>> allHistory;
+    public static double totalTime = 0;
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
@@ -18,13 +31,19 @@ public class Main {
 
         Map<String,List<Disposal>> disposalsJan2017 = ParseData.parseCSVFile(filePath);
         Map<String,List<Disposal>> disposals2016 = ParseData.parseCSVFile(filePath2);
+        allHistory = disposals2016;
 
-        //System.out.println("LocalDateTime: " + LocalDateTime.now() + ", LocalDate: " + LocalDate.of(2017,5,10));
-        //System.out.println(Statistics.compareDates(LocalDateTime.now(), LocalDate.of(2017,5,10)));
+        Statistics.sortDays(allHistory);
 
-        Statistics.sortDays(disposals2016);
+        //simulate(disposalsJan2017, setup);
 
-        //System.out.println("Monday-disposals amount: " + setup.inletsMap.get("18:4").getDisposals().get(DayOfWeek.MONDAY).size());
+        /*System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(Statistics.getDisposalStatsByTime("6:3", Arrays.asList(DayOfWeek.TUESDAY), LocalTime.of(5,0,0), LocalTime.of(23,59,59)));
+
+        System.out.println();
+        System.out.println("Monday-disposals amount: " + setup.inletsMap.get("6:3").getDisposals().get(DayOfWeek.TUESDAY).size());*/
         /*System.out.println("Disposals for inlet 3:1:");
         for (Disposal d : disposals.get("3:1")) {
             System.out.println("Disposal: " + d.getLogId() + ", Date: " + d.getLogDate());
@@ -32,13 +51,92 @@ public class Main {
 
     }
 
+    /*
+     * Kör datan i disposals som "realtiddata", anropa updateLevel typ varje dag eller liknande och skicka med den datan som är "ny" sedan senaste anropet.
+     */
+    private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
+        // Set the time between checks to 1 day
+        //LocalTime time = LocalTime.of(24, 0);
+        int minutes = 30;
+        // Default starting time is 2017-01-01 13:00
+        LocalDateTime startTime = LocalDateTime.of(2017,1,1,13,0,0);
+        LocalDateTime endTime = startTime;
+        Map<String,List<Disposal>> temp = disposals;
+
+        while (endTime.getMonth().equals(Month.JANUARY)) {
+
+            output.add("");
+            output.add("Update levels until date: " + endTime);
+            //System.out.println("Update levels until date: " + endTime);
+            Map<String,List<Disposal>> nextUpdate = getNextUpdate(temp, endTime);
+            for (String inletID : nextUpdate.keySet()) {
+
+                List<Disposal> newList = temp.get(inletID);
+                newList.removeAll(nextUpdate.get(inletID));
+                temp.put(inletID, newList);
+
+            }
+            
+            LevelHandler.updateLevels(nextUpdate);
+
+            endTime = endTime.plusMinutes(minutes);
+
+            int fraction = 1;
+            Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
+
+            if (startNode != null) {
+                Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+            }
+
+            for (Tuple<Double, String> t : Algorithm.emptySeq) {
+                output.add(t.y + " for " + t.x + " s.");
+            }
+
+            output.add("Total time: " + Algorithm.getTotalTime());
+            output.add("");
+            output.add("");
+            totalTime += Algorithm.getTotalTime();
+
+            setup.refreshSystem();
+        }
+
+        output.add("TOTALTID: " + totalTime);
+
+        try {
+            Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output.txt"), output);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-    public static void testAlgorithm(SystemSetup setup, int fraction) {
-        setup.levelUpdate("18:1", 0.8);
-        setup.levelUpdate("25:1", 0.8);
+    }
 
-        Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
+    private static Map<String,List<Disposal>> getNextUpdate(Map<String,List<Disposal>> futureDisposals, LocalDateTime endTime) {
+        Map<String,List<Disposal>> nextUpdate = new HashMap<>();
+
+        for (String inletID : futureDisposals.keySet()) {
+            List<Disposal> newList = new ArrayList<>();
+
+            for (Disposal d : futureDisposals.get(inletID)) {
+                if (d.getLogDate().isBefore(endTime)) {
+                    newList.add(d);
+                } else {
+                    break;
+                }
+            }
+
+            nextUpdate.put(inletID,newList);
+        }
+
+        return nextUpdate;
+    }
+
+
+    private static void testAlgorithm(SystemSetup setup, int fraction) {
+        //setup.levelUpdate("18:1", 0.8);
+        //setup.levelUpdate("25:1", 0.8);
+
+        /*Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
 
         if (startNode != null) {
             Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
@@ -53,7 +151,7 @@ public class Main {
         System.out.println();
         System.out.println();
 
-        setup.refreshSystem();
+        setup.refreshSystem();*/
 
         Algorithm.processSubtree(setup.rootNode, fraction);
 
