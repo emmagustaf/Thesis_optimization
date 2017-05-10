@@ -515,13 +515,16 @@ public class SystemSetup {
 
         inletCluster21_1 = new InletCluster(7,31.4/METER_CONVERSION,0/METER_CONVERSION, J8, null, inletList21_1);
         inletCluster21_2 = new InletCluster(8,34.9/METER_CONVERSION,0.8/METER_CONVERSION, J10, null, inletList21_2);
-        inletCluster21_3 = new InletCluster(10,35.7/METER_CONVERSION,1.5/METER_CONVERSION, J11, null, inletList21_3);
+        inletCluster21_3 = new InletCluster(10,36.2/METER_CONVERSION,1.5/METER_CONVERSION, J11, null, inletList21_3);
         inletCluster21_4 = new InletCluster(11,34/METER_CONVERSION,0.3/METER_CONVERSION, J11, null, inletList21_4);
 
         inletCluster22 = new InletCluster(9,37.1/METER_CONVERSION,3.0/METER_CONVERSION, J10, null, inletList22);
+
         inletCluster23_1 = new InletCluster(2,25.3/METER_CONVERSION,0.9/METER_CONVERSION, J3, null, inletList23_1);
         inletCluster23_2 = new InletCluster(4,26.9/METER_CONVERSION,0.8/METER_CONVERSION, J4, null, inletList23_2);
+
         inletCluster24 = new InletCluster(5,27.3/METER_CONVERSION,1.5/METER_CONVERSION, J6, null, inletList24);
+
         inletCluster25 = new InletCluster(3,28.3/METER_CONVERSION,2.2/METER_CONVERSION, J4, null, inletList25);
 
     }
@@ -582,6 +585,7 @@ public class SystemSetup {
         J52 = new Junction(52,61.6/METER_CONVERSION,0.4/METER_CONVERSION, J51, J53, inletCluster15_1,1,1);
         J53 = new Junction(53,62.1/METER_CONVERSION,0.5/METER_CONVERSION, J52, inletCluster16_1, inletCluster16_2, 1,1);
     }
+
     public void setParents(){
         //J1.setParent(rootNode);
         J2.setParent(rootNode);
@@ -897,30 +901,30 @@ public class SystemSetup {
     }
 
     public void instantiateAllAv() {
-        AV3 = new AV(3,inletCluster3_1.getLengthToParent(),Arrays.asList(inletCluster3_1,inletCluster3_2,inletCluster3_3));
+        AV3 = new AV(3,inletCluster3_1.getLengthToRoot(),Arrays.asList(inletCluster3_1,inletCluster3_2,inletCluster3_3));
         inletCluster3_1.setAV(AV3);
         inletCluster3_2.setAV(AV3);
         inletCluster3_3.setAV(AV3);
 
-        AV4 = new AV(4,inletCluster4.getLengthToParent(),Arrays.asList(inletCluster4));
+        AV4 = new AV(4,inletCluster4.getLengthToRoot(),Arrays.asList(inletCluster4));
         inletCluster4.setAV(AV4);
 
-        AV5 = new AV(5,inletCluster5.getLengthToParent(),Arrays.asList(inletCluster5));
+        AV5 = new AV(5,inletCluster5.getLengthToRoot(),Arrays.asList(inletCluster5));
         inletCluster5.setAV(AV5);
 
-        AV6 = new AV(6,inletCluster6_4.getLengthToParent(),Arrays.asList(inletCluster6_1,inletCluster6_2,inletCluster6_3,inletCluster6_4));
+        AV6 = new AV(6,inletCluster6_4.getLengthToRoot(),Arrays.asList(inletCluster6_1,inletCluster6_2,inletCluster6_3,inletCluster6_4));
         inletCluster6_1.setAV(AV6);
         inletCluster6_2.setAV(AV6);
         inletCluster6_3.setAV(AV6);
         inletCluster6_4.setAV(AV6);
 
-        AV7 = new AV(7,inletCluster7_1.getLengthToParent(),Arrays.asList(inletCluster7_1,inletCluster7_2,inletCluster7_3,inletCluster7_4));
+        AV7 = new AV(7,inletCluster7_1.getLengthToRoot(),Arrays.asList(inletCluster7_1,inletCluster7_2,inletCluster7_3,inletCluster7_4));
         inletCluster7_1.setAV(AV7);
         inletCluster7_2.setAV(AV7);
         inletCluster7_3.setAV(AV7);
         inletCluster7_4.setAV(AV7);
 
-        AV8 = new AV(8,inletCluster8_1.getLengthToParent(),Arrays.asList(inletCluster8_1,inletCluster8_2,inletCluster8_3,inletCluster8_4,inletCluster8_5,inletCluster8_6));
+        AV8 = new AV(8,inletCluster8_1.getLengthToRoot(),Arrays.asList(inletCluster8_1,inletCluster8_2,inletCluster8_3,inletCluster8_4,inletCluster8_5,inletCluster8_6));
         inletCluster8_1.setAV(AV8);
         inletCluster8_2.setAV(AV8);
         inletCluster8_3.setAV(AV8);
@@ -928,73 +932,74 @@ public class SystemSetup {
         inletCluster8_5.setAV(AV8);
         inletCluster8_6.setAV(AV8);
 
-        AV9 = new AV(9,inletCluster9.getLengthToParent(),Arrays.asList(inletCluster9));
+        AV9 = new AV(9,inletCluster9.getLengthToRoot(),Arrays.asList(inletCluster9));
         inletCluster9.setAV(AV9);
 
-        AV10 = new AV(10,inletCluster10_1.getLengthToParent(),Arrays.asList(inletCluster10_1,inletCluster10_2,inletCluster10_3,inletCluster10_4));
+        AV10 = new AV(10,inletCluster10_1.getLengthToRoot(),Arrays.asList(inletCluster10_1,inletCluster10_2,inletCluster10_3,inletCluster10_4));
         inletCluster10_1.setAV(AV10);
         inletCluster10_2.setAV(AV10);
         inletCluster10_3.setAV(AV10);
         inletCluster10_4.setAV(AV10);
 
-        AV11 = new AV(11,inletCluster11.getLengthToParent(),Arrays.asList(inletCluster11));
+        AV11 = new AV(11,inletCluster11.getLengthToRoot(),Arrays.asList(inletCluster11));
         inletCluster11.setAV(AV11);
 
-        AV12 = new AV(12,inletCluster12_1.getLengthToParent(),Arrays.asList(inletCluster12_1,inletCluster12_2,inletCluster12_3));
+        AV12 = new AV(12,inletCluster12_1.getLengthToRoot(),Arrays.asList(inletCluster12_1,inletCluster12_2,inletCluster12_3));
         inletCluster12_1.setAV(AV12);
         inletCluster12_2.setAV(AV12);
         inletCluster12_3.setAV(AV12);
 
-        AV13 = new AV(13,inletCluster13.getLengthToParent(),Arrays.asList(inletCluster13));
+        AV13 = new AV(13,inletCluster13.getLengthToRoot(),Arrays.asList(inletCluster13));
         inletCluster13.setAV(AV13);
 
-        AV14 = new AV(14,inletCluster14_1.getLengthToParent(),Arrays.asList(inletCluster14_1,inletCluster14_2));
+        AV14 = new AV(14,inletCluster14_1.getLengthToRoot(),Arrays.asList(inletCluster14_1,inletCluster14_2));
         inletCluster14_1.setAV(AV14);
         inletCluster14_2.setAV(AV14);
 
-        AV15 = new AV(15,inletCluster15_1.getLengthToParent(),Arrays.asList(inletCluster15_1,inletCluster15_2,inletCluster15_3));
+        AV15 = new AV(15,inletCluster15_1.getLengthToRoot(),Arrays.asList(inletCluster15_1,inletCluster15_2,inletCluster15_3));
         inletCluster15_1.setAV(AV15);
         inletCluster15_2.setAV(AV15);
         inletCluster15_3.setAV(AV15);
 
-        AV16 = new AV(16,inletCluster16_2.getLengthToParent(),Arrays.asList(inletCluster16_1,inletCluster16_2));
+        AV16 = new AV(16,inletCluster16_2.getLengthToRoot(),Arrays.asList(inletCluster16_1,inletCluster16_2));
         inletCluster16_1.setAV(AV16);
         inletCluster16_2.setAV(AV16);
 
-        AV17 = new AV(17,inletCluster17_1.getLengthToParent(),Arrays.asList(inletCluster17_1,inletCluster17_2,inletCluster17_3,inletCluster17_4));
+        AV17 = new AV(17,inletCluster17_1.getLengthToRoot(),Arrays.asList(inletCluster17_1,inletCluster17_2,inletCluster17_3,inletCluster17_4));
         inletCluster17_1.setAV(AV17);
         inletCluster17_2.setAV(AV17);
         inletCluster17_3.setAV(AV17);
         inletCluster17_4.setAV(AV17);
 
-        AV18 = new AV(18,inletCluster18_1.getLengthToParent(),Arrays.asList(inletCluster18_1,inletCluster18_2,inletCluster18_3));
+        AV18 = new AV(18,inletCluster18_1.getLengthToRoot(),Arrays.asList(inletCluster18_1,inletCluster18_2,inletCluster18_3));
         inletCluster18_1.setAV(AV18);
         inletCluster18_2.setAV(AV18);
         inletCluster18_3.setAV(AV18);
 
-        AV19 = new AV(19,inletCluster19.getLengthToParent(),Arrays.asList(inletCluster19));
+        AV19 = new AV(19,inletCluster19.getLengthToRoot(),Arrays.asList(inletCluster19));
         inletCluster19.setAV(AV19);
 
-        AV20 = new AV(20,inletCluster20.getLengthToParent(),Arrays.asList(inletCluster20));
+        AV20 = new AV(20,inletCluster20.getLengthToRoot(),Arrays.asList(inletCluster20));
         inletCluster20.setAV(AV20);
 
         AV21 = new AV(21,inletCluster21_3.getLengthToParent(),Arrays.asList(inletCluster21_1,inletCluster21_4,inletCluster21_2,inletCluster21_3));
+
         inletCluster21_1.setAV(AV21);
         inletCluster21_2.setAV(AV21);
         inletCluster21_3.setAV(AV21);
         inletCluster21_4.setAV(AV21);
 
-        AV22 = new AV(22,inletCluster22.getLengthToParent(),Arrays.asList(inletCluster22));
+        AV22 = new AV(22,inletCluster22.getLengthToRoot(),Arrays.asList(inletCluster22));
         inletCluster22.setAV(AV22);
 
-        AV23 = new AV(23,inletCluster23_2.getLengthToParent(),Arrays.asList(inletCluster23_1,inletCluster23_2));
+        AV23 = new AV(23,inletCluster23_2.getLengthToRoot(),Arrays.asList(inletCluster23_1,inletCluster23_2));
         inletCluster23_1.setAV(AV23);
         inletCluster23_2.setAV(AV23);
 
-        AV24 = new AV(24,inletCluster24.getLengthToParent(),Arrays.asList(inletCluster24));
+        AV24 = new AV(24,inletCluster24.getLengthToRoot(),Arrays.asList(inletCluster24));
         inletCluster24.setAV(AV24);
 
-        AV25 = new AV(25,inletCluster25.getLengthToParent(),Arrays.asList(inletCluster25));
+        AV25 = new AV(25,inletCluster25.getLengthToRoot(),Arrays.asList(inletCluster25));
         inletCluster25.setAV(AV25);
 
     }
