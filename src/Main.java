@@ -19,13 +19,13 @@ public class Main {
     private static Map<String,List<Disposal>> allHistory;
     public static double totalTime = 0;
     public static int nbrOfInlets = 0;
-    public static boolean overLimit = false;
+    public static List<String> overLimit = new ArrayList<>();
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
-        int fraction = 3;
+        int fraction = 1;
 
-        //testAlgorithm(setup, fraction);
+        testAlgorithm(setup, fraction);
 
         String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
         String filePath2 = "/Users/elin/Documents/Programmering/Exjobb/disposals_2016.csv";
@@ -37,7 +37,7 @@ public class Main {
 
         Statistics.sortDays(allHistory);
 
-        simulate(disposalsJan2017, setup);
+        //simulate(disposalsJan2017, setup);
 
         /*System.out.println();
         System.out.println();
@@ -55,12 +55,12 @@ public class Main {
     }
 
     /*
-     * Kör datan i disposals som "realtiddata", anropa updateLevel typ varje dag eller liknande och skicka med den datan som är "ny" sedan senaste anropet.
+     * Simulates the emptying of the system for all the disposals made in january.
      */
     private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
         // Set the time between checks to 1 day
         //LocalTime time = LocalTime.of(24, 0);
-        int minutes = 30;
+        int minutes = 10;
         // Default starting time is 2017-01-01 13:00
         LocalDateTime startTime = LocalDateTime.of(2017,1,1,13,0,0);
         LocalDateTime endTime = startTime;
@@ -72,40 +72,43 @@ public class Main {
             output.add("Update levels until date: " + endTime);
             //System.out.println("Update levels until date: " + endTime);
             Map<String,List<Disposal>> nextUpdate = getNextUpdate(temp, endTime);
-            for (String inletID : nextUpdate.keySet()) {
 
+            for (String inletID : nextUpdate.keySet()) {
                 List<Disposal> newList = temp.get(inletID);
                 newList.removeAll(nextUpdate.get(inletID));
                 temp.put(inletID, newList);
 
             }
-            
-            LevelHandler.updateLevels(nextUpdate);
 
+            List<Integer> fractionsToEmpty = LevelHandler.updateLevels(nextUpdate);
             endTime = endTime.plusMinutes(minutes);
 
-            int fraction = 1;
-            Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
 
-            if (startNode != null) {
-                Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+            for (int fraction : fractionsToEmpty) {
+                Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
+
+                if (startNode != null) {
+                    Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+                }
+
+                for (Tuple<Double, String> t : Algorithm.emptySeq) {
+                    output.add(t.y + " for " + t.x + " s.");
+                }
+
+                output.add("Total time: " + Algorithm.getTotalTime());
+                output.add("");
+                output.add("");
+                totalTime += Algorithm.getTotalTime();
+
+                setup.refreshSystem();
             }
 
-            for (Tuple<Double, String> t : Algorithm.emptySeq) {
-                output.add(t.y + " for " + t.x + " s.");
-            }
-
-            output.add("Total time: " + Algorithm.getTotalTime());
-            output.add("");
-            output.add("");
-            totalTime += Algorithm.getTotalTime();
-
-            setup.refreshSystem();
         }
 
         output.add("TOTAL TIME: " + totalTime);
-        output.add("Their time: " + (100221.0 + 14513.0 + 108525.0));
-        output.add("Anything over limit? " + overLimit);
+        output.add("Their \"rest\" time: " + (100221.0 + 14513.0 + 108525.0));
+        output.add("Their total time: " + (262509.0 + 79369.0 +	97130.0));
+        output.add("Anything over limit? " + overLimit.get(0) + " and " + overLimit.get(1));
 
         output.add("");
         output.add("Number of inlets emptied: " + nbrOfInlets);

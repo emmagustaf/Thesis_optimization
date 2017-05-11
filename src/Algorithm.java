@@ -1,15 +1,17 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Algorithm {
 
     // Random values for now
-    private static final double STABILIZATION_TIME = 0.8;
-    private static final double SAFETY_MARGIN = 4;
+    private static final double STARTUP_TIME = 120;
+    private static final double STABILIZATION_TIME = 0.1;
+    private static final double SAFETY_MARGIN = 20;
 
     private static final double EMPTY_DV_TIME = 14;
     // Time it takes to close the last AV and empty a new one
-    private static final double OPEN_CLOSE_AV_TIME = 2;
+    private static final double OPEN_CLOSE_AV_TIME = 4;
     private static final double SPEED = 10; // m/s
 
     /*
@@ -19,6 +21,7 @@ public class Algorithm {
      */
     public static List<Tuple<Double,String>> emptySeq = new ArrayList<>();
     public static List<AV> emptiedAVs = new ArrayList<>();
+    public static AV lastAV = null;
 
 
     public static AV processSubtree(Vertex v, int fraction) {
@@ -56,6 +59,7 @@ public class Algorithm {
                 return av;
             } else  { // Reached the root
                 emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
+                emptySeq.add(new Tuple<>(STARTUP_TIME, "Turning system off"));
                 return null; // done
             }
 
@@ -63,12 +67,18 @@ public class Algorithm {
     }
 
     private static void emptyAV(AV av, int fraction) {
-        if (emptySeq.size() > 0) {
-            emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
+        double stabilizationTime;
+
+        if (emptiedAVs.size() > 0) {
+            emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + lastAV.getId()));
+            stabilizationTime = calculateStabilizationTime(av.getId(), SystemSetup.avs.get(lastAV.getId()).getPathToRoot());
+        } else {
+            emptySeq.add(new Tuple<>(STARTUP_TIME, "Starting fans"));
+            stabilizationTime = SystemSetup.avs.get(av.getId()).getLengthToRoot() * STABILIZATION_TIME;
         }
 
         emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Open AV: " + av.getId()));
-        emptySeq.add(new Tuple<>(calculateStabilizationTime(av.getId(), Integer.parseInt(getLastAV())), "Stabilize pressure in AV: " + av.getId())); //STABILIZATION_TIME * av.getLengthToRoot()
+        emptySeq.add(new Tuple<>(stabilizationTime, "Stabilize pressure in AV: " + av.getId())); //STABILIZATION_TIME * av.getLengthToRoot()
 
         List<InletCluster> clusters = SystemSetup.avs.get(av.getId()).getInlets();
 
@@ -78,10 +88,12 @@ public class Algorithm {
             for (Inlet i : inlets) {
                 if (SystemSetup.inletsMap.get(i.getId()).getFraction() == fraction) {
                     emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i.getId()));
+                    emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
                     Main.nbrOfInlets++;
                     SystemSetup.levelUpdate(i.getId(), 0);
                 }
             }
+            emptySeq.add(new Tuple<>(SystemSetup.inletClusters.get(cluster.getId()).getLengthToParent()/SPEED, "Transport cluster: " + cluster.getId()));
 
         }
 
@@ -89,6 +101,8 @@ public class Algorithm {
         emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
         emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
         emptiedAVs.add(SystemSetup.avs.get(av.getId()));
+
+        lastAV = av;
     }
 
 
@@ -148,12 +162,11 @@ public class Algorithm {
         return d;
     }
 
-    private static double calculateStabilizationTime(int newAV, int oldAV) {
+    private static double calculateStabilizationTime(int newAV, List<Junction> path) {
         List<InletCluster> clusters = SystemSetup.avs.get(newAV).getInlets();
         InletCluster cluster = clusters.get(clusters.size()-1);
         Junction nextNode = (Junction) SystemSetup.inletClusters.get(cluster.getId()).getParent();
 
-        List<Junction> path = SystemSetup.avs.get(oldAV).getPathToRoot();
         double stabilizeLength = cluster.getLengthToParent();
 
         while (!path.contains(SystemSetup.junctions.get(nextNode.getId()))) {
