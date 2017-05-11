@@ -25,7 +25,7 @@ public class Main {
         SystemSetup setup = new SystemSetup();
         int fraction = 1;
 
-        testAlgorithm(setup, fraction);
+        //testAlgorithm(setup, fraction);
 
         String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
         String filePath2 = "/Users/elin/Documents/Programmering/Exjobb/disposals_2016.csv";
@@ -37,7 +37,7 @@ public class Main {
 
         Statistics.sortDays(allHistory);
 
-        //simulate(disposalsJan2017, setup);
+        simulate(disposalsJan2017, setup);
 
         /*System.out.println();
         System.out.println();
@@ -60,7 +60,7 @@ public class Main {
     private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
         // Set the time between checks to 1 day
         //LocalTime time = LocalTime.of(24, 0);
-        int minutes = 10;
+        int minutes = 60;
         // Default starting time is 2017-01-01 13:00
         LocalDateTime startTime = LocalDateTime.of(2017,1,1,13,0,0);
         LocalDateTime endTime = startTime;
@@ -108,7 +108,7 @@ public class Main {
         output.add("TOTAL TIME: " + totalTime);
         output.add("Their \"rest\" time: " + (100221.0 + 14513.0 + 108525.0));
         output.add("Their total time: " + (262509.0 + 79369.0 +	97130.0));
-        output.add("Anything over limit? " + overLimit.get(0) + " and " + overLimit.get(1));
+        output.add("Anything over limit? " + overLimit.size());//overLimit.get(0) + " and " + overLimit.get(1));
 
         output.add("");
         output.add("Number of inlets emptied: " + nbrOfInlets);
