@@ -26,6 +26,9 @@ public class LevelHandler {
                     Main.output.add("Level of: " + newLevel + " triggered by: " + inletID + ", fraction: " + SystemSetup.inletsMap.get(inletID).getFraction());
                     //System.out.println("Level of: " + newLevel + " triggered by: " + inletID);
                     SystemSetup.levelUpdate(inletID, newLevel);
+                    if (newLevel >= 1) {
+                        Main.overLimit = true;
+                    }
                     triggerEmptying(inletID);
                 } else if (addedVolume != 0) {
                     SystemSetup.levelUpdate(inletID, newLevel);

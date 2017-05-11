@@ -4,8 +4,8 @@ import java.util.List;
 public class Algorithm {
 
     // Random values for now
-    private static final double STABILIZATION_TIME = 5;
-    private static final double SAFETY_MARGIN = 5;
+    private static final double STABILIZATION_TIME = 0.8;
+    private static final double SAFETY_MARGIN = 4;
 
     private static final double EMPTY_DV_TIME = 14;
     // Time it takes to close the last AV and empty a new one
@@ -52,6 +52,7 @@ public class Algorithm {
             } else if ( SystemSetup.junctions.get(v.getId()).getLengthToRoot() != 0) {
                 AV av = av2 == null ? av1 : av2;
                 emptySeq.add(new Tuple( SystemSetup.junctions.get(v.getId()).getLengthToParent()/SPEED, "Continue on AV: " + av.getId()));
+                emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
                 return av;
             } else  { // Reached the root
                 emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
@@ -66,8 +67,8 @@ public class Algorithm {
             emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
         }
 
-        emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Open AV: " + SystemSetup.avs.get(av.getId()).getId()));
-        //emptySeq.add(new Tuple<>(STABILIZATION_TIME * av.getLengthToRoot(), "Stabilize pressure in AV: " + av.getId()));
+        emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Open AV: " + av.getId()));
+        emptySeq.add(new Tuple<>(calculateStabilizationTime(av.getId(), Integer.parseInt(getLastAV())), "Stabilize pressure in AV: " + av.getId())); //STABILIZATION_TIME * av.getLengthToRoot()
 
         List<InletCluster> clusters = SystemSetup.avs.get(av.getId()).getInlets();
 
@@ -77,6 +78,7 @@ public class Algorithm {
             for (Inlet i : inlets) {
                 if (SystemSetup.inletsMap.get(i.getId()).getFraction() == fraction) {
                     emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i.getId()));
+                    Main.nbrOfInlets++;
                     SystemSetup.levelUpdate(i.getId(), 0);
                 }
             }
@@ -84,7 +86,8 @@ public class Algorithm {
         }
 
         InletCluster lastCluster = clusters.get(clusters.size() - 1);
-        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + SystemSetup.avs.get(av.getId()).getId())); //(55.4+7.4+4+3)*0.05*10
+        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
+        emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
         emptiedAVs.add(SystemSetup.avs.get(av.getId()));
     }
 
@@ -143,6 +146,22 @@ public class Algorithm {
         }
 
         return d;
+    }
+
+    private static double calculateStabilizationTime(int newAV, int oldAV) {
+        List<InletCluster> clusters = SystemSetup.avs.get(newAV).getInlets();
+        InletCluster cluster = clusters.get(clusters.size()-1);
+        Junction nextNode = (Junction) SystemSetup.inletClusters.get(cluster.getId()).getParent();
+
+        List<Junction> path = SystemSetup.avs.get(oldAV).getPathToRoot();
+        double stabilizeLength = cluster.getLengthToParent();
+
+        while (!path.contains(SystemSetup.junctions.get(nextNode.getId()))) {
+            nextNode = SystemSetup.junctions.get(nextNode.getParent().getId());
+            stabilizeLength += nextNode.getLengthToParent();
+        }
+
+        return stabilizeLength * STABILIZATION_TIME;
     }
 
 }

@@ -18,12 +18,14 @@ public class Main {
     public static List<String> output = new ArrayList<>();
     private static Map<String,List<Disposal>> allHistory;
     public static double totalTime = 0;
+    public static int nbrOfInlets = 0;
+    public static boolean overLimit = false;
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
         int fraction = 3;
 
-        testAlgorithm(setup, fraction);
+        //testAlgorithm(setup, fraction);
 
         String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
         String filePath2 = "/Users/elin/Documents/Programmering/Exjobb/disposals_2016.csv";
@@ -35,7 +37,7 @@ public class Main {
 
         Statistics.sortDays(allHistory);
 
-        //simulate(disposalsJan2017, setup);
+        simulate(disposalsJan2017, setup);
 
         /*System.out.println();
         System.out.println();
@@ -101,7 +103,17 @@ public class Main {
             setup.refreshSystem();
         }
 
-        output.add("TOTALTID: " + totalTime);
+        output.add("TOTAL TIME: " + totalTime);
+        output.add("Their time: " + (100221.0 + 14513.0 + 108525.0));
+        output.add("Anything over limit? " + overLimit);
+
+        output.add("");
+        output.add("Number of inlets emptied: " + nbrOfInlets);
+        output.add("DVs per minute: " + (nbrOfInlets/(totalTime/60)));
+
+        output.add("");
+        output.add("Their number of inlets emptied: " + (1453 + 1645 + 29));
+        output.add("Their DVs per minute: " + ((1453 + 1645 + 29) / ((100221.0 + 14513.0 + 108525.0)/60)));
 
         try {
             Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output.txt"), output);
@@ -161,6 +173,8 @@ public class Main {
         }
 
         System.out.println("Total time: " + Algorithm.getTotalTime());
+        System.out.println("Number of inlets emptied: " + nbrOfInlets);
+        System.out.println("DVs per minute: " + (nbrOfInlets/(Algorithm.getTotalTime()/60)));
     }
 
     /*
