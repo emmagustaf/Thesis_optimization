@@ -60,13 +60,8 @@ public class SystemSetup {
 
         instantiateAllInlets();
         instantiateAllInletLists();
-        instantiateAllJunctions();
-        instantiateAllInletClusters();
-        instantiateAllAv();
-        setChildren();
-        setParents();
-        fillMaps();
-        setAllJunctionDepths(rootNode);
+
+        refreshSystem();
 
     }
 
@@ -81,6 +76,10 @@ public class SystemSetup {
         setParents();
         fillMaps();
         setAllJunctionDepths(rootNode);
+
+        for (int avID : avs.keySet()) {
+            setPathList(avID, rootNode.getId());
+        }
     }
 
     public static void levelUpdate(String id, double newLevel){
@@ -1051,6 +1050,21 @@ public class SystemSetup {
             return junctions.get(v.getId()).getLengthToParent() + deepest;
 
         }
+    }
+
+    public static void setPathList(int avID, int endNodeID) {
+        List<Junction> pathList = new ArrayList<>();
+
+        List<InletCluster> clusters = avs.get(avID).getInlets();
+        InletCluster cluster = clusters.get(clusters.size()-1);
+        Junction nextNode = (Junction) inletClusters.get(cluster.getId()).getParent();
+
+        while (!nextNode.equals(junctions.get(endNodeID))) {
+            nextNode = junctions.get(nextNode.getParent().getId());
+            pathList.add(nextNode);
+        }
+
+        avs.get(avID).setPathToRoot(pathList);
     }
 
 
