@@ -24,7 +24,7 @@ public class Main {
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
-        int fraction = 1;
+        int fraction = 3;
 
         //testAlgorithm(setup, fraction);
 
@@ -35,6 +35,14 @@ public class Main {
         Map<String,List<Disposal>> disposalsJan2017 = ParseData.parseCSVFile(filePath);
         Map<String,List<Disposal>> disposals2016 = ParseData.parseCSVFile(filePath2);
         allHistory = disposals2016;
+
+        System.out.println(disposalsJan2017.keySet().size());
+
+        for (String inletID : SystemSetup.inletsMap.keySet()) {
+            if (!disposalsJan2017.keySet().contains(inletID) && !disposals2016.keySet().contains(inletID)) {
+                System.out.println("ID: " + inletID);
+            }
+        }
 
         Statistics.sortDays(allHistory);
 

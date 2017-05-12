@@ -7,9 +7,9 @@ public class Algorithm {
     // Random values for now
     public static final double STARTUP_TIME = 120;
     public static final double STABILIZATION_TIME = 0.1;
-    public static final double SAFETY_MARGIN = 20;
+    public static final double SAFETY_MARGIN = 18.5; // 0,8698775706
 
-    public static final double EMPTY_DV_TIME = 14;
+    public static final double EMPTY_DV_TIME = 18;
     // Time it takes to close the last AV and empty a new one
     public static final double OPEN_CLOSE_AV_TIME = 4;
     public static final double SPEED = 10; // m/s
@@ -54,7 +54,8 @@ public class Algorithm {
 
             } else if ( SystemSetup.junctions.get(v.getId()).getLengthToRoot() != 0) {
                 AV av = av2 == null ? av1 : av2;
-                emptySeq.add(new Tuple( SystemSetup.junctions.get(v.getId()).getLengthToParent()/SPEED, "Continue on AV: " + av.getId()));
+                double length = SystemSetup.junctions.get(v.getId()).getLengthToParent();
+                emptySeq.add(new Tuple( length/SPEED, "Continue on AV: " + av.getId()));
                 emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
                 return av;
             } else  { // Reached the root
@@ -89,7 +90,7 @@ public class Algorithm {
                     emptySeq.add(new Tuple<>(EMPTY_DV_TIME, "Open DV: " + i.getId()));
                     emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
                     Main.nbrOfInlets++;
-                    SystemSetup.levelUpdate(i.getId(), 0);
+                    //SystemSetup.levelUpdate(i.getId(), 0);
                 }
             }
             emptySeq.add(new Tuple<>(SystemSetup.inletClusters.get(cluster.getId()).getLengthToParent()/SPEED, "Transport cluster: " + cluster.getId()));
@@ -97,8 +98,9 @@ public class Algorithm {
         }
 
         InletCluster lastCluster = clusters.get(clusters.size() - 1);
-        emptySeq.add(new Tuple<>(lastCluster.getLengthToParent()/SPEED, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
-        emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
+        double length = lastCluster.getLengthToParent();
+        emptySeq.add(new Tuple<>(length / SPEED, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
+        emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId())); //
         emptiedAVs.add(SystemSetup.avs.get(av.getId()));
 
         lastAV = av;
