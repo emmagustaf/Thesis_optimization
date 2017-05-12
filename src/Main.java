@@ -20,6 +20,7 @@ public class Main {
     public static double totalTime = 0;
     public static int nbrOfInlets = 0;
     public static List<String> overLimit = new ArrayList<>();
+    public static int minutes;
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
@@ -37,6 +38,7 @@ public class Main {
 
         Statistics.sortDays(allHistory);
 
+        //worstCaseScenario(disposalsJan2017, setup);
         simulate(disposalsJan2017, setup);
 
         /*System.out.println();
@@ -55,28 +57,24 @@ public class Main {
     }
 
     /*
-     * Simulates the emptying of the system for all the disposals made in january.
+     * Emptying all inlets at pre-scheduled times
+     * TODO add emptying of triggered
      */
-    private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
-        // Set the time between checks to 1 day
-        //LocalTime time = LocalTime.of(24, 0);
-        int minutes = 60;
-        // Default starting time is 2017-01-01 13:00
-        LocalDateTime startTime = LocalDateTime.of(2017,1,1,13,0,0);
-        LocalDateTime endTime = startTime;
-        Map<String,List<Disposal>> temp = disposals;
+    private static void worstCaseScenario(Map<String,List<Disposal>> disposals, SystemSetup setup) {
+        minutes = 60;
+
+        LocalDateTime endTime = LocalDateTime.of(2017,1,1,13,0,0);
 
         while (endTime.getMonth().equals(Month.JANUARY)) {
 
             output.add("");
             output.add("Update levels until date: " + endTime);
-            //System.out.println("Update levels until date: " + endTime);
-            Map<String,List<Disposal>> nextUpdate = getNextUpdate(temp, endTime);
+            Map<String,List<Disposal>> nextUpdate = getNextUpdate(disposals, endTime);
 
             for (String inletID : nextUpdate.keySet()) {
-                List<Disposal> newList = temp.get(inletID);
+                List<Disposal> newList = disposals.get(inletID);
                 newList.removeAll(nextUpdate.get(inletID));
-                temp.put(inletID, newList);
+                disposals.put(inletID, newList);
 
             }
 
@@ -84,46 +82,100 @@ public class Main {
             endTime = endTime.plusMinutes(minutes);
 
 
-            for (int fraction : fractionsToEmpty) {
-                Vertex startNode = Algorithm.buildTree(setup.rootNode, fraction);
+            Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
+            Algorithm.processSubtree(SystemSetup.rootNode, 1);     // Empty residual every hour
+            output.add("Total time: " + Algorithm.getTotalTime());
+            output.add("");
+            output.add("");
+            totalTime += Algorithm.getTotalTime();
+            setup.refreshSystem();
 
-                if (startNode != null) {
-                    Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
-                }
-
-                for (Tuple<Double, String> t : Algorithm.emptySeq) {
-                    output.add(t.y + " for " + t.x + " s.");
-                }
-
+            if (endTime.getHour() % 2 == 0) {   // Empty plastic every 2 hours
+                Algorithm.processSubtree(SystemSetup.rootNode, 2);
                 output.add("Total time: " + Algorithm.getTotalTime());
                 output.add("");
                 output.add("");
                 totalTime += Algorithm.getTotalTime();
-
                 setup.refreshSystem();
             }
 
+            if (endTime.getHour() % 3 == 0) {   // Empty paper every 3 hours
+                Algorithm.processSubtree(SystemSetup.rootNode, 3);
+                output.add("Total time: " + Algorithm.getTotalTime());
+                output.add("");
+                output.add("");
+                totalTime += Algorithm.getTotalTime();
+                setup.refreshSystem();
+            }
+
+            /*for (int i = 0; i < 3; i++) {
+                Algorithm.processSubtree(setup.rootNode, i + 1);
+
+                output.add("Total time: " + Algorithm.getTotalTime());
+                output.add("");
+                output.add("");
+
+                totalTime += Algorithm.getTotalTime();
+                setup.refreshSystem();
+            }*/
+
         }
 
-        output.add("TOTAL TIME: " + totalTime);
-        output.add("Their \"rest\" time: " + (100221.0 + 14513.0 + 108525.0));
-        output.add("Their total time: " + (262509.0 + 79369.0 +	97130.0));
-        output.add("Anything over limit? " + overLimit.size());//overLimit.get(0) + " and " + overLimit.get(1));
+        writeFile();
+    }
 
-        output.add("");
-        output.add("Number of inlets emptied: " + nbrOfInlets);
-        output.add("DVs per minute: " + (nbrOfInlets/(totalTime/60)));
+    /*
+     * Simulates the emptying of the system for all the disposals made in january.
+     */
+    private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
+        // Set the time between checks to 1 day
+        //LocalTime time = LocalTime.of(24, 0);
+        minutes = 120;
+        // Default starting time is 2017-01-01 13:00
+        LocalDateTime endTime = LocalDateTime.of(2017,1,1,13,0,0);
+        Map<String,List<Disposal>> tempDisposals = disposals;
 
-        output.add("");
-        output.add("Their number of inlets emptied: " + (1453 + 1645 + 29));
-        output.add("Their DVs per minute: " + ((1453 + 1645 + 29) / ((100221.0 + 14513.0 + 108525.0)/60)));
+        while (endTime.getMonth().equals(Month.JANUARY)) {
+            long emptyingTime = 0;
 
-        try {
-            Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output.txt"), output);
-        } catch (IOException e) {
-            e.printStackTrace();
+            output.add("");
+            output.add("Update levels until date: " + endTime);
+            //System.out.println("Update levels until date: " + endTime);
+            Map<String,List<Disposal>> nextUpdate = getNextUpdate(tempDisposals, endTime);
+
+            for (String inletID : nextUpdate.keySet()) {
+                List<Disposal> newList = tempDisposals.get(inletID);
+                newList.removeAll(nextUpdate.get(inletID));
+                tempDisposals.put(inletID, newList);
+
+            }
+
+            List<Integer> fractionsToEmpty = LevelHandler.updateLevels(nextUpdate);
+
+            for (int fraction : fractionsToEmpty) {
+                Vertex startNode = Algorithm.buildTree(SystemSetup.rootNode, fraction);
+
+                if (startNode != null) {
+                    Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
+                    Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+
+                    tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+                    emptyingTime += Algorithm.getTotalTime();
+                }
+
+                printAlgorithm();
+                totalTime += Algorithm.getTotalTime();
+                setup.refreshSystem();
+            }
+
+            LocalDateTime timeByInterval = endTime.plusMinutes(minutes);
+            LocalDateTime timeByEmptying = endTime.plusSeconds(emptyingTime);
+
+            endTime = timeByInterval.isAfter(timeByEmptying) ? timeByInterval : timeByEmptying;
+
         }
 
+        writeFile();
 
     }
 
@@ -147,6 +199,82 @@ public class Main {
         return nextUpdate;
     }
 
+    private static Map<String,List<Disposal>> updateDisposalsAfterEmptying(Map<String,List<Disposal>> disposals, LocalDateTime startTime) {
+        Map<String,List<Disposal>> newDisposals = new HashMap<>();
+        long secondsUntilEmptied = 0;
+        boolean wasEmptied;
+
+        for (String inletID : disposals.keySet()) {
+            wasEmptied = false;
+            List<Disposal> updatedDisposalList = new ArrayList<>();
+
+            for (Tuple<Double,String> lineInSeq : Algorithm.emptySeq) {
+                secondsUntilEmptied += lineInSeq.x;
+
+                if (lineInSeq.y.equals("Open DV: " + inletID)) {
+                    wasEmptied = true;
+                    break;
+                }
+            }
+
+            List<Disposal> tempList = disposals.get(inletID);
+
+            if (wasEmptied) {
+                List<Disposal> temp = disposals.get(inletID);
+                for (Disposal d : temp) {
+                    if (d.getLogDate().isBefore(startTime.plusSeconds(secondsUntilEmptied))) {
+                        updatedDisposalList.add(d);
+                    } else {
+                        break;
+                    }
+                }
+
+
+                tempList.removeAll(updatedDisposalList);
+            }
+
+            newDisposals.put(inletID, tempList);
+        }
+
+        return newDisposals;
+    }
+
+    private static void printAlgorithm() {
+        for (Tuple<Double, String> t : Algorithm.emptySeq) {
+            output.add(t.y + " for " + t.x + " s.");
+        }
+
+        output.add("Total time: " + Algorithm.getTotalTime());
+        output.add("");
+        output.add("");
+    }
+
+    private static void writeFile() {
+        output.add("TOTAL TIME: " + totalTime);
+        output.add("Their \"rest\" time: " + 262509);
+        output.add("Their total time: " + (262509.0 + 79369.0 +	97130.0));
+
+        String overfull = "Anything over limit, " + overLimit.size() + ": ";
+        for (String s : overLimit) {
+            overfull += s + ", ";
+        }
+        output.add(overfull);//overLimit.get(0) + " and " + overLimit.get(1));
+
+        output.add("");
+        output.add("Number of inlets emptied: " + nbrOfInlets);
+        output.add("DVs per minute: " + (nbrOfInlets/(totalTime/60)));
+
+        output.add("");
+        output.add("Their \"rest\" number of inlets emptied: " + 3305);
+        output.add("Their number of inlets emptied: " + (3305 +1191.0 + 1003.0));
+        output.add("Their \"rest\" DVs per minute: " + (3305 / (262509/60)));
+
+        try {
+            Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output.txt"), output);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static void testAlgorithm(SystemSetup setup, int fraction) {
         //setup.levelUpdate("18:1", 0.8);
@@ -169,6 +297,7 @@ public class Main {
 
         setup.refreshSystem();*/
 
+        Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
         Algorithm.processSubtree(setup.rootNode, fraction);
 
         for (Tuple<Double, String> t : Algorithm.emptySeq) {

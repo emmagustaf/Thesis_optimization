@@ -5,14 +5,14 @@ import java.util.List;
 public class Algorithm {
 
     // Random values for now
-    private static final double STARTUP_TIME = 120;
-    private static final double STABILIZATION_TIME = 0.1;
-    private static final double SAFETY_MARGIN = 20;
+    public static final double STARTUP_TIME = 120;
+    public static final double STABILIZATION_TIME = 0.1;
+    public static final double SAFETY_MARGIN = 20;
 
-    private static final double EMPTY_DV_TIME = 14;
+    public static final double EMPTY_DV_TIME = 14;
     // Time it takes to close the last AV and empty a new one
-    private static final double OPEN_CLOSE_AV_TIME = 4;
-    private static final double SPEED = 10; // m/s
+    public static final double OPEN_CLOSE_AV_TIME = 4;
+    public static final double SPEED = 10; // m/s
 
     /*
      * List of tuples containing a description of the action taken and the time
@@ -59,7 +59,7 @@ public class Algorithm {
                 return av;
             } else  { // Reached the root
                 emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + getLastAV()));
-                emptySeq.add(new Tuple<>(STARTUP_TIME, "Turning system off"));
+                //emptySeq.add(new Tuple<>(STARTUP_TIME, "Turning system off"));
                 return null; // done
             }
 
@@ -73,7 +73,6 @@ public class Algorithm {
             emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + lastAV.getId()));
             stabilizationTime = calculateStabilizationTime(av.getId(), SystemSetup.avs.get(lastAV.getId()).getPathToRoot());
         } else {
-            emptySeq.add(new Tuple<>(STARTUP_TIME, "Starting fans"));
             stabilizationTime = SystemSetup.avs.get(av.getId()).getLengthToRoot() * STABILIZATION_TIME;
         }
 
@@ -103,6 +102,15 @@ public class Algorithm {
         emptiedAVs.add(SystemSetup.avs.get(av.getId()));
 
         lastAV = av;
+    }
+
+    // TODO continue on this function
+    public static void emptyTriggered(InletCluster ic, int fraction) {
+        AV av = SystemSetup.inletClusters.get(ic.getId()).getAV();
+        //emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Open AV: " + av.getId()));
+
+        emptyAV(av, fraction);
+
     }
 
 
