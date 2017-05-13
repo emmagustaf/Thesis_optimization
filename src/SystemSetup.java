@@ -92,7 +92,7 @@ public class SystemSetup {
     public static boolean anyLevel(AV av, int fraction) {
         for (InletCluster ic : avs.get(av.getId()).getInlets()) {
             for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
-                if (inletsMap.get(i.getId()).getLevel() > LevelHandler.MAX_LEVEL && inletsMap.get(i.getId()).getFraction() == fraction) {
+                if (inletsMap.get(i.getId()).getLevel() >= LevelHandler.MAX_LEVEL && inletsMap.get(i.getId()).getFraction() == fraction) {
                     Main.output.add("Inlet with level: " + i.getId());
                     return true;
                     //inletClusters.get(ic.getId()).setInd(1);
@@ -466,65 +466,43 @@ public class SystemSetup {
         inletCluster6_3 = new InletCluster(24,47.2/METER_CONVERSION,0.1/METER_CONVERSION, J25, null, inletList6_3);
         inletCluster6_4 = new InletCluster(25,48.7/METER_CONVERSION,1.6/METER_CONVERSION, J25, null, inletList6_4);
 
-        inletCluster7_1 = new InletCluster(19,45.5/METER_CONVERSION,0.6/METER_CONVERSION, J19, null, inletList7_1);
+        inletCluster7_1 = new InletCluster(19,45.8/METER_CONVERSION,0.9/METER_CONVERSION, J19, null, inletList7_1);
         inletCluster7_2 = new InletCluster(17, 43.2/METER_CONVERSION,0.7/METER_CONVERSION, J18, null, inletList7_2);
-        //inletCluster7_3 = new InletCluster(20,47.5/METER_CONVERSION, 0.7/METER_CONVERSION, J21, null, inletList7_3);
-        //inletCluster7_4 = new InletCluster(21,48.1/METER_CONVERSION,1.1/METER_CONVERSION, J21, null, inletList7_4);
 
         inletCluster8_1 = new InletCluster(27,50.1/METER_CONVERSION,2.4/METER_CONVERSION, J28, null, inletList8_1);
-        //inletCluster8_2 = new InletCluster(26,43.5/METER_CONVERSION, 0.3/METER_CONVERSION, J26, null, inletList8_2);
-        //inletCluster8_3 = new InletCluster(53,43.9/METER_CONVERSION, 0.6/METER_CONVERSION, J27, null, inletList8_3);
-        //inletCluster8_4 = new InletCluster(29,49.5/METER_CONVERSION,1.5/METER_CONVERSION, J30, null, inletList8_4);
-        //inletCluster8_5 = new InletCluster(30,49/METER_CONVERSION,0.6/METER_CONVERSION, J31, null, inletList8_5);
-        //inletCluster8_6 = new InletCluster(28,52/METER_CONVERSION,2.3/METER_CONVERSION, J29, null, inletList8_6);
-
-        //inletCluster9 = new InletCluster(14,42.8/METER_CONVERSION, 4.4/METER_CONVERSION, J14, null, inletList9);
 
         inletCluster10_1 = new InletCluster(38,56/METER_CONVERSION,1.2/METER_CONVERSION, J39, null, inletList10_1);
         inletCluster10_2 = new InletCluster(31,51.8/METER_CONVERSION,0.8/METER_CONVERSION, J34, null, inletList10_2);
-        //inletCluster10_3 = new InletCluster(32,52.6/METER_CONVERSION,0/METER_CONVERSION, J33, null, inletList10_3);
-        //inletCluster10_4 = new InletCluster(33,57/METER_CONVERSION,4.4/METER_CONVERSION, J33, null, inletList10_4);
 
-        inletCluster11 = new InletCluster(50,60.8/METER_CONVERSION,1.5/METER_CONVERSION, J46, null, inletList11);
+        inletCluster11 = new InletCluster(50,61.9/METER_CONVERSION,1.5/METER_CONVERSION, J46, null, inletList11);
 
-        inletCluster12_1 = new InletCluster(52,59.8/METER_CONVERSION,1/METER_CONVERSION, J46, null, inletList12_1);
-       //inletCluster12_2 = new InletCluster(49,58.8/METER_CONVERSION,0.5/METER_CONVERSION, J45, null, inletList12_2);
-       //inletCluster12_3 = new InletCluster(51,61.7/METER_CONVERSION,1.9/METER_CONVERSION, J47, null, inletList12_3);
+        inletCluster12_1 = new InletCluster(52,61.4/METER_CONVERSION,1/METER_CONVERSION, J46, null, inletList12_1);
 
         inletCluster13 = new InletCluster(54, 62.0/METER_CONVERSION, 3.1/METER_CONVERSION, J44, null, inletList13);
 
         inletCluster14_1 = new InletCluster(43,62.1/METER_CONVERSION,0.6/METER_CONVERSION, J49, null, inletList14_1);
-        //inletCluster14_2 = new InletCluster(42,58.9/METER_CONVERSION,0.4/METER_CONVERSION, J50, null, inletList14_2);
 
-        inletCluster15_1 = new InletCluster(46,61.9/METER_CONVERSION,0.3/METER_CONVERSION, J52, null, inletList15_1);
-        //inletCluster15_2 = new InletCluster(44,59.7/METER_CONVERSION,0.2/METER_CONVERSION, J50, null, inletList15_2);
-        inletCluster15_3 = new InletCluster(45,64.2/METER_CONVERSION,2.9/METER_CONVERSION, J51, null, inletList15_3);
+        inletCluster15_1 = new InletCluster(46,64.8/METER_CONVERSION,0.3/METER_CONVERSION, J52, null, inletList15_1);
+        inletCluster15_3 = new InletCluster(45,67.0/METER_CONVERSION,2.9/METER_CONVERSION, J51, null, inletList15_3);
 
-        inletCluster16_1 = new InletCluster(48,62.1/METER_CONVERSION, 0.0/METER_CONVERSION, J53, null, inletList16_1);
-        inletCluster16_2 = new InletCluster(47,62.6/METER_CONVERSION,0.5/METER_CONVERSION, J53, null, inletList16_2);
+        inletCluster16_1 = new InletCluster(48,65.1/METER_CONVERSION, 0.0/METER_CONVERSION, J53, null, inletList16_1);
+        inletCluster16_2 = new InletCluster(47,65.6/METER_CONVERSION,0.5/METER_CONVERSION, J53, null, inletList16_2);
 
         inletCluster17_1 = new InletCluster(40,56.9/METER_CONVERSION,1.8/METER_CONVERSION, J40, null, inletList17_1);
-        //inletCluster17_2 = new InletCluster(41,53.0/METER_CONVERSION,0.8/METER_CONVERSION, J42, null, inletList17_2);
-        //inletCluster17_3 = new InletCluster(39,56.9/METER_CONVERSION,0.8/METER_CONVERSION, J41, null, inletList17_3);
-        //inletCluster17_4 = new InletCluster(34,53.7/METER_CONVERSION,0.8/METER_CONVERSION, J36, null, inletList17_4);
 
         inletCluster18_1 = new InletCluster(35,53.9/METER_CONVERSION,0.4/METER_CONVERSION, J37, null, inletList18_1);
         inletCluster18_2 = new InletCluster(36,57.8/METER_CONVERSION,4.3/METER_CONVERSION, J37, null, inletList18_2);
-        //inletCluster18_3 = new InletCluster(37,57.9/METER_CONVERSION,1.4/METER_CONVERSION, J38, null, inletList18_3);
 
         inletCluster19 = new InletCluster(6,27.4/METER_CONVERSION,0.2/METER_CONVERSION, J6, null, inletList19);
 
-        inletCluster20 = new InletCluster(1, 1.3/METER_CONVERSION, 25.1/METER_CONVERSION, J2, null, inletList20);
+        inletCluster20 = new InletCluster(1, 25.1/METER_CONVERSION, 1.3/METER_CONVERSION, J2, null, inletList20);
 
         inletCluster21_1 = new InletCluster(7,31.4/METER_CONVERSION,0/METER_CONVERSION, J8, null, inletList21_1);
         inletCluster21_2 = new InletCluster(8,34.9/METER_CONVERSION,0.8/METER_CONVERSION, J10, null, inletList21_2);
         inletCluster21_3 = new InletCluster(10,36.2/METER_CONVERSION,1.5/METER_CONVERSION, J11, null, inletList21_3);
-        inletCluster21_4 = new InletCluster(11,34/METER_CONVERSION,0.3/METER_CONVERSION, J11, null, inletList21_4);
+        inletCluster21_4 = new InletCluster(11,35/METER_CONVERSION,0.3/METER_CONVERSION, J11, null, inletList21_4);
 
         inletCluster22 = new InletCluster(9,37.1/METER_CONVERSION,3.0/METER_CONVERSION, J10, null, inletList22);
-
-        //inletCluster23_1 = new InletCluster(2,25.3/METER_CONVERSION,0.9/METER_CONVERSION, J3, null, inletList23_1);
-        //inletCluster23_2 = new InletCluster(4,26.9/METER_CONVERSION,0.8/METER_CONVERSION, J4, null, inletList23_2);
 
         inletCluster24 = new InletCluster(5,27.3/METER_CONVERSION,1.5/METER_CONVERSION, J6, null, inletList24);
 
@@ -534,59 +512,38 @@ public class SystemSetup {
 
     public void instantiateAllJunctions() {
         rootNode = new Junction(0, 0,0, null, J2, J5, 1, 1);
-        //J1 = new Junction(1,22.6/METER_CONVERSION,22.6/METER_CONVERSION, rootNode, J2, J5, 1, 1);
         J2 = new Junction(2,23.8/METER_CONVERSION,23.8/METER_CONVERSION, rootNode, inletCluster20, inletCluster25,1,1);
-        //J3 = new Junction(3,24.4/METER_CONVERSION,0.6/METER_CONVERSION, J2, J4, inletCluster23_1, 1, 1);
-        //J4 = new Junction(4,26.1/METER_CONVERSION,1.7/METER_CONVERSION, J3, inletCluster25, inletCluster23_2, 1, 1);
         J5 = new Junction(5,25.8/METER_CONVERSION,25.8/METER_CONVERSION, rootNode, inletCluster24, J6, 1, 1);
         J6 = new Junction(6,27.2/METER_CONVERSION,1.4/METER_CONVERSION, J5, J7, inletCluster19,1,1);
         J7 = new Junction(7,27.7/METER_CONVERSION,0.5/METER_CONVERSION, J6, J8, J12,1,1);
         J8 = new Junction(8,31.4/METER_CONVERSION,3.7/METER_CONVERSION, J7, inletCluster21_1, J9,1,1);
         J9 = new Junction(9,33.4/METER_CONVERSION,2.0/METER_CONVERSION, J8, J10, J11,1,1);
         J10 = new Junction(10,34.1/METER_CONVERSION,0.7/METER_CONVERSION, J9, inletCluster21_2, inletCluster22,1,1);
-        J11 = new Junction(11,33.7/METER_CONVERSION,1.3/METER_CONVERSION, J9, inletCluster21_3, inletCluster21_4,1,1);
+        J11 = new Junction(11,34.7/METER_CONVERSION,1.3/METER_CONVERSION, J9, inletCluster21_3, inletCluster21_4,1,1);
         J12 = new Junction(12,32.8/METER_CONVERSION,5.1/METER_CONVERSION, J7, J13, inletCluster3_3, 1, 1);
         J13 = new Junction(13,35.0/METER_CONVERSION,2.2/METER_CONVERSION, J12, inletCluster3_2, J15, 1, 1);
-        //J14 = new Junction(14,38.4/METER_CONVERSION,3.4/METER_CONVERSION, J13, J15, inletCluster9,1,1);
         J15 = new Junction(15,40.7/METER_CONVERSION,5.7/METER_CONVERSION, J13, J16, J22, 1, 1);
         J16 = new Junction(16,41.2/METER_CONVERSION,0.5/METER_CONVERSION, J15, inletCluster3_1, J17, 1, 1);
         J17 = new Junction(17,42.3/METER_CONVERSION,1.1/METER_CONVERSION, J16, inletCluster4, J18, 1,1);
         J18 = new Junction(18,42.5/METER_CONVERSION,0.2/METER_CONVERSION, J17, J19, inletCluster7_2,1,1);
         J19 = new Junction(19,44.9/METER_CONVERSION,2.4/METER_CONVERSION, J18, inletCluster5, inletCluster7_1,1,1);
-        //J20 = new Junction(20,45.2/METER_CONVERSION,0.3/METER_CONVERSION, J19, J21, inletCluster7_1,1,1);
-        //J21 = new Junction(21,47.0/METER_CONVERSION,1.8/METER_CONVERSION, J20, inletCluster7_3, inletCluster7_4,1,1);
         J22 = new Junction(22,41.5/METER_CONVERSION,0.8/METER_CONVERSION, J15, J28, J23,1,1);
         J23 = new Junction(23,42.8/METER_CONVERSION,1.3/METER_CONVERSION, J22, J24, inletCluster6_1,1,1);
         J24 = new Junction(24,44.5/METER_CONVERSION,1.7/METER_CONVERSION, J23, J25, inletCluster6_2, 1,1);
         J25 = new Junction(25,47.1/METER_CONVERSION,2.6/METER_CONVERSION, J24, inletCluster6_3, inletCluster6_4,1,1);
-        //J26 = new Junction(26,43.2/METER_CONVERSION,1.7/METER_CONVERSION, J22, inletCluster8_2, J27, 1, 1);
-        //J27 = new Junction(27,43.3/METER_CONVERSION,0.1/METER_CONVERSION, J26, J28, inletCluster8_3,1,1);
         J28 = new Junction(28,47.7/METER_CONVERSION,6.2/METER_CONVERSION, J22, inletCluster8_1, J34, 1,1);
-        //J29 = new Junction(29,49.7/METER_CONVERSION,2.0/METER_CONVERSION, J28, inletCluster8_1, inletCluster8_6,1,1 );
-        //J30 = new Junction(30,47.9/METER_CONVERSION,0.2/METER_CONVERSION, J28, J31, inletCluster8_4, 1,1);
-        //J31 = new Junction(31,48.4/METER_CONVERSION,0.5/METER_CONVERSION, J30, inletCluster8_5, J32,1,1);
-        //J32 = new Junction(32,50.9/METER_CONVERSION,2.5/METER_CONVERSION, J31, J34, J33, 1,1);
-        //J33 = new Junction(33,52.6/METER_CONVERSION,1.7/METER_CONVERSION, J32, inletCluster10_3, inletCluster10_4,1,1);
         J34 = new Junction(34,51.0/METER_CONVERSION,3.3/METER_CONVERSION, J28, inletCluster10_2, J35,1,1);
-        J35 = new Junction(35,52.0/METER_CONVERSION,1/METER_CONVERSION, J34, J39, J37, 1,1);
-        //J36 = new Junction(36,52.9/METER_CONVERSION,0.9/METER_CONVERSION, J35, J37, inletCluster17_4, 1,1);
+        J35 = new Junction(35,52.0/METER_CONVERSION,4.7/METER_CONVERSION, J34, J39, J37, 1,1);
         J37 = new Junction(37,53.5/METER_CONVERSION,1.5/METER_CONVERSION, J35, inletCluster18_1, inletCluster18_2,1,1);
-        //J38 = new Junction(38,56.5/METER_CONVERSION,3/METER_CONVERSION, J37, inletCluster18_2, inletCluster18_3,1,1);
         J39 = new Junction(39,54.8/METER_CONVERSION,2.8/METER_CONVERSION, J35, inletCluster10_1, J40, 1,1);
         J40 = new Junction(40,55.1/METER_CONVERSION,0.3/METER_CONVERSION, J39, J43, inletCluster17_1, 1,1);
-        //J41 = new Junction(41,56.1/METER_CONVERSION,1/METER_CONVERSION, J40, inletCluster17_3, inletCluster17_1,1,1);
-        //J42 = new Junction(42,55.2/METER_CONVERSION,0.1/METER_CONVERSION, J40, J43, inletCluster17_2,1,1);
         J43 = new Junction(43,56.6/METER_CONVERSION,1.5/METER_CONVERSION, J40, J44, J49,1,1);
         J44 = new Junction(44,58.9/METER_CONVERSION,2.3/METER_CONVERSION, J43, J46, inletCluster13, 1,1);
-        //J45 = new Junction(45,58.3/METER_CONVERSION,0.5/METER_CONVERSION, J44, J46, inletCluster12_2,1,1);
-        J46 = new Junction(46,59.3/METER_CONVERSION,1.5/METER_CONVERSION, J44, inletCluster11, inletCluster12_1,1,1);
-        //J47 = new Junction(47,59.8/METER_CONVERSION,0.5/METER_CONVERSION, J46, inletCluster12_3, inletCluster12_1,1,1);
-        //J48 = new Junction(48,58.5/METER_CONVERSION,1.9/METER_CONVERSION, J43, J49, inletCluster14_2, 1,1);
+        J46 = new Junction(46,60.4/METER_CONVERSION,1.5/METER_CONVERSION, J44, inletCluster11, inletCluster12_1,1,1);
         J49 = new Junction(49,61.5/METER_CONVERSION,4.9/METER_CONVERSION, J43, inletCluster14_1, J51,1,1);
-        //J50 = new Junction(50,59.5/METER_CONVERSION,1.0/METER_CONVERSION, J49, J51, inletCluster15_2,1,1);
-        J51 = new Junction(51,61.2/METER_CONVERSION,2.6/METER_CONVERSION, J49, J52, inletCluster15_3,1,1);
-        J52 = new Junction(52,61.6/METER_CONVERSION,0.4/METER_CONVERSION, J51, J53, inletCluster15_1,1,1);
-        J53 = new Junction(53,62.1/METER_CONVERSION,0.5/METER_CONVERSION, J52, inletCluster16_1, inletCluster16_2, 1,1);
+        J51 = new Junction(51,64.1/METER_CONVERSION,2.6/METER_CONVERSION, J49, J52, inletCluster15_3,1,1);
+        J52 = new Junction(52,64.5/METER_CONVERSION,0.4/METER_CONVERSION, J51, J53, inletCluster15_1,1,1);
+        J53 = new Junction(53,65.1/METER_CONVERSION,0.6/METER_CONVERSION, J52, inletCluster16_1, inletCluster16_2, 1,1);
     }
 
     public void setParents(){
@@ -888,7 +845,7 @@ public class SystemSetup {
         //J48.setRightChild(inletCluster14_2);
 
         J49.setLeftChild(inletCluster14_1);
-        J49.setRightChild(J52);
+        J49.setRightChild(J51);
 
         //J50.setLeftChild(J51);
         //J50.setRightChild(inletCluster15_2);
@@ -899,8 +856,8 @@ public class SystemSetup {
         J52.setLeftChild(J53);
         J52.setRightChild(inletCluster15_1);
 
-        J53.setLeftChild(inletCluster16_1);
-        J53.setRightChild(inletCluster16_2);
+        J53.setLeftChild(inletCluster16_2);
+        J53.setRightChild(inletCluster16_1);
     }
 
     public void instantiateAllAv() {
@@ -1007,25 +964,29 @@ public class SystemSetup {
     }
 
     public static void setJunctionDepth(Vertex v) {
-        Tuple<Double,Double> newDepth = findJunctionDepth(junctions.get(v.getId()));
+        Tuple<Double,Double> newDepth = findJunctionDepth(junctions.get(v.getId()), junctions.get(v.getId()));
 
         junctions.get(v.getId()).setLeftDepth(newDepth.x);
         junctions.get(v.getId()).setRightDepth(newDepth.y);
-        //junctions.get(v.getId()).setLeftDepth(newDepth.x);
-        //junctions.get(v.getId()).setRightDepth(newDepth.y);
     }
 
-    public static Tuple<Double,Double> findJunctionDepth(Vertex v) {
+    public static Tuple<Double,Double> findJunctionDepth(Junction start, Vertex v) {
         if (v instanceof InletCluster) {
             return new Tuple(inletClusters.get(v.getId()).getLengthToParent(), inletClusters.get(v.getId()).getLengthToParent());
 
         } else {
-            double dLeft = findJunctionDepth(junctions.get(v.getId()).getLeftChild()).x;
-            double dRight = findJunctionDepth(junctions.get(v.getId()).getRightChild()).y;
+            Tuple<Double,Double> dLeft = findJunctionDepth(start, junctions.get(v.getId()).getLeftChild());
+            Tuple<Double,Double> dRight = findJunctionDepth(start, junctions.get(v.getId()).getRightChild());
 
-            //double deepest = dRight >= dLeft ? dRight : dLeft;
+            double left = dLeft.x > dLeft.y ? dLeft.x : dLeft.y;
+            double right = dRight.x > dRight.y ? dRight.x : dRight.y;
 
-            return new Tuple(junctions.get(v.getId()).getLengthToParent() + dLeft,junctions.get(v.getId()).getLengthToParent() + dRight);
+            if (v.getId() != start.getId()) {
+                return new Tuple(junctions.get(v.getId()).getLengthToParent() + left,junctions.get(v.getId()).getLengthToParent() + right);
+            } else {
+                return new Tuple<>(left, right);
+            }
+
 
         }
     }
@@ -1063,6 +1024,5 @@ public class SystemSetup {
 
         avs.get(avID).setPathToRoot(pathList);
     }
-
 
 }

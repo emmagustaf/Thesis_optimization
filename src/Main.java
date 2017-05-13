@@ -16,6 +16,7 @@ import java.util.*;
 public class Main {
 
     public static List<String> output = new ArrayList<>();
+    public static List<String> output2 = new ArrayList<>();
     private static Map<String,List<Disposal>> allHistory;
     public static double totalTime = 0;
     public static int nbrOfInlets = 0;
@@ -36,18 +37,34 @@ public class Main {
         Map<String,List<Disposal>> disposals2016 = ParseData.parseCSVFile(filePath2);
         allHistory = disposals2016;
 
-        System.out.println(disposalsJan2017.keySet().size());
+        /*int fraction1 = 0;
+        int fraction2 = 0;
+        int fraction3 = 0;
 
-        for (String inletID : SystemSetup.inletsMap.keySet()) {
-            if (!disposalsJan2017.keySet().contains(inletID) && !disposals2016.keySet().contains(inletID)) {
-                System.out.println("ID: " + inletID);
+        for (String inletID : disposals2016.keySet()) {
+            int f = SystemSetup.inletsMap.get(inletID).getFraction();
+
+            if (f == 1) {
+                fraction1 += disposals2016.get(inletID).size();
+            } else if (f == 2) {
+                fraction2 += disposals2016.get(inletID).size();
+            } else if (f == 3) {
+                fraction3 += disposals2016.get(inletID).size();
             }
+
         }
 
+        System.out.println("1: " + fraction1 + ", 2: " + fraction2 + ", 3: " + fraction3);*/
         Statistics.sortDays(allHistory);
 
-        //worstCaseScenario(disposalsJan2017, setup);
-        simulate(disposalsJan2017, setup);
+        worstCaseScenario(disposalsJan2017, setup);
+        //simulate(disposalsJan2017, setup);
+
+        try {
+            Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output2.txt"), output2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         /*System.out.println();
         System.out.println();
@@ -69,26 +86,27 @@ public class Main {
      * TODO add emptying of triggered
      */
     private static void worstCaseScenario(Map<String,List<Disposal>> disposals, SystemSetup setup) {
-        minutes = 60;
+        minutes = 760;
 
         LocalDateTime endTime = LocalDateTime.of(2017,1,1,13,0,0);
+        Map<String,List<Disposal>> tempDisposals = disposals;
+        int tic = 1;
 
         while (endTime.getMonth().equals(Month.JANUARY)) {
+            long emptyingTime = 0;
 
             output.add("");
             output.add("Update levels until date: " + endTime);
-            Map<String,List<Disposal>> nextUpdate = getNextUpdate(disposals, endTime);
+            Map<String,List<Disposal>> nextUpdate = getNextUpdate(tempDisposals, endTime);
 
             for (String inletID : nextUpdate.keySet()) {
-                List<Disposal> newList = disposals.get(inletID);
+                List<Disposal> newList = tempDisposals.get(inletID);
                 newList.removeAll(nextUpdate.get(inletID));
-                disposals.put(inletID, newList);
+                tempDisposals.put(inletID, newList);
 
             }
 
             List<Integer> fractionsToEmpty = LevelHandler.updateLevels(nextUpdate);
-            endTime = endTime.plusMinutes(minutes);
-
 
             Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
             Algorithm.processSubtree(SystemSetup.rootNode, 1);     // Empty residual every hour
@@ -96,23 +114,32 @@ public class Main {
             output.add("");
             output.add("");
             totalTime += Algorithm.getTotalTime();
+
+            tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+            emptyingTime += Algorithm.getTotalTime();
             setup.refreshSystem();
 
-            if (endTime.getHour() % 2 == 0) {   // Empty plastic every 2 hours
+            if (tic % 2 == 0) {   // Empty plastic every 2 hours
                 Algorithm.processSubtree(SystemSetup.rootNode, 2);
                 output.add("Total time: " + Algorithm.getTotalTime());
                 output.add("");
                 output.add("");
                 totalTime += Algorithm.getTotalTime();
+
+                tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+                emptyingTime += Algorithm.getTotalTime();
                 setup.refreshSystem();
             }
 
-            if (endTime.getHour() % 3 == 0) {   // Empty paper every 3 hours
+            if (tic % 5 == 0) {   // Empty paper every 3 hours
                 Algorithm.processSubtree(SystemSetup.rootNode, 3);
                 output.add("Total time: " + Algorithm.getTotalTime());
                 output.add("");
                 output.add("");
                 totalTime += Algorithm.getTotalTime();
+
+                tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+                emptyingTime += Algorithm.getTotalTime();
                 setup.refreshSystem();
             }
 
@@ -127,6 +154,13 @@ public class Main {
                 setup.refreshSystem();
             }*/
 
+            LocalDateTime timeByInterval = endTime.plusMinutes(minutes);
+            LocalDateTime timeByEmptying = endTime.plusSeconds(emptyingTime);
+
+            endTime = timeByInterval.isAfter(timeByEmptying) ? timeByInterval : timeByEmptying;
+
+            tic++;
+
         }
 
         writeFile();
@@ -138,7 +172,7 @@ public class Main {
     private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
         // Set the time between checks to 1 day
         //LocalTime time = LocalTime.of(24, 0);
-        minutes = 120;
+        minutes = 60;
         // Default starting time is 2017-01-01 13:00
         LocalDateTime endTime = LocalDateTime.of(2017,1,1,13,0,0);
         Map<String,List<Disposal>> tempDisposals = disposals;
@@ -164,6 +198,10 @@ public class Main {
                 Vertex startNode = Algorithm.buildTree(SystemSetup.rootNode, fraction);
 
                 if (startNode != null) {
+
+                    //printTree(startNode);
+                    //System.out.println("");
+
                     Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
                     Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
 
@@ -185,6 +223,23 @@ public class Main {
 
         writeFile();
 
+    }
+
+    private static void printTree(Vertex node) {
+
+        if (node instanceof InletCluster) {
+            System.out.println("InletCluster: " + node.getId());
+        } else {
+            System.out.println("Junction: " + node.getId());
+
+            boolean leftDeepest = SystemSetup.junctions.get(node.getId()).getLeftDepth() >  SystemSetup.junctions.get(node.getId()).getRightDepth();
+            Vertex firstChild = leftDeepest ?  SystemSetup.junctions.get(node.getId()).getLeftChild() : SystemSetup.junctions.get(node.getId()).getRightChild();
+            Vertex secondChild = leftDeepest ?  SystemSetup.junctions.get(node.getId()).getRightChild() : SystemSetup.junctions.get(node.getId()).getLeftChild();
+
+            System.out.println("Left depth: " + SystemSetup.junctions.get(node.getId()).getLeftDepth() + ", Right depth: " + SystemSetup.junctions.get(node.getId()).getRightDepth());
+            printTree(firstChild);
+            printTree(secondChild);
+        }
     }
 
     private static Map<String,List<Disposal>> getNextUpdate(Map<String,List<Disposal>> futureDisposals, LocalDateTime endTime) {

@@ -9,7 +9,7 @@ public class LevelHandler {
     private final static int PAPER_DISPOSAL = 8;
     private final static double MAX_VOLUME = 188.5;
     //private final static double MAX_BAGS = MAX_VOLUME/BAG_CONVERTER;
-    public final static double MAX_LEVEL = 0.8;
+    public final static double MAX_LEVEL = 0.5;
 
     public static List<Integer> updateLevels(Map<String,List<Disposal>> disposals) {
         double addedVolume, newLevel, oldLevel;
