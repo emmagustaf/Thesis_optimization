@@ -124,10 +124,58 @@ public class Statistics {
 
     }
 
+    /*
+     * Function that returns the average number of disposals made in an inlet for a certain day of week in the given time span.
+     */
+    public static double averageNbrOfdisposals(String inletID, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        List<Integer> disposalsPerDay = new ArrayList<>();
+        Inlet i = SystemSetup.inletsMap.get(inletID); // TODO kan jag göra såhär?
+        List<List<Disposal>> dayOfWeekDisposals = i.getDisposals().get(startDateTime.getDayOfWeek());
+
+        if (dayOfWeekDisposals == null) { // There are no statistics available for this day on this inlet
+            return 0;
+        }
+
+        for (List<Disposal> day: dayOfWeekDisposals) {
+            int dayDisposals = 0;
+
+            for (Disposal disposal : day) {
+                LocalDateTime logDate = disposal.getLogDate();
+
+                LocalTime startTime = startDateTime.toLocalTime();
+                LocalTime endTime = endDateTime.toLocalTime();
+                LocalTime logTime = logDate.toLocalTime();
+
+                if (logTime.isBefore(endTime) && logTime.isAfter(startTime)) {
+                    dayDisposals++;
+                } else if (logTime.isAfter(endTime)) {
+                    break;
+                }
+            }
+
+            disposalsPerDay.add(dayDisposals);
+        }
+
+        double sum = (double) sum(disposalsPerDay);
+        double average = sum / disposalsPerDay.size();
+        //System.out.println("sum: " + sum);
+
+        return average;
+    }
+
     private static boolean compareDates(LocalDateTime disposalDate, LocalDate currentDate) {
         LocalDate temp = LocalDate.of(disposalDate.getYear(), disposalDate.getMonth(), disposalDate.getDayOfMonth());
 
         return temp.equals(currentDate);
+    }
+
+    public static int sum(List<Integer> list) {
+        int sum = 0;
+
+        for (int i : list)
+            sum = sum + i;
+
+        return sum;
     }
 
 }

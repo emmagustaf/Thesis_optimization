@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Algorithm {
@@ -143,7 +142,7 @@ public class Algorithm {
     public static Vertex buildTree(Vertex v, int fraction) {
         if (v instanceof InletCluster) {
             // If any inlet in the cluster has a level, the cluster is added to the tree
-            return SystemSetup.anyLevel(SystemSetup.inletClusters.get(v.getId()).getAV(), fraction) ? v : null;
+            return SystemSetup.shouldBeEmptied(SystemSetup.inletClusters.get(v.getId()).getAV(), fraction) ? v : null;
 
         } else {
             Vertex v1 = buildTree(SystemSetup.junctions.get(v.getId()).getRightChild(), fraction);

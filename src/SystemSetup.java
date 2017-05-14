@@ -8,7 +8,7 @@ public class SystemSetup {
     public static Junction rootNode;
 
     public static Junction J2, J5, J6, J7, J8, J9, J10, J11, J12, J13, J15, J16,
-            J17, J18, J19, J21, J22, J23, J24, J25, J28, J34,
+            J17, J18, J19, J22, J23, J24, J25, J28, J34,
             J35, J37, J39, J40, J43, J44, J46, J49, J51, J52, J53;
 
     private AV AV3, AV4, AV5, AV6, AV7, AV8, AV10, AV11, AV12, AV13, AV14, AV15, AV16, AV17, AV18, AV19, AV20, AV21, AV22, AV24, AV25;
@@ -89,10 +89,22 @@ public class SystemSetup {
         return inletsMap.get(id).getLevel();
     }
 
-    public static boolean anyLevel(AV av, int fraction) {
+    public static boolean shouldBeEmptied(AV av, int fraction) {
         for (InletCluster ic : avs.get(av.getId()).getInlets()) {
             for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
-                if (inletsMap.get(i.getId()).getLevel() >= LevelHandler.MAX_LEVEL && inletsMap.get(i.getId()).getFraction() == fraction) {
+                boolean correctFraction = inletsMap.get(i.getId()).getFraction() == fraction;
+
+                double level = inletsMap.get(i.getId()).getLevel();
+                boolean hasMaxLevel = level >= LevelHandler.MAX_LEVEL;
+                boolean hasMinLevel = level >= LevelHandler.MIN_EMPTY_LEVEL;
+
+                double disposalAverage = Statistics.averageNbrOfdisposals(i.getId(), Main.currentEndTime, Main.currentEndTime.plusMinutes(Main.minutes));
+                double oldLevel = inletsMap.get(i.getId()).getLevel();
+                double addedLevel = (disposalAverage * LevelHandler.bagConverter) / LevelHandler.MAX_VOLUME;
+                double possibleLevel = oldLevel + addedLevel;
+
+                //System.out.println("disposalAverage: " + disposalAverage + ", addedLevel: " + addedLevel + ", possibleLevel: " + possibleLevel);
+                if (correctFraction && (hasMaxLevel || possibleLevel > LevelHandler.MAX_LEVEL)) { // hasMinLevel
                     Main.output.add("Inlet with level: " + i.getId());
                     return true;
                     //inletClusters.get(ic.getId()).setInd(1);

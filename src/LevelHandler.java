@@ -7,13 +7,15 @@ public class LevelHandler {
     private final static int RESIDUAL_DISPOSAL = 8;
     private final static int PLASTIC_DISPOSAL = 8;
     private final static int PAPER_DISPOSAL = 8;
-    private final static double MAX_VOLUME = 188.5;
-    //private final static double MAX_BAGS = MAX_VOLUME/BAG_CONVERTER;
-    public final static double MAX_LEVEL = 0.5;
+    public static int bagConverter = 8;
+
+    public final static double MAX_VOLUME = 188.5;
+    public final static double MAX_LEVEL = 0.8;
+    public final static double MIN_EMPTY_LEVEL = 0.5;
 
     public static List<Integer> updateLevels(Map<String,List<Disposal>> disposals) {
         double addedVolume, newLevel, oldLevel;
-        int fraction, bagConverter;
+        int fraction;
         List<Integer> fractionsToEmpty = new ArrayList<>();
 
         for (String inletID : disposals.keySet()) {

@@ -21,6 +21,8 @@ public class Main {
     public static double totalTime = 0;
     public static int nbrOfInlets = 0;
     public static List<String> overLimit = new ArrayList<>();
+
+    public static LocalDateTime currentEndTime;
     public static int minutes;
 
     public static void main(String[] args) {
@@ -57,8 +59,8 @@ public class Main {
         System.out.println("1: " + fraction1 + ", 2: " + fraction2 + ", 3: " + fraction3);*/
         Statistics.sortDays(allHistory);
 
-        worstCaseScenario(disposalsJan2017, setup);
-        //simulate(disposalsJan2017, setup);
+        //worstCaseScenario(disposalsJan2017, setup);
+        simulate(disposalsJan2017, setup);
 
         try {
             Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output2.txt"), output2);
@@ -143,17 +145,6 @@ public class Main {
                 setup.refreshSystem();
             }
 
-            /*for (int i = 0; i < 3; i++) {
-                Algorithm.processSubtree(setup.rootNode, i + 1);
-
-                output.add("Total time: " + Algorithm.getTotalTime());
-                output.add("");
-                output.add("");
-
-                totalTime += Algorithm.getTotalTime();
-                setup.refreshSystem();
-            }*/
-
             LocalDateTime timeByInterval = endTime.plusMinutes(minutes);
             LocalDateTime timeByEmptying = endTime.plusSeconds(emptyingTime);
 
@@ -170,20 +161,19 @@ public class Main {
      * Simulates the emptying of the system for all the disposals made in january.
      */
     private static void simulate(Map<String,List<Disposal>> disposals, SystemSetup setup) {
-        // Set the time between checks to 1 day
-        //LocalTime time = LocalTime.of(24, 0);
-        minutes = 60;
+        // Set the number of minutes between checks
+        minutes = 1;
         // Default starting time is 2017-01-01 13:00
-        LocalDateTime endTime = LocalDateTime.of(2017,1,1,13,0,0);
+        currentEndTime = LocalDateTime.of(2017,1,1,13,0,0);
         Map<String,List<Disposal>> tempDisposals = disposals;
 
-        while (endTime.getMonth().equals(Month.JANUARY)) {
+        while (currentEndTime.getMonth().equals(Month.JANUARY)) {
             long emptyingTime = 0;
 
             output.add("");
-            output.add("Update levels until date: " + endTime);
+            output.add("Update levels until date: " + currentEndTime);
             //System.out.println("Update levels until date: " + endTime);
-            Map<String,List<Disposal>> nextUpdate = getNextUpdate(tempDisposals, endTime);
+            Map<String,List<Disposal>> nextUpdate = getNextUpdate(tempDisposals, currentEndTime);
 
             for (String inletID : nextUpdate.keySet()) {
                 List<Disposal> newList = tempDisposals.get(inletID);
@@ -205,7 +195,7 @@ public class Main {
                     Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
                     Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
 
-                    tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+                    tempDisposals = updateDisposalsAfterEmptying(tempDisposals, currentEndTime);
                     emptyingTime += Algorithm.getTotalTime();
                 }
 
@@ -214,10 +204,10 @@ public class Main {
                 setup.refreshSystem();
             }
 
-            LocalDateTime timeByInterval = endTime.plusMinutes(minutes);
-            LocalDateTime timeByEmptying = endTime.plusSeconds(emptyingTime);
+            LocalDateTime timeByInterval = currentEndTime.plusMinutes(minutes);
+            LocalDateTime timeByEmptying = currentEndTime.plusSeconds(emptyingTime);
 
-            endTime = timeByInterval.isAfter(timeByEmptying) ? timeByInterval : timeByEmptying;
+            currentEndTime = timeByInterval.isAfter(timeByEmptying) ? timeByInterval : timeByEmptying;
 
         }
 
