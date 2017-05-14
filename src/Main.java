@@ -1,12 +1,8 @@
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +104,7 @@ public class Main {
 
             }
 
-            List<Integer> fractionsToEmpty = LevelHandler.updateLevels(nextUpdate);
+            LevelHandler.updateLevels(nextUpdate);
 
             Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
             Algorithm.processSubtree(SystemSetup.rootNode, 1);     // Empty residual every hour
@@ -117,7 +113,7 @@ public class Main {
             output.add("");
             totalTime += Algorithm.getTotalTime();
 
-            tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+            tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime, emptyingTime);
             emptyingTime += Algorithm.getTotalTime();
             setup.refreshSystem();
 
@@ -128,7 +124,7 @@ public class Main {
                 output.add("");
                 totalTime += Algorithm.getTotalTime();
 
-                tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+                tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime, emptyingTime);
                 emptyingTime += Algorithm.getTotalTime();
                 setup.refreshSystem();
             }
@@ -140,7 +136,7 @@ public class Main {
                 output.add("");
                 totalTime += Algorithm.getTotalTime();
 
-                tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime);
+                tempDisposals = updateDisposalsAfterEmptying(tempDisposals, endTime, emptyingTime);
                 emptyingTime += Algorithm.getTotalTime();
                 setup.refreshSystem();
             }
@@ -182,26 +178,36 @@ public class Main {
 
             }
 
-            List<Integer> fractionsToEmpty = LevelHandler.updateLevels(nextUpdate);
+            List<String> inletsWithMaxLevel = LevelHandler.updateLevels(nextUpdate);
 
-            for (int fraction : fractionsToEmpty) {
-                Vertex startNode = Algorithm.buildTree(SystemSetup.rootNode, fraction);
+            if (inletsWithMaxLevel.size() > 0) {
 
-                if (startNode != null) {
+                List<Integer> fractionsToEmpty = LevelHandler.setInletsToEmpty(inletsWithMaxLevel); //new ArrayList<>();
 
-                    //printTree(startNode);
-                    //System.out.println("");
+                //System.out.println("inletsWithMaxLevel: " + fractionsToEmpty.size());
 
-                    Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
-                    Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+                Algorithm.emptySeq.add(new Tuple<>(Algorithm.STARTUP_TIME, "Starting fans"));
 
-                    tempDisposals = updateDisposalsAfterEmptying(tempDisposals, currentEndTime);
-                    emptyingTime += Algorithm.getTotalTime();
+                //System.out.println("for-loop: " + fractionsToEmpty.size());
+
+                for (int fraction : fractionsToEmpty) {
+                    Vertex startNode = Algorithm.buildTree(SystemSetup.rootNode, fraction);
+
+                    if (startNode != null) {
+
+                        //printTree(startNode);
+                        //System.out.println("");
+
+                        Algorithm.processSubtree(startNode, fraction);//SystemSetup.inletClusters.get(35));//
+
+                        tempDisposals = updateDisposalsAfterEmptying(tempDisposals, currentEndTime, emptyingTime);
+                        emptyingTime += Algorithm.getTotalTime();
+                    }
+
+                    printAlgorithm();
+                    totalTime += Algorithm.getTotalTime();
+                    setup.refreshSystem();
                 }
-
-                printAlgorithm();
-                totalTime += Algorithm.getTotalTime();
-                setup.refreshSystem();
             }
 
             LocalDateTime timeByInterval = currentEndTime.plusMinutes(minutes);
@@ -252,14 +258,16 @@ public class Main {
         return nextUpdate;
     }
 
-    private static Map<String,List<Disposal>> updateDisposalsAfterEmptying(Map<String,List<Disposal>> disposals, LocalDateTime startTime) {
+    private static Map<String,List<Disposal>> updateDisposalsAfterEmptying(Map<String,List<Disposal>> disposals, LocalDateTime startTime, long prevSeqTime) {
         Map<String,List<Disposal>> newDisposals = new HashMap<>();
-        long secondsUntilEmptied = 0;
+        long secondsUntilEmptied = prevSeqTime;
         boolean wasEmptied;
 
+        Main.output.add("prevSeqTime: " + prevSeqTime);
         for (String inletID : disposals.keySet()) {
             wasEmptied = false;
             List<Disposal> updatedDisposalList = new ArrayList<>();
+            secondsUntilEmptied = prevSeqTime;
 
             for (Tuple<Double,String> lineInSeq : Algorithm.emptySeq) {
                 secondsUntilEmptied += lineInSeq.x;
@@ -280,6 +288,15 @@ public class Main {
                     } else {
                         break;
                     }
+                }
+
+                // Was the inlet overfull before it was emptied?
+                double oldLevel = SystemSetup.inletsMap.get(inletID).getLevel();
+                double addedLevel = (updatedDisposalList.size() * LevelHandler.bagConverter) / LevelHandler.MAX_VOLUME;
+                double newLevel = oldLevel + addedLevel;
+                if (newLevel >= 1) {
+                    Main.output.add("Was overfull at level " + newLevel + " before emptied after " + secondsUntilEmptied + " s: " + inletID);
+                    overLimit.add(inletID);
                 }
 
 
@@ -303,10 +320,11 @@ public class Main {
     }
 
     private static void writeFile() {
+        output.add("");
+        output.add("");
+        output.add("Number of inlets emptied: " + nbrOfInlets);
         output.add("TOTAL TIME: " + totalTime);
-        output.add("Their \"rest\" time: " + 262509);
-        output.add("Their total time: " + (262509.0 + 79369.0 +	97130.0));
-
+        output.add("DVs per minute: " + (nbrOfInlets/(totalTime/60)));
         String overfull = "Anything over limit, " + overLimit.size() + ": ";
         for (String s : overLimit) {
             overfull += s + ", ";
@@ -314,8 +332,8 @@ public class Main {
         output.add(overfull);//overLimit.get(0) + " and " + overLimit.get(1));
 
         output.add("");
-        output.add("Number of inlets emptied: " + nbrOfInlets);
-        output.add("DVs per minute: " + (nbrOfInlets/(totalTime/60)));
+        output.add("Their \"rest\" time: " + 262509);
+        output.add("Their total time: " + (262509.0 + 79369.0 +	97130.0));
 
         output.add("");
         output.add("Their \"rest\" number of inlets emptied: " + 3305);

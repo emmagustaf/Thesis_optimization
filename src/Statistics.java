@@ -83,7 +83,7 @@ public class Statistics {
     /*
      * Returns the average number of disposals made in the given time span
      */
-    public static double getDisposalStatsByTime(String inletID, List<DayOfWeek> weekdays, LocalTime start, LocalTime end) {
+    /*public static double getDisposalStatsByTime(String inletID, List<DayOfWeek> weekdays, LocalTime start, LocalTime end) {
         Map<DayOfWeek, List<List<Disposal>>> allDisposals = SystemSetup.inletsMap.get(inletID).getDisposals();
         List<List<Disposal>> dayDisposals = new ArrayList<>();
         List<List<Disposal>> newDayDisposals = new ArrayList<>();
@@ -122,14 +122,14 @@ public class Statistics {
 
         return totalDisposalAmount/(52 * weekdays.size());  //dayDisposals.size();
 
-    }
+    }*/
 
     /*
      * Function that returns the average number of disposals made in an inlet for a certain day of week in the given time span.
      */
-    public static double averageNbrOfdisposals(String inletID, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public static double averageNbrOfDisposals(String inletID, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         List<Integer> disposalsPerDay = new ArrayList<>();
-        Inlet i = SystemSetup.inletsMap.get(inletID); // TODO kan jag göra såhär?
+        Inlet i = SystemSetup.inletsMap.get(inletID);
         List<List<Disposal>> dayOfWeekDisposals = i.getDisposals().get(startDateTime.getDayOfWeek());
 
         if (dayOfWeekDisposals == null) { // There are no statistics available for this day on this inlet
@@ -157,7 +157,7 @@ public class Statistics {
         }
 
         double sum = (double) sum(disposalsPerDay);
-        double average = sum / disposalsPerDay.size();
+        double average = sum / dayOfWeekDisposals.size(); // 52; // disposalsPerDay.size();
         //System.out.println("sum: " + sum);
 
         return average;

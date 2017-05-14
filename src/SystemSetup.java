@@ -89,6 +89,34 @@ public class SystemSetup {
         return inletsMap.get(id).getLevel();
     }
 
+    /*public static boolean shouldBeEmptied(AV av, int fraction) {
+        for (InletCluster ic : avs.get(av.getId()).getInlets()) {
+            for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
+                boolean correctFraction = inletsMap.get(i.getId()).getFraction() == fraction;
+
+                //double level = inletsMap.get(i.getId()).getLevel();
+                //boolean hasMaxLevel = level >= LevelHandler.MAX_LEVEL;
+                //boolean hasMinLevel = level >= LevelHandler.MIN_EMPTY_LEVEL;
+                //
+                //double disposalAverage = Statistics.averageNbrOfdisposals(i.getId(), Main.currentEndTime, Main.currentEndTime.plusMinutes(Main.minutes));
+                //double oldLevel = inletsMap.get(i.getId()).getLevel();
+                //double addedLevel = (disposalAverage * LevelHandler.bagConverter) / LevelHandler.MAX_VOLUME;
+                //double possibleLevel = oldLevel + addedLevel;
+
+                //System.out.println("disposalAverage: " + disposalAverage + ", addedLevel: " + addedLevel + ", possibleLevel: " + possibleLevel);
+                if (correctFraction && LevelHandler.inletsToEmpty.contains(i.getId())) {  //(hasMaxLevel || hasMinLevel)) { // && possibleLevel > LevelHandler.MAX_LEVEL
+                    Main.output.add("Inlet with level: " + i.getId());
+                    return true;
+                    //inletClusters.get(ic.getId()).setInd(1);
+                }
+            }
+        }
+
+        return false;
+
+    }*/
+
+
     public static boolean shouldBeEmptied(AV av, int fraction) {
         for (InletCluster ic : avs.get(av.getId()).getInlets()) {
             for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
@@ -98,7 +126,7 @@ public class SystemSetup {
                 boolean hasMaxLevel = level >= LevelHandler.MAX_LEVEL;
                 boolean hasMinLevel = level >= LevelHandler.MIN_EMPTY_LEVEL;
 
-                double disposalAverage = Statistics.averageNbrOfdisposals(i.getId(), Main.currentEndTime, Main.currentEndTime.plusMinutes(Main.minutes));
+                double disposalAverage = Statistics.averageNbrOfDisposals(i.getId(), Main.currentEndTime, Main.currentEndTime.plusMinutes(Main.minutes));
                 double oldLevel = inletsMap.get(i.getId()).getLevel();
                 double addedLevel = (disposalAverage * LevelHandler.bagConverter) / LevelHandler.MAX_VOLUME;
                 double possibleLevel = oldLevel + addedLevel;
