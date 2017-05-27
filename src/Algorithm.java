@@ -1,3 +1,5 @@
+import sun.security.util.Length;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,12 +8,13 @@ public class Algorithm {
     // Random values for now
     public static final double STARTUP_TIME = 120;
     public static final double STABILIZATION_TIME = 0.1;
-    public static final double SAFETY_MARGIN = 19; // 0,8698775706
+    public static final double SAFETY_MARGIN = 19; //19; // 0,8698775706
 
     public static final double EMPTY_DV_TIME = 18;
     // Time it takes to close the last AV and empty a new one
     public static final double OPEN_CLOSE_AV_TIME = 4;
-    public static final double SPEED = 10; // m/s
+    public static final double SPEED_PAPER = 8; // m/s
+    public static final double SPEED_OTHER = 10; // m/s
 
     /*
      * List of tuples containing a description of the action taken and the time
@@ -78,7 +81,8 @@ public class Algorithm {
             } else if (SystemSetup.junctions.get(v.getId()).getLengthToRoot() != 0) {
                 AV av = av2 == null ? av1 : av2;
                 double length = SystemSetup.junctions.get(v.getId()).getLengthToParent();
-                emptySeq.add(new Tuple(length / SPEED, "Continue on AV: " + av.getId()));
+                double speed = fraction == 3 ? SPEED_PAPER : SPEED_OTHER;
+                emptySeq.add(new Tuple(length / speed, "Continue on AV: " + av.getId()));
                 emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId()));
                 return av;
             } else  { // Reached the root
@@ -92,6 +96,7 @@ public class Algorithm {
 
     private static void emptyAV(AV av, int fraction) {
         double stabilizationTime;
+        double speed = fraction == 3 ? SPEED_PAPER : SPEED_OTHER;
 
         if (emptiedAVs.size() > 0) {
             emptySeq.add(new Tuple<>(OPEN_CLOSE_AV_TIME, "Close AV: " + lastAV.getId()));
@@ -105,7 +110,7 @@ public class Algorithm {
 
         List<InletCluster> clusters = SystemSetup.avs.get(av.getId()).getInlets();
 
-        for (InletCluster cluster : SystemSetup.avs.get(av.getId()).getInlets()) {
+        for (InletCluster cluster : clusters) {
             List<Inlet> inlets = cluster.getInletList();
 
             for (Inlet i : inlets) {
@@ -116,13 +121,13 @@ public class Algorithm {
                     SystemSetup.levelUpdate(i.getId(), 0);
                 }
             }
-            emptySeq.add(new Tuple<>(SystemSetup.inletClusters.get(cluster.getId()).getLengthToParent()/SPEED, "Transport cluster: " + cluster.getId()));
+            emptySeq.add(new Tuple<>(SystemSetup.inletClusters.get(cluster.getId()).getLengthToParent()/speed, "Transport cluster: " + cluster.getId()));
 
         }
 
         InletCluster lastCluster = clusters.get(clusters.size() - 1);
         double length = lastCluster.getLengthToParent();
-        emptySeq.add(new Tuple<>(length / SPEED, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
+        emptySeq.add(new Tuple<>(length / speed, "Continue on AV: " + av.getId())); //(55.4+7.4+4+3)*0.05*10
         emptySeq.add(new Tuple<>(SAFETY_MARGIN, "Safety margin for " + av.getId())); //
         emptiedAVs.add(SystemSetup.avs.get(av.getId()));
 

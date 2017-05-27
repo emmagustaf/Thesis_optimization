@@ -23,40 +23,44 @@ public class Main {
 
     public static void main(String[] args) {
         SystemSetup setup = new SystemSetup();
-        int fraction = 3;
+        int fraction = 1;
 
-        //testAlgorithm(setup, fraction);
+        testAlgorithm(setup, fraction);
 
         String filePath = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan2017.csv";
         String filePath2 = "/Users/elin/Documents/Programmering/Exjobb/disposals_2016.csv";
+        String filePath3 = "/Users/elin/Documents/Programmering/Exjobb/disposals_jan-nov2016.csv";
+        String filePath4 = "/Users/elin/Documents/Programmering/Exjobb/disposals_dec2016.csv";
         //String filePath = "/Users/emma/Chalmers/exjobb/Prototype/thesis_opt/disposals_jan2017.csv";
 
         Map<String,List<Disposal>> disposalsJan2017 = ParseData.parseCSVFile(filePath);
         Map<String,List<Disposal>> disposals2016 = ParseData.parseCSVFile(filePath2);
+        Map<String,List<Disposal>> disposalsDec2016 = ParseData.parseCSVFile(filePath4);
+        Map<String,List<Disposal>> disposalsJanNov2016 = ParseData.parseCSVFile(filePath3);
         allHistory = disposals2016;
 
-        /*int fraction1 = 0;
-        int fraction2 = 0;
-        int fraction3 = 0;
-
-        for (String inletID : disposals2016.keySet()) {
-            int f = SystemSetup.inletsMap.get(inletID).getFraction();
-
-            if (f == 1) {
-                fraction1 += disposals2016.get(inletID).size();
-            } else if (f == 2) {
-                fraction2 += disposals2016.get(inletID).size();
-            } else if (f == 3) {
-                fraction3 += disposals2016.get(inletID).size();
-            }
-
-        }
-
-        System.out.println("1: " + fraction1 + ", 2: " + fraction2 + ", 3: " + fraction3);*/
+        //int fraction1 = 0;
+        //int fraction2 = 0;
+        //int fraction3 = 0;
+        //
+        //for (String inletID : disposals2016.keySet()) {
+        //    int f = SystemSetup.inletsMap.get(inletID).getFraction();
+        //
+        //    if (f == 1) {
+        //        fraction1 += disposals2016.get(inletID).size();
+        //    } else if (f == 2) {
+        //        fraction2 += disposals2016.get(inletID).size();
+        //    } else if (f == 3) {
+        //        fraction3 += disposals2016.get(inletID).size();
+        //    }
+        //
+        //}
+        //
+        //System.out.println("1: " + fraction1 + ", 2: " + fraction2 + ", 3: " + fraction3);
         Statistics.sortDays(allHistory);
 
-        //worstCaseScenario(disposalsJan2017, setup);
-        simulate(disposalsJan2017, setup);
+        worstCaseScenario(disposalsJan2017, setup);
+        //simulate(disposalsJan2017, setup);
 
         try {
             Files.write(Paths.get("/Users/elin/Documents/Programmering/Exjobb/output2.txt"), output2);
@@ -84,7 +88,7 @@ public class Main {
      * TODO add emptying of triggered
      */
     private static void worstCaseScenario(Map<String,List<Disposal>> disposals, SystemSetup setup) {
-        minutes = 760;
+        minutes = 70;
 
         LocalDateTime endTime = LocalDateTime.of(2017,1,1,13,0,0);
         Map<String,List<Disposal>> tempDisposals = disposals;
@@ -129,7 +133,7 @@ public class Main {
                 setup.refreshSystem();
             }
 
-            if (tic % 5 == 0) {   // Empty paper every 3 hours
+            if (tic % 2 == 1) {   // Empty paper every 2 hours
                 Algorithm.processSubtree(SystemSetup.rootNode, 3);
                 output.add("Total time: " + Algorithm.getTotalTime());
                 output.add("");
@@ -161,9 +165,11 @@ public class Main {
         minutes = 1;
         // Default starting time is 2017-01-01 13:00
         currentEndTime = LocalDateTime.of(2017,1,1,13,0,0);
+        //currentEndTime = LocalDateTime.of(2016,12,1,0,0,0);
         Map<String,List<Disposal>> tempDisposals = disposals;
 
         while (currentEndTime.getMonth().equals(Month.JANUARY)) {
+        //while (currentEndTime.getMonth().equals(Month.DECEMBER)) {
             long emptyingTime = 0;
 
             output.add("");
@@ -263,7 +269,7 @@ public class Main {
         long secondsUntilEmptied = prevSeqTime;
         boolean wasEmptied;
 
-        Main.output.add("prevSeqTime: " + prevSeqTime);
+        //Main.output.add("prevSeqTime: " + prevSeqTime);
         for (String inletID : disposals.keySet()) {
             wasEmptied = false;
             List<Disposal> updatedDisposalList = new ArrayList<>();

@@ -24,14 +24,14 @@ public class ParseData {
                 String[] split = buffLine.split(delimiter);
                 String logId = split[0];
                 LocalDateTime logDate = parseDate(split[2]);
+                String customerId = split[5];
                 String tagId = split[6];
+                String weigth = split[7];
                 String inletId = split[8];
                 inletId = inletId.substring(0, inletId.lastIndexOf(':'));
 
-                // Tard ifall 6 disposals inom 1 min
-
                 // We don't want the "fake"-disposals with customer-id starting with 00000000
-                if (!tagId.equals("")) {
+                if (!customerId.startsWith("0000000") && !tagId.equals("") && weigth.equals("-1")) {
 
                     if (conseqDisposals != null) {  // If conseqDisposals has been initialized
                         if ((conseqDisposals.x).equals(tagId) && (conseqDisposals.y.get(0).getInletAddress()).equals(inletId)) {    // If this disposal is made by the same user as the one before
@@ -49,7 +49,7 @@ public class ParseData {
                                 newList = new ArrayList<>();
                             }
 
-                            if (conseqDisposals.y.size() > 3 && secondsBetweenDisposals < 5) { // Something is weird with these disposals, only save the first one
+                            if (conseqDisposals.y.size() > 1 && secondsBetweenDisposals < 5) { // Something is weird with these disposals, only save the first one
                                 newList.add(conseqDisposals.y.get(0));
                             } else {    // Add all if nothing seems weird
                                 newList.addAll(conseqDisposals.y);

@@ -29,8 +29,8 @@ public class LevelHandler {
                 addedVolume = (disposals.get(inletID).size() * bagConverter) / MAX_VOLUME;
                 newLevel = addedVolume + oldLevel;
 
-                if (newLevel >= MAX_LEVEL) {
-                    Main.output.add("Level of: " + newLevel + ", triggered by: " + inletID + ", fraction: " + SystemSetup.inletsMap.get(inletID).getFraction());
+                if (newLevel > MAX_LEVEL) {
+                    Main.output.add("Level of: " + newLevel + " with old lvl: " + oldLevel + " and addedVolume: " + addedVolume + ", triggered by: " + inletID + ", fraction: " + SystemSetup.inletsMap.get(inletID).getFraction());
 
                     //System.out.println("Level of: " + newLevel + " triggered by: " + inletID);
                     SystemSetup.levelUpdate(inletID, newLevel);
@@ -71,8 +71,6 @@ public class LevelHandler {
         for (String inletID : inletsWithMaxLevel) {
             int fraction = SystemSetup.inletsMap.get(inletID).getFraction();
 
-            inletsToEmpty.add(inletID); // TODO REMOVE
-
             if (!firstFractionsToEmpty.contains(fraction)) {
                 firstFractionsToEmpty.add(fraction);
             }
@@ -80,9 +78,9 @@ public class LevelHandler {
 
         fractionsToEmpty.addAll(firstFractionsToEmpty);
 
-        /*for (String inletID : SystemSetup.inletsMap.keySet()) {
+        for (String inletID : SystemSetup.inletsMap.keySet()) {
             double level = SystemSetup.getLevel(inletID);
-            double disposalAverage = Statistics.averageNbrOfdisposals(inletID, Main.currentEndTime, Main.currentEndTime.plusMinutes(60));
+            double disposalAverage = Statistics.averageNbrOfDisposals(inletID, Main.currentEndTime, Main.currentEndTime.plusMinutes(60));
             double addedLevel = (disposalAverage * LevelHandler.bagConverter) / LevelHandler.MAX_VOLUME;
             double possibleLevel = level + addedLevel;
             int fraction = SystemSetup.inletsMap.get(inletID).getFraction();
@@ -118,15 +116,10 @@ public class LevelHandler {
                 Main.output.add("Number of inlets over 50: " + inletsOver50.get(i+1).size() + " in fraction: " + (i+1));
                 inletsToEmpty.addAll(inletsOver50.get(i+1));
             }
-        }*/
+        }
 
         Main.output.add("Fractions to empty: " + fractionsToEmpty.size());
         return fractionsToEmpty;
-    }
-
-    // TODO : Gör denna funktion!
-    private static void triggerEmptying(String id){
-
     }
 
 

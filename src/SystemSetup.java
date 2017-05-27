@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.*;
 
 public class SystemSetup {
@@ -50,12 +52,16 @@ public class SystemSetup {
             inletCluster21_3,inletCluster21_4, inletCluster22,
             inletCluster24, inletCluster25;
 
+    public static Map<Integer, Boolean> AVIndicator;
+
+
     public SystemSetup(){
 
         inletsMap = new HashMap<>();
         inletClusters = new HashMap<>();
         avs = new HashMap<>();
         junctions = new HashMap<>();
+        AVIndicator = new HashMap<>();
 
         instantiateAllInlets();
         instantiateAllInletLists();
@@ -67,6 +73,7 @@ public class SystemSetup {
     public void refreshSystem() {
         Algorithm.emptySeq = new ArrayList<>();
         Algorithm.emptiedAVs = new ArrayList<>();
+        AVIndicator = new HashMap<>();
 
         instantiateAllJunctions();
         instantiateAllInletClusters();
@@ -89,35 +96,30 @@ public class SystemSetup {
         return inletsMap.get(id).getLevel();
     }
 
-    /*public static boolean shouldBeEmptied(AV av, int fraction) {
+    public static boolean shouldBeEmptied(AV av, int fraction) {
+        if (AVIndicator.get(av.getId()) != null) {
+            return AVIndicator.get(av.getId());
+        }
+
         for (InletCluster ic : avs.get(av.getId()).getInlets()) {
             for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
                 boolean correctFraction = inletsMap.get(i.getId()).getFraction() == fraction;
 
-                //double level = inletsMap.get(i.getId()).getLevel();
-                //boolean hasMaxLevel = level >= LevelHandler.MAX_LEVEL;
-                //boolean hasMinLevel = level >= LevelHandler.MIN_EMPTY_LEVEL;
-                //
-                //double disposalAverage = Statistics.averageNbrOfdisposals(i.getId(), Main.currentEndTime, Main.currentEndTime.plusMinutes(Main.minutes));
-                //double oldLevel = inletsMap.get(i.getId()).getLevel();
-                //double addedLevel = (disposalAverage * LevelHandler.bagConverter) / LevelHandler.MAX_VOLUME;
-                //double possibleLevel = oldLevel + addedLevel;
-
-                //System.out.println("disposalAverage: " + disposalAverage + ", addedLevel: " + addedLevel + ", possibleLevel: " + possibleLevel);
                 if (correctFraction && LevelHandler.inletsToEmpty.contains(i.getId())) {  //(hasMaxLevel || hasMinLevel)) { // && possibleLevel > LevelHandler.MAX_LEVEL
                     Main.output.add("Inlet with level: " + i.getId());
+                    AVIndicator.put(av.getId(), true);
                     return true;
-                    //inletClusters.get(ic.getId()).setInd(1);
                 }
             }
         }
 
+        AVIndicator.put(av.getId(), false);
         return false;
 
-    }*/
+    }
 
 
-    public static boolean shouldBeEmptied(AV av, int fraction) {
+    /*public static boolean shouldBeEmptied(AV av, int fraction) {
         for (InletCluster ic : avs.get(av.getId()).getInlets()) {
             for (Inlet i : inletClusters.get(ic.getId()).getInletList()) {
                 boolean correctFraction = inletsMap.get(i.getId()).getFraction() == fraction;
@@ -132,7 +134,7 @@ public class SystemSetup {
                 double possibleLevel = oldLevel + addedLevel;
 
                 //System.out.println("disposalAverage: " + disposalAverage + ", addedLevel: " + addedLevel + ", possibleLevel: " + possibleLevel);
-                if (correctFraction && (hasMaxLevel || possibleLevel > LevelHandler.MAX_LEVEL)) { // hasMinLevel
+                if (correctFraction && hasMaxLevel) {//(hasMaxLevel || possibleLevel > LevelHandler.MAX_LEVEL)) { // hasMinLevel
                     Main.output.add("Inlet with level: " + i.getId());
                     return true;
                     //inletClusters.get(ic.getId()).setInd(1);
@@ -142,7 +144,7 @@ public class SystemSetup {
 
         return false;
 
-    }
+    }*/
 
     public static void updateRelation(Vertex parent, Vertex leftChild, Vertex rightChild){
         if(leftChild != null) {
